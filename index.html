@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>租号玩｜跨端通行证活动原型 v2</title>
+  <meta name="description" content="租号玩官网风格的 Genre-Pass 跨游戏通行证交互原型" />
+  <style>
+    :root {
+      --pink: #f44386;
+      --pink-2: #ff6a9e;
+      --blue: #5d7ff5;
+      --blue-2: #6d9cff;
+      --ink: #24232b;
+      --sub: #727783;
+      --line: #e7e9ef;
+      --bg: #f4f6fa;
+      --card: #fff;
+      --green: #2fae79;
+      --orange: #ff9d39;
+      --shadow: 0 12px 30px rgba(37, 46, 78, .09);
+      --shadow-soft: 0 6px 18px rgba(44, 54, 86, .07);
+      --radius: 14px;
+      --ease: cubic-bezier(.2,.8,.2,1);
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html, body { margin: 0; min-height: 100%; background: #eef1f6; color: var(--ink); font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; }
+    body { font-size: 14px; }
+    button, a { font: inherit; }
+    button { border: 0; cursor: pointer; }
+    button:focus-visible, a:focus-visible { outline: 3px solid rgba(93,127,245,.36); outline-offset: 2px; }
+    .proto-toolbar { height: 58px; display:flex; align-items:center; justify-content:space-between; gap:20px; padding: 0 28px; background:#fff; border-bottom:1px solid #e5e8ef; color:#3e4655; }
+    .proto-brand { display:flex; align-items:center; gap:10px; min-width: 255px; }
+    .proto-brand .dot { width:8px; height:8px; border-radius:50%; background:var(--pink); box-shadow:0 0 0 5px rgba(244,67,134,.12); }
+    .proto-brand strong { font-size:12px; letter-spacing:.1em; }
+    .proto-brand span { color:#9298a6; font-size:12px; }
+    .device-toggle { display:flex; gap:3px; padding:3px; border-radius:10px; background:#f0f2f7; }
+    .device-toggle button { background:transparent; color:#818895; padding:7px 13px; border-radius:8px; font-size:12px; }
+    .device-toggle button.active { color:var(--blue); background:#fff; box-shadow:0 2px 8px rgba(43,55,93,.12); font-weight:700; }
+    .proto-note { color:#939aa7; font-size:11px; text-align:right; line-height:1.45; }
+    .stage { min-height:calc(100vh - 58px); padding:28px; display:flex; justify-content:center; align-items:flex-start; }
+    .site-frame { width:min(1400px, 100%); min-height:820px; overflow:hidden; border-radius:18px; background:var(--bg); box-shadow:0 22px 55px rgba(40,49,77,.14); transition:width .45s var(--ease), border-radius .45s var(--ease); }
+    .site-frame.mobile { width:390px; border-radius:28px; }
+    .site-frame.mobile .topline { padding:0 14px; }
+    .site-frame.mobile .site-header { padding:12px 16px 9px; display:block; }
+    .site-frame.mobile .brand-logo { width:142px; margin:0 auto 11px; }
+    .site-frame.mobile .search { width:100%; }
+    .site-frame.mobile .download-link { display:none; }
+    .site-frame.mobile .site-nav { margin:0 10px 10px; overflow:auto; justify-content:flex-start; }
+    .site-frame.mobile .site-nav button { flex:0 0 auto; padding:11px 14px; }
+    .site-frame.mobile .site-main { padding:0 10px 72px; }
+    .site-frame.mobile .home-grid { grid-template-columns:1fr; }
+    .site-frame.mobile .hot-panel, .site-frame.mobile .user-panel { display:none; }
+    .site-frame.mobile .hero-banner { min-height:255px; background-position:63% center; }
+    .site-frame.mobile .banner-copy { padding:22px; max-width:275px; }
+    .site-frame.mobile .banner-copy h1 { font-size:27px; }
+    .site-frame.mobile .banner-copy p { font-size:11px; max-width:225px; }
+    .site-frame.mobile .shelf-grid { grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .site-frame.mobile .shelf-card:nth-child(n+3) { display:none; }
+    .site-frame.mobile .activity-hero { min-height:310px; background-position:59% center; }
+    .site-frame.mobile .activity-hero-copy { padding:24px 20px; max-width:305px; }
+    .site-frame.mobile .activity-hero-copy h1 { font-size:33px; }
+    .site-frame.mobile .pass-hub-hero { display:block; min-height:250px; padding:23px 20px; }
+    .site-frame.mobile .pass-hub-copy h1 { font-size:29px; }
+    .site-frame.mobile .pass-hub-mark { height:92px; margin-top:18px; }
+    .site-frame.mobile .pass-matrix { grid-template-columns:1fr; }
+    .site-frame.mobile .pass-choice { grid-template-columns:128px 1fr; min-height:172px; }
+    .site-frame.mobile .pass-choice-copy { padding:14px; }
+    .site-frame.mobile .pass-choice-copy h2 { font-size:17px; }
+    .site-frame.mobile .pass-detail-panel { grid-template-columns:1fr; }
+    .site-frame.mobile .selected-checks { grid-template-columns:repeat(2,1fr); gap:6px; }
+    .site-frame.mobile .how-steps { grid-template-columns:1fr; }
+    .site-frame.mobile .activity-layout, .site-frame.mobile .session-layout { grid-template-columns:1fr; }
+    .site-frame.mobile .directory-tools { display:block; }
+    .site-frame.mobile .directory-filter { margin-top:12px; }
+    .site-frame.mobile .directory-grid { grid-template-columns:1fr; }
+    .site-frame.mobile .mobile-bottom-nav { display:grid; }
+    .site-frame.mobile .page { padding-top:10px; }
+    .site-frame.mobile .crumbs { font-size:11px; }
+
+    .topline { height:31px; display:flex; justify-content:space-between; align-items:center; padding:0 28px; color:#575d6a; font-size:11px; background:linear-gradient(100deg,#fff4fd,#effcff); }
+    .topline .right { display:flex; gap:22px; }
+    .site-header { min-height:86px; display:flex; align-items:center; gap:46px; padding:15px 52px 13px; background:linear-gradient(100deg,#fdf2fb 0%,#edfaff 56%,#dff3ff 100%); }
+    .brand-logo { width:175px; height:auto; object-fit:contain; }
+    .search { height:43px; width:min(760px, 62vw); display:flex; align-items:center; overflow:hidden; border:2px solid #26282b; border-radius:13px; background:rgba(255,255,255,.74); }
+    .search-select { height:100%; display:flex; align-items:center; gap:5px; padding:0 17px; font-weight:700; border-right:1px solid #e2e2e7; white-space:nowrap; }
+    .search-input { flex:1; border:0; outline:0; background:transparent; padding:0 15px; color:#8c929d; font-size:14px; }
+    .search-button { width:58px; height:100%; color:#fff; background:#26282b; font-size:22px; }
+    .download-link { margin-left:auto; flex:0 0 auto; padding:10px 18px; border-radius:22px; color:#fff; background:linear-gradient(100deg,#7bceff,#6f78f4); box-shadow:0 7px 15px rgba(99,127,238,.2); font-weight:700; }
+    .site-nav { height:48px; margin:0 10px 15px; display:flex; align-items:center; justify-content:center; gap:30px; border-radius:13px; background:#fff; box-shadow:0 3px 12px rgba(35,45,69,.04); }
+    .site-nav button { position:relative; padding:12px 11px 11px; color:#22242b; background:transparent; font-weight:700; white-space:nowrap; }
+    .site-nav button.active:after { content:""; position:absolute; left:50%; bottom:3px; width:23px; height:5px; transform:translateX(-50%) rotate(-7deg); border-radius:8px 3px; background:var(--pink); }
+    .hot { display:inline-block; margin-left:4px; padding:2px 5px; border-radius:7px; color:#fff; background:#ff4d92; font-size:9px; }
+    .site-main { padding:0 10px 72px; }
+    .page { display:none; animation:fadeIn .28s var(--ease) both; }
+    .page.active { display:block; }
+    @keyframes fadeIn { from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none} }
+    .home-grid { display:grid; grid-template-columns:276px minmax(0,1fr) 280px; gap:10px; }
+    .hot-panel, .user-panel { min-height:360px; padding:18px 16px; border-radius:13px; background:#fff; box-shadow:var(--shadow-soft); }
+    .hot-tabs { display:flex; gap:9px; padding:0 0 12px; border-bottom:1px solid #f0f1f5; }
+    .hot-tabs button { padding:7px 13px; border-radius:9px; background:transparent; color:#17191e; font-size:12px; font-weight:700; }
+    .hot-tabs button.active { color:#fff; background:var(--pink); }
+    .hot-list { display:grid; gap:4px; margin-top:9px; }
+    .hot-list button { display:flex; align-items:center; gap:10px; height:43px; width:100%; padding:5px 0; text-align:left; background:transparent; color:#30333b; }
+    .game-avatar { width:31px; height:31px; flex:0 0 31px; display:grid; place-items:center; border-radius:8px; color:#fff; font-size:11px; font-weight:800; background:linear-gradient(145deg,#7c9cff,#344eab); }
+    .hot-list button:nth-child(2) .game-avatar { background:linear-gradient(145deg,#bc6178,#462b61); }
+    .hot-list button:nth-child(3) .game-avatar { background:linear-gradient(145deg,#8c6a42,#263d55); }
+    .hot-list button:nth-child(4) .game-avatar { background:linear-gradient(145deg,#7c90dc,#4c6c9d); }
+    .hot-list button:nth-child(5) .game-avatar { background:linear-gradient(145deg,#5b7f63,#243d31); }
+    .hot-list button span:not(.game-avatar) { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .hot-list small { color:#9a9fab; font-size:10px; }
+    .hot-list em { margin-left:auto; color:#555b64; font-style:normal; font-size:16px; }
+    .all-games { display:flex; justify-content:space-between; margin-top:13px; padding-top:12px; border-top:1px solid #f0f1f5; color:#17191e; background:transparent; font-weight:700; }
+    .hero-banner { position:relative; min-height:360px; overflow:hidden; border-radius:13px; background-image:linear-gradient(90deg,rgba(255,255,255,.94) 0%,rgba(255,255,255,.60) 33%,rgba(255,255,255,0) 68%), url('assets/genre-pass-banner-bg.png'); background-size:cover; background-position:center; box-shadow:var(--shadow); cursor:pointer; }
+    .hero-banner:after { content:""; position:absolute; inset:0; background:linear-gradient(120deg,rgba(244,67,134,.08),transparent 34%,rgba(93,127,245,.08)); pointer-events:none; }
+    .banner-copy { position:relative; z-index:1; max-width:390px; padding:48px 0 0 45px; }
+    .banner-kicker, .activity-kicker { display:inline-flex; align-items:center; gap:7px; padding:6px 10px; border-radius:999px; color:#5e68a7; background:rgba(255,255,255,.77); border:1px solid rgba(109,128,235,.2); font-size:11px; font-weight:700; }
+    .banner-kicker i, .activity-kicker i { width:6px; height:6px; border-radius:50%; background:var(--pink); }
+    .banner-copy h1 { margin:18px 0 10px; font-size:38px; line-height:1.12; letter-spacing:-.06em; color:#222c52; }
+    .banner-copy h1 strong { color:#5c79e5; }
+    .banner-copy p { margin:0; max-width:320px; color:#67728d; line-height:1.7; font-size:13px; }
+    .banner-actions { display:flex; align-items:center; gap:10px; margin-top:24px; }
+    .primary { padding:12px 20px; border-radius:10px; color:#fff; background:var(--pink); box-shadow:0 8px 17px rgba(244,67,134,.25); font-weight:700; }
+    .primary:hover { transform:translateY(-1px); box-shadow:0 11px 22px rgba(244,67,134,.32); }
+    .secondary { padding:11px 16px; border-radius:10px; color:#4f6cd1; background:rgba(255,255,255,.83); border:1px solid rgba(96,124,228,.2); font-weight:700; }
+    .banner-foot { margin-top:23px; color:#8490a4; font-size:10px; }
+    .user-panel { padding:17px 18px; }
+    .user-head { display:flex; align-items:center; gap:11px; }
+    .user-avatar { width:42px; height:42px; display:grid; place-items:center; border-radius:50%; color:#fff; background:linear-gradient(145deg,#f3a5b9,#a25c9f); font-weight:800; }
+    .user-head strong { display:block; font-size:14px; }
+    .user-head small { display:block; margin-top:5px; color:#fa4d8b; font-size:11px; }
+    .svip { margin-left:auto; color:#ef5a9e; font-size:18px; font-weight:900; }
+    .login-btn { width:100%; margin-top:19px; padding:13px 10px; border-radius:8px; color:#fff; background:var(--pink); font-weight:700; }
+    .user-links { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-top:18px; padding-bottom:15px; border-bottom:1px solid #f0f1f4; }
+    .user-links button { display:grid; gap:5px; color:#5b616d; background:transparent; font-size:11px; text-align:center; }
+    .user-links b { color:#444b57; font-size:18px; font-weight:400; }
+    .empty-order { min-height:124px; display:grid; place-items:center; margin-top:15px; border-radius:10px; background:#f5f7fa; color:#747b88; text-align:center; }
+    .empty-order b { display:block; margin-bottom:7px; color:#464b56; font-size:12px; }
+    .user-foot { display:flex; justify-content:space-between; margin-top:15px; color:#878d99; font-size:11px; }
+    .section-head { display:flex; align-items:end; justify-content:space-between; margin:21px 10px 12px; }
+    .section-head h2 { margin:0; font-size:24px; letter-spacing:-.04em; }
+    .section-head p { margin:5px 0 0; color:#9399a4; font-size:12px; }
+    .section-link { color:#7b7f89; background:transparent; font-size:12px; }
+    .shelf-section { position:relative; min-height:285px; padding:20px 16px 14px 208px; overflow:hidden; border-radius:14px; background:linear-gradient(95deg,#fff,#fff 56%,#fbfcff); box-shadow:var(--shadow-soft); }
+    .shelf-art { position:absolute; left:0; bottom:0; width:220px; height:258px; display:flex; align-items:end; justify-content:center; color:#c6cee0; font-size:80px; font-weight:900; letter-spacing:-.15em; opacity:.4; pointer-events:none; }
+    .shelf-art:before { content:"✦"; position:absolute; left:48px; bottom:77px; color:#aeb9d8; font-size:118px; filter:blur(1px); }
+    .shelf-title { display:flex; align-items:center; gap:13px; margin-bottom:14px; }
+    .shelf-title h2 { margin:0; font-size:24px; }
+    .shelf-title span { color:#9c8a9a; font-size:12px; }
+    .shelf-tags { display:flex; gap:8px; overflow:hidden; white-space:nowrap; }
+    .shelf-tags button { padding:7px 12px; border-radius:6px; color:#5a688d; background:#eff4ff; font-size:11px; }
+    .shelf-grid { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:13px; }
+    .shelf-grid.plan-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); max-width:720px; }
+    .shelf-shortcuts { display:flex; flex-wrap:wrap; gap:8px; margin-top:15px; }
+    .shelf-shortcuts button { padding:8px 12px; border-radius:7px; color:#5b6fae; background:#f0f4ff; font-size:11px; }
+    .shelf-card { min-width:0; }
+    .shelf-thumb { height:105px; display:flex; align-items:end; padding:11px; overflow:hidden; border-radius:10px; color:#fff; position:relative; background:linear-gradient(145deg,#9f91d9,#2f3d6a); }
+    .shelf-card:nth-child(2) .shelf-thumb { background:linear-gradient(145deg,#8d6d5d,#202c3a); }
+    .shelf-card:nth-child(3) .shelf-thumb { background:linear-gradient(145deg,#b87793,#4a355b); }
+    .shelf-card:nth-child(4) .shelf-thumb { background:linear-gradient(145deg,#807b6a,#233342); }
+    .shelf-thumb:after { content:""; position:absolute; width:90px; height:90px; right:-22px; top:-24px; border-radius:50%; background:rgba(255,255,255,.16); }
+    .shelf-thumb strong { position:relative; z-index:1; font-size:17px; }
+    .shelf-badge { position:absolute; z-index:2; top:8px; left:8px; padding:4px 6px; border-radius:5px; color:#fff; background:#ff8d47; font-size:10px; }
+    .shelf-card h3 { margin:9px 0 4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; }
+    .shelf-card p { margin:0; color:#ee6b94; font-size:11px; }
+    .shelf-price { display:flex; align-items:end; justify-content:space-between; margin-top:9px; }
+    .shelf-price strong { font-size:21px; }
+    .shelf-price small { color:#9aa0ab; font-size:10px; }
+    .shelf-price button { padding:8px 12px; border-radius:7px; color:#fff; background:var(--pink); font-size:11px; font-weight:700; }
+
+    .crumbs { display:flex; align-items:center; gap:8px; margin:4px 8px 12px; color:#8a909a; font-size:12px; }
+    .crumbs b { color:#353a45; }
+    .activity-hero { position:relative; min-height:290px; overflow:hidden; border-radius:14px; background-image:linear-gradient(90deg,rgba(255,255,255,.94) 0%,rgba(255,255,255,.78) 34%,rgba(255,255,255,0) 66%), url('assets/genre-pass-banner-bg.png'); background-size:cover; background-position:center; box-shadow:var(--shadow); }
+    .activity-hero-copy { position:relative; z-index:1; max-width:520px; padding:43px 0 34px 49px; }
+    .activity-hero-copy h1 { margin:14px 0 10px; color:#28335a; font-size:42px; letter-spacing:-.07em; }
+    .activity-hero-copy h1 span { color:#617de4; }
+    .activity-hero-copy p { max-width:420px; margin:0; color:#5e6e8b; line-height:1.8; font-size:13px; }
+    .activity-meta { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; color:#73809b; font-size:11px; }
+    .meta-chip { padding:6px 10px; border-radius:7px; background:rgba(255,255,255,.75); border:1px solid rgba(95,122,224,.15); }
+    .activity-actions { display:flex; gap:10px; margin-top:20px; }
+    .activity-layout { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr); gap:12px; margin-top:12px; }
+    .pass-hub-hero { display:flex; align-items:end; justify-content:space-between; gap:25px; min-height:178px; padding:28px 34px; border-radius:14px; overflow:hidden; background:linear-gradient(110deg,#fff3f8,#f2f6ff 58%,#e6f5ff); border:1px solid #e3e8f5; box-shadow:var(--shadow-soft); }
+    .pass-hub-copy { max-width:590px; }
+    .pass-hub-copy h1 { margin:12px 0 8px; color:#28325a; font-size:34px; letter-spacing:-.07em; }
+    .pass-hub-copy p { margin:0; color:#687592; font-size:13px; line-height:1.7; }
+    .pass-hub-mark { position:relative; flex:0 0 230px; height:120px; border-radius:20px; background:radial-gradient(circle at 50% 48%,#fff 0 11%,transparent 12%), linear-gradient(135deg,#dce8ff,#fce5f1); box-shadow:inset 0 0 0 1px rgba(255,255,255,.7); }
+    .pass-hub-mark:before { content:""; position:absolute; inset:18px 28px; border:1px solid rgba(95,125,232,.34); border-radius:50%; transform:rotate(-17deg); box-shadow:0 0 0 13px rgba(95,125,232,.06),0 0 0 26px rgba(244,67,134,.05); }
+    .pass-hub-mark:after { content:"PASS"; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); color:#5e76d8; font-size:17px; font-weight:900; letter-spacing:.16em; }
+    .pass-filter { display:flex; gap:7px; flex-wrap:wrap; margin:17px 0 12px; }
+    .pass-filter button { padding:9px 14px; border-radius:8px; color:#69758b; background:#fff; border:1px solid #e6eaf2; font-size:11px; }
+    .pass-filter button.active { color:#fff; background:var(--pink); border-color:var(--pink); box-shadow:0 6px 13px rgba(244,67,134,.2); }
+    .pass-matrix { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .pass-choice { position:relative; display:grid; grid-template-columns:168px 1fr; min-height:196px; overflow:hidden; border-radius:13px; background:#fff; border:1px solid #e6e9f0; box-shadow:var(--shadow-soft); transition:transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s; }
+    .pass-choice:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+    .pass-choice.selected { border-color:#f35a94; box-shadow:0 0 0 3px rgba(244,67,134,.1),var(--shadow-soft); }
+    .pass-choice-art { min-height:100%; background-size:cover; background-position:center; }
+    .pass-choice-art.night { background-image:linear-gradient(90deg,rgba(39,45,95,.05),rgba(39,45,95,.18)),url('assets/pass-categories/pass-single-night.png'); }
+    .pass-choice-art.weekend { background-image:linear-gradient(90deg,rgba(33,70,134,.03),rgba(33,70,134,.13)),url('assets/pass-categories/pass-category-weekend.png'); }
+    .pass-choice-art.allsite { background-image:linear-gradient(90deg,rgba(55,86,173,.03),rgba(55,86,173,.13)),url('assets/pass-categories/pass-all-site-week.png'); }
+    .pass-choice-art.premium { background-image:linear-gradient(90deg,rgba(109,73,105,.03),rgba(109,73,105,.12)),url('assets/pass-categories/pass-premium.png'); }
+    .pass-choice-copy { display:flex; min-width:0; flex-direction:column; padding:17px; }
+    .pass-choice-kicker { display:flex; align-items:center; justify-content:space-between; gap:5px; color:#6679cf; font-size:10px; font-weight:700; }
+    .pass-choice-copy h2 { margin:9px 0 5px; color:#293148; font-size:19px; letter-spacing:-.05em; }
+    .pass-choice-copy p { min-height:34px; margin:0; color:#848b99; font-size:11px; line-height:1.55; }
+    .pass-tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:11px; }
+    .pass-tags span { padding:5px 7px; border-radius:5px; color:#687597; background:#f0f3fb; font-size:9px; }
+    .pass-bottom { display:flex; align-items:end; justify-content:space-between; gap:8px; margin-top:auto; padding-top:12px; border-top:1px solid #f0f1f4; }
+    .pass-price strong { color:#242b3e; font-size:22px; letter-spacing:-.05em; }
+    .pass-price small { color:#9a9fab; font-size:10px; }
+    .pass-actions { display:flex; gap:5px; }
+    .pass-actions button { padding:8px 9px; border-radius:7px; color:#5570d4; background:#edf2ff; font-size:10px; font-weight:700; }
+    .pass-actions .pass-buy { color:#fff; background:var(--pink); }
+    .pass-badge { position:absolute; z-index:2; top:10px; left:10px; padding:5px 7px; border-radius:5px; color:#fff; background:#667ee3; font-size:9px; font-weight:700; }
+    .pass-choice:nth-child(2) .pass-badge { background:#35a7bc; }
+    .pass-choice:nth-child(3) .pass-badge { background:#e99145; }
+    .pass-choice:nth-child(4) .pass-badge { background:#b58a47; }
+    .pass-detail-panel { display:grid; grid-template-columns:minmax(0,1.16fr) minmax(300px,.84fr); gap:12px; margin-top:12px; }
+    .selected-summary { padding:20px; border-radius:13px; background:#fff; box-shadow:var(--shadow-soft); }
+    .selected-summary-head { display:flex; align-items:start; justify-content:space-between; gap:15px; }
+    .selected-summary h2 { margin:0; font-size:21px; letter-spacing:-.05em; }
+    .selected-summary p { margin:6px 0 0; color:#858d9a; font-size:11px; line-height:1.6; }
+    .selected-checks { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:16px; }
+    .selected-check { padding:10px 11px; border-radius:8px; background:#f7f8fb; border:1px solid #edf0f5; }
+    .selected-check b { display:block; color:#3b52b2; font-size:13px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .selected-check span { display:block; margin-top:4px; color:#858e9d; font-size:10px; }
+    .selected-scope-box { margin-top:13px; padding:13px 15px; border-radius:9px; background:#f8fafe; border:1px solid #e3e8f4; }
+    .scope-head { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:9px; flex-wrap:wrap; }
+    .scope-title-wrap { display:flex; align-items:center; gap:7px; }
+    .scope-badge { padding:3px 8px; border-radius:5px; color:#fff; background:#556ed4; font-size:10px; font-weight:700; }
+    .scope-title-wrap strong { font-size:12px; color:#232b3e; }
+    .scope-pool { font-size:10px; color:#606c85; background:#fff; border:1px solid #dce2ef; padding:3px 8px; border-radius:5px; font-weight:500; }
+    .scope-games-row { margin-top:7px; }
+    .scope-games-title { display:flex; align-items:center; gap:6px; margin-bottom:6px; color:#798396; font-size:11px; font-weight:700; }
+    .scope-chips { display:flex; flex-wrap:wrap; gap:6px; }
+    .game-chip { display:inline-flex; align-items:center; gap:4px; padding:4px 8px; border-radius:6px; background:#fff; border:1px solid #e1e6f0; color:#364157; font-size:11px; }
+    .game-chip em { font-style:normal; font-size:9px; font-weight:700; padding:1px 4px; border-radius:4px; background:#edf2ff; color:#4a63ce; }
+    .game-chip.gold { background:#fffdf5; border-color:#fedc9b; color:#855c1b; }
+    .game-chip.gold em { background:#faebd0; color:#9c6218; }
+    .selected-note { margin-top:12px; padding:10px 13px; border-left:3px solid var(--pink); border-radius:6px; color:#727c8d; background:#fff5f9; font-size:11px; line-height:1.55; }
+    .how-card { padding:20px; border-radius:13px; background:#fff; box-shadow:var(--shadow-soft); }
+    .how-card h3 { margin:0; font-size:15px; }
+    .how-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:14px; }
+    .how-step { padding:12px 10px; border-radius:8px; background:#f7f8fb; }
+    .how-step b { display:grid; place-items:center; width:22px; height:22px; border-radius:50%; color:#fff; background:#7188e5; font-size:10px; }
+    .how-step strong { display:block; margin-top:8px; font-size:11px; }
+    .how-step span { display:block; margin-top:4px; color:#8d94a2; font-size:9px; line-height:1.5; }
+    .panel-card { padding:21px; border-radius:13px; background:#fff; box-shadow:var(--shadow-soft); }
+    .panel-card h2 { margin:0; font-size:20px; letter-spacing:-.04em; }
+    .panel-card .lead { margin:8px 0 0; color:#808794; font-size:12px; line-height:1.6; }
+    .rules { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:19px; }
+    .rule { min-height:104px; padding:14px; border-radius:10px; background:#f7f8fb; border:1px solid #edf0f5; }
+    .rule b { display:block; color:#566fd5; font-size:20px; }
+    .rule strong { display:block; margin-top:8px; font-size:12px; }
+    .rule span { display:block; margin-top:4px; color:#8b929d; font-size:10px; line-height:1.5; }
+    .notice { margin-top:13px; padding:12px 14px; border-left:3px solid var(--pink); border-radius:6px; background:#fff6fa; color:#747e90; font-size:11px; line-height:1.6; }
+    .purchase-card h3 { margin:0; font-size:15px; }
+    .plan-row { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin:14px 0; }
+    .plan { padding:12px; text-align:left; border:1px solid #e5e8ef; border-radius:9px; background:#fff; }
+    .plan.active { border-color:var(--pink); background:#fff4f8; box-shadow:0 0 0 3px rgba(244,67,134,.09); }
+    .plan small { display:block; color:#9399a6; font-size:10px; }
+    .plan strong { display:block; margin-top:5px; font-size:22px; }
+    .purchase-lines { display:grid; gap:0; margin:9px 0 14px; }
+    .purchase-line { display:flex; justify-content:space-between; gap:10px; padding:12px 0; border-bottom:1px solid #f0f1f4; font-size:12px; }
+    .purchase-line span { color:#858b96; }
+    .purchase-line b { text-align:right; }
+    .full-btn { width:100%; }
+    .fine { margin:11px 0 0; color:#989da8; font-size:10px; line-height:1.6; }
+
+    .directory-tools { display:flex; align-items:end; justify-content:space-between; gap:16px; margin-bottom:14px; }
+    .directory-tools h1, .session-head h1 { margin:0; font-size:28px; letter-spacing:-.06em; }
+    .directory-tools p, .session-head p { margin:6px 0 0; color:#89909c; font-size:12px; }
+    .directory-filter { display:flex; gap:5px; padding:4px; border-radius:9px; background:#e9edf5; }
+    .directory-filter button { padding:8px 14px; border-radius:7px; color:#747d8e; background:transparent; font-size:11px; }
+    .directory-filter button.active { color:#465fcc; background:#fff; box-shadow:0 2px 8px rgba(49,62,100,.11); font-weight:700; }
+    .directory-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .directory-card { position:relative; min-height:200px; padding:17px; border-radius:12px; background:#fff; border:1px solid #e8ebf1; box-shadow:var(--shadow-soft); }
+    .directory-card.hidden { display:none; }
+    .directory-top { display:flex; justify-content:space-between; align-items:start; gap:8px; }
+    .directory-icon { width:46px; height:46px; display:grid; place-items:center; border-radius:12px; color:#fff; background:linear-gradient(145deg,#7a94ff,#3d4f98); font-weight:900; }
+    .directory-card:nth-child(2) .directory-icon { background:linear-gradient(145deg,#c66f90,#60416c); }
+    .directory-card:nth-child(3) .directory-icon { background:linear-gradient(145deg,#9a8158,#334858); }
+    .directory-card:nth-child(4) .directory-icon { background:linear-gradient(145deg,#7c9bf1,#3a6994); }
+    .directory-card:nth-child(5) .directory-icon { background:linear-gradient(145deg,#e4a062,#9e5360); }
+    .directory-card:nth-child(6) .directory-icon { background:linear-gradient(145deg,#7c9f7d,#405f57); }
+    .status { padding:5px 7px; border-radius:6px; color:#2a9b6b; background:#eaf8f0; font-size:10px; font-weight:700; }
+    .status.wait { color:#a66a29; background:#fff5df; }
+    .status.off { color:#969da8; background:#f1f2f5; }
+    .directory-card h3 { margin:14px 0 4px; font-size:15px; }
+    .directory-card p { margin:0; color:#8a919c; font-size:11px; }
+    .directory-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:13px; }
+    .directory-tags span { padding:5px 7px; border-radius:5px; color:#647091; background:#f0f3fb; font-size:10px; }
+    .directory-bottom { display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:11px; border-top:1px solid #f0f1f4; }
+    .directory-bottom small { color:#8d94a1; font-size:10px; }
+    .directory-bottom button { padding:8px 12px; border-radius:7px; color:#fff; background:var(--pink); font-size:11px; font-weight:700; }
+    .directory-card .directory-bottom button[disabled] { color:#9298a4; background:#edf0f4; cursor:not-allowed; }
+    .catalog-note { margin-top:12px; padding:11px 13px; border-radius:8px; color:#7e8797; background:#fff; border:1px dashed #dfe4ed; font-size:11px; line-height:1.55; }
+
+    .session-head { display:flex; align-items:end; justify-content:space-between; gap:15px; margin-bottom:14px; }
+    .session-empty { display:grid; place-items:center; min-height:270px; padding:35px; border:1px dashed #dbe1eb; border-radius:13px; background:#fff; text-align:center; box-shadow:var(--shadow-soft); }
+    .session-empty .empty-icon { width:54px; height:54px; display:grid; place-items:center; margin:0 auto 14px; border-radius:16px; color:#6f84e3; background:#edf2ff; font-size:25px; }
+    .session-empty h2 { margin:0; font-size:20px; }
+    .session-empty p { max-width:360px; margin:8px auto 17px; color:#89909c; font-size:12px; line-height:1.6; }
+    .session-hero { position:relative; overflow:hidden; padding:25px 28px; border-radius:13px; background:linear-gradient(115deg,#fff,#edf4ff); border:1px solid #e1e7f5; }
+    .session-hero:after { content:""; position:absolute; width:270px; height:270px; right:-78px; top:-120px; border-radius:50%; border:1px solid rgba(94,127,238,.18); box-shadow:0 0 0 24px rgba(94,127,238,.05),0 0 0 51px rgba(94,127,238,.035); }
+    .session-hero > * { position:relative; z-index:1; }
+    .session-tag { color:#5a70ce; font-size:10px; letter-spacing:.08em; }
+    .session-hero h2 { margin:10px 0 6px; font-size:31px; letter-spacing:-.06em; }
+    .session-hero p { margin:0; color:#7889aa; font-size:12px; }
+    .live { display:inline-flex; align-items:center; gap:6px; margin-top:17px; color:#3b9d71; font-size:11px; }
+    .live i { width:7px; height:7px; border-radius:50%; background:#41c487; box-shadow:0 0 0 4px rgba(65,196,135,.14); }
+    .time { position:absolute; top:24px; right:28px; text-align:right; }
+    .time strong { display:block; color:#2c3c66; font-size:36px; line-height:1; }
+    .time span { color:#8290a9; font-size:10px; }
+    .session-layout { display:grid; grid-template-columns:minmax(0,1.16fr) minmax(300px,.84fr); gap:12px; margin-top:12px; }
+    .timeline, .session-account { padding:20px; border-radius:13px; background:#fff; box-shadow:var(--shadow-soft); }
+    .timeline h3, .session-account h3 { margin:0; font-size:15px; }
+    .steps { display:grid; gap:16px; margin-top:19px; }
+    .step { display:grid; grid-template-columns:30px 1fr auto; gap:10px; align-items:center; }
+    .step-dot { position:relative; width:30px; height:30px; display:grid; place-items:center; border-radius:50%; color:#8690a3; background:#eef1f6; font-size:11px; font-weight:700; }
+    .step.done .step-dot { color:#fff; background:#6c88ef; }
+    .step.current .step-dot { color:#fff; background:var(--pink); box-shadow:0 0 0 5px rgba(244,67,134,.12); }
+    .step:not(:last-child) .step-dot:after { content:""; position:absolute; top:30px; left:50%; width:1px; height:21px; background:#dce2ec; }
+    .step strong { display:block; font-size:12px; }
+    .step span { display:block; margin-top:4px; color:#8a929e; font-size:10px; line-height:1.5; }
+    .step time { color:#9aa1ad; font-size:10px; }
+    .swap-card { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:21px; padding:14px; border-radius:10px; background:#fff7fa; border:1px solid #ffe1eb; }
+    .swap-card strong { display:block; font-size:12px; }
+    .swap-card span { display:block; margin-top:5px; color:#8c8f99; font-size:10px; }
+    .account-box { display:flex; align-items:center; gap:10px; margin-top:18px; padding:12px; border-radius:10px; background:#f7f8fb; }
+    .account-avatar { width:40px; height:40px; display:grid; place-items:center; border-radius:11px; color:#fff; background:#5d73dc; font-weight:800; }
+    .account-box strong { display:block; font-size:12px; }
+    .account-box span { display:block; margin-top:4px; color:#2fae79; font-size:10px; }
+    .account-stats { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:15px; }
+    .account-stats div { padding:11px; border-radius:9px; background:#f7f8fb; }
+    .account-stats span { display:block; color:#8e95a1; font-size:10px; }
+    .account-stats b { display:block; margin-top:6px; font-size:16px; }
+    .account-note { margin:14px 0 0; color:#9299a6; font-size:10px; line-height:1.6; }
+
+    .modal-wrap { position:fixed; inset:0; z-index:20; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(35,39,57,.32); backdrop-filter:blur(6px); }
+    .modal-wrap.open { display:flex; }
+    .modal { width:min(440px,100%); padding:22px; border-radius:15px; background:#fff; box-shadow:0 25px 70px rgba(29,34,58,.22); animation:modalIn .22s var(--ease) both; }
+    @keyframes modalIn { from{opacity:0; transform:translateY(8px) scale(.98)} to{opacity:1; transform:none} }
+    .modal-head { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .plan-modal .modal-head { align-items:flex-start; }
+    .plan-modal .modal-head .close { margin-left:auto; }
+    .modal-head h3 { margin:0; font-size:17px; }
+    .close { width:28px; height:28px; border-radius:50%; color:#7b818c; background:#f2f3f6; font-size:20px; }
+    .modal p { margin:10px 0 14px; color:#858c98; font-size:11px; line-height:1.6; }
+    .modal-lines { display:grid; gap:0; }
+    .modal-line { display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f0f1f4; font-size:12px; }
+    .modal-line span { color:#898f9a; }
+    .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:18px; }
+    .toast { position:fixed; z-index:30; left:50%; bottom:25px; display:flex; align-items:center; gap:8px; max-width:calc(100vw - 32px); padding:11px 15px; transform:translate(-50%,20px); opacity:0; border-radius:999px; color:#fff; background:#262b38; box-shadow:0 12px 28px rgba(22,27,41,.23); pointer-events:none; transition:.25s var(--ease); font-size:12px; }
+    .toast.show { opacity:1; transform:translate(-50%,0); }
+    .toast i { width:6px; height:6px; border-radius:50%; background:#6de0a7; }
+    .toolbar-mid { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center; }
+    .role-toggle { display:flex; gap:3px; padding:3px; border-radius:10px; background:#f0f2f7; }
+    .role-toggle button { background:transparent; color:#818895; padding:7px 13px; border-radius:8px; font-size:12px; }
+    .role-toggle button.active { color:#fff; font-weight:700; box-shadow:0 2px 8px rgba(43,55,93,.12); }
+    .role-toggle button[data-role="c"].active { background:var(--pink); }
+    .role-toggle button[data-role="b"].active { background:#2c3a67; }
+    .role-toggle button[data-role="intro"].active { background:#3d4fbe; }
+    .intro-frame { width:min(980px,100%); min-height:820px; overflow:hidden; border-radius:18px; background:#fff; box-shadow:0 22px 55px rgba(40,49,77,.14); }
+    .intro-frame.mobile { width:390px; }
+    .intro-cover { padding:46px 56px 32px; color:#fff; background:linear-gradient(115deg,#4f62ea 0%,#7458d6 54%,#f44386 100%); }
+    .intro-kicker { display:inline-flex; padding:5px 10px; border-radius:999px; background:rgba(255,255,255,.16); font-size:12px; letter-spacing:.08em; }
+    .intro-cover h1 { margin:16px 0 12px; font-size:40px; letter-spacing:-.05em; }
+    .intro-cover .lede { max-width:680px; margin:0; font-size:16px; line-height:1.75; color:rgba(255,255,255,.92); }
+    .intro-cover .aside { margin:14px 0 0; color:rgba(255,255,255,.78); font-size:13px; }
+    .intro-toc { display:flex; flex-wrap:wrap; gap:8px; padding:14px 56px; border-bottom:1px solid #eef1f6; background:#fbfcfe; }
+    .intro-toc a { padding:7px 10px; border-radius:999px; color:#4d5e9a; background:#eef2ff; font-size:12px; text-decoration:none; }
+    .intro-body { padding:8px 56px 64px; }
+    .intro-body h2 { margin:40px 0 12px; font-size:24px; letter-spacing:-.04em; }
+    .intro-body h3 { margin:22px 0 8px; font-size:16px; }
+    .intro-body p { margin:0 0 12px; color:#3c4352; font-size:15px; line-height:1.8; }
+    .intro-note { padding:12px 14px; border-radius:10px; background:#fff7f1; color:#8a5a32; font-size:13px; line-height:1.7; }
+    .intro-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:8px 0 16px; }
+    .intro-card { padding:16px; border-radius:14px; background:#f7f8fb; border:1px solid #eef0f5; }
+    .intro-card b { display:block; margin-bottom:6px; color:#3d4fbe; }
+    .intro-card p { margin:0; font-size:13px; line-height:1.7; color:#4c5568; }
+    .intro-rights { display:grid; gap:8px; margin-bottom:14px; }
+    .intro-right { display:grid; grid-template-columns:36px 1fr; gap:10px; align-items:start; padding:12px 14px; border-radius:12px; background:#f6f8ff; }
+    .intro-right i { width:36px; height:36px; display:grid; place-items:center; border-radius:10px; color:#fff; background:#5d73e6; font-style:normal; font-weight:800; }
+    .intro-right strong { display:block; }
+    .intro-right span { display:block; margin-top:4px; color:#667085; font-size:13px; line-height:1.6; }
+    .intro-table { width:100%; border-collapse:collapse; margin:8px 0 16px; font-size:13px; }
+    .intro-table th, .intro-table td { padding:12px 10px; text-align:left; border-bottom:1px solid #eef1f6; vertical-align:top; line-height:1.6; }
+    .intro-table th { color:#667085; font-weight:700; background:#fafbfe; }
+    .intro-skus { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .intro-sku { padding:14px 16px; border-radius:14px; background:#fff; border:1px solid #e7ebf4; }
+    .intro-sku strong { display:block; margin-bottom:4px; }
+    .intro-sku span { color:#667085; font-size:13px; line-height:1.65; }
+    .intro-steps { display:grid; gap:0; margin:8px 0 8px; }
+    .intro-step { display:grid; grid-template-columns:42px 1fr; gap:12px; }
+    .intro-step .num { position:relative; width:32px; height:32px; display:grid; place-items:center; border-radius:50%; color:#fff; background:#5d73e6; font-size:13px; font-weight:800; }
+    .intro-step:not(:last-child) .num:after { content:""; position:absolute; top:32px; left:15px; width:2px; height:calc(100% + 8px); background:#e4e9f6; }
+    .intro-step .txt { padding-bottom:16px; }
+    .intro-step .txt strong { display:block; margin-bottom:4px; }
+    .intro-step .txt p { margin:0; color:#4c5568; font-size:14px; }
+    .intro-paths { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:4px 0 16px; }
+    .intro-callout { margin:8px 0 16px; padding:14px 16px; border-left:3px solid var(--pink); border-radius:8px; background:#fff5f9; color:#5c4450; font-size:14px; line-height:1.7; }
+    .intro-rules { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .intro-pipe { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 14px; padding:0; list-style:none; }
+    .intro-pipe li { padding:8px 12px; border-radius:999px; background:#f4f6fd; color:#31406e; font-size:13px; }
+    .intro-pipe li b { margin-right:6px; color:#5d73e6; }
+    .intro-frame.mobile .intro-rules { grid-template-columns:1fr; }
+    .intro-rule { padding:12px 14px; border-radius:12px; background:#f7f8fb; }
+    .intro-rule b { color:#3d4fbe; }
+    .intro-split { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .intro-frame.mobile .intro-cover, .intro-frame.mobile .intro-body, .intro-frame.mobile .intro-toc { padding-left:18px; padding-right:18px; }
+    .intro-frame.mobile .intro-cover h1 { font-size:30px; }
+    .intro-frame.mobile .intro-grid, .intro-frame.mobile .intro-paths, .intro-frame.mobile .intro-skus, .intro-frame.mobile .intro-split { grid-template-columns:1fr; }
+    .order-strip { display:none; align-items:center; gap:18px; margin:14px 0 0; padding:16px 20px; min-height:88px; border-radius:16px; color:#fff; background:linear-gradient(110deg,#5563e8 0%,#7a5cdb 52%,#f44386 100%); box-shadow:0 16px 32px rgba(88,76,196,.28); }
+    .pass-hub-hero + .order-strip.show + .pass-filter { margin-top:12px; }
+    .order-strip.show { display:flex; }
+    .order-strip-brand { width:54px; height:54px; flex:0 0 54px; display:grid; place-items:center; border-radius:16px; background:rgba(255,255,255,.16); font-size:11px; font-weight:900; letter-spacing:.12em; }
+    .order-strip-main { min-width:0; flex:1; }
+    .order-strip-kicker { display:flex; align-items:center; gap:8px; color:rgba(255,255,255,.82); font-size:11px; }
+    .order-strip-kicker b { color:#fff; }
+    .order-strip-main strong { display:block; margin-top:4px; font-size:20px; letter-spacing:-.04em; }
+    .order-strip-main em { display:block; margin-top:4px; color:rgba(255,255,255,.8); font-style:normal; font-size:12px; }
+    .order-strip-time { text-align:right; }
+    .order-strip-time b { display:block; font-size:28px; line-height:1; letter-spacing:-.04em; }
+    .order-strip-time span { display:block; margin-top:5px; color:rgba(255,255,255,.75); font-size:11px; }
+    .order-strip-actions { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    .order-strip .ghost { color:#fff; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.28); }
+    .order-strip .primary { color:#5b4fd6; background:#fff; }
+    .plan-modal { width:min(760px,100%); max-height:86vh; overflow:auto; }
+    .plan-stock { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:4px 0 12px; }
+    .plan-stock div { padding:12px; border-radius:10px; background:#f6f8fd; }
+    .plan-stock b { display:block; color:#3b52b2; font-size:22px; }
+    .plan-stock span { display:block; margin-top:4px; color:#858e9d; font-size:11px; }
+    .plan-game-list { display:grid; gap:8px; margin:4px 0 10px; }
+    .plan-game-row { display:grid; grid-template-columns:42px minmax(0,1.4fr) 90px 110px; gap:10px; align-items:center; padding:10px 12px; border-radius:10px; background:#f7f8fb; border:1px solid #eef0f5; }
+    .plan-game-row .directory-icon { width:36px; height:36px; font-size:12px; }
+    .plan-game-row strong { display:block; font-size:13px; }
+    .plan-game-row small { display:block; margin-top:3px; color:#8a919c; font-size:11px; }
+    .plan-game-row .shelf-num { text-align:right; }
+    .plan-game-row .shelf-num b { display:block; font-size:18px; color:#2c3c66; }
+    .plan-game-row .shelf-num span { color:#8a919c; font-size:10px; }
+    .upgrade-item { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; margin-bottom:8px; border-radius:12px; background:#f7f8fb; border:1px solid #e8ebf3; text-align:left; width:100%; }
+    .upgrade-item strong { display:block; font-size:14px; }
+    .upgrade-item span { display:block; margin-top:4px; color:#808794; font-size:11px; line-height:1.5; }
+    .upgrade-item b { color:#f44386; font-size:16px; }
+    .pass-hero-card { position:relative; overflow:hidden; padding:24px 26px; border-radius:13px; background:linear-gradient(115deg,#fff,#edf4ff); border:1px solid #e1e7f5; }
+    .pass-hero-card h1 { margin:8px 0 6px; font-size:28px; letter-spacing:-.06em; }
+    .pass-hero-meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .history-card { margin-top:12px; padding:20px; border-radius:13px; background:#fff; box-shadow:var(--shadow-soft); }
+    .history-row { display:grid; grid-template-columns:1.2fr .9fr .6fr .7fr 1fr; gap:8px; padding:11px 0; border-bottom:1px solid #f0f1f4; font-size:12px; }
+    .history-row.head { color:#8a919c; font-size:11px; border-bottom:1px solid #e7e9ef; }
+    .rules-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .rule-block { padding:18px; border-radius:13px; background:#fff; box-shadow:var(--shadow-soft); }
+    .rule-block b { display:block; color:#5d7ff5; font-size:12px; }
+    .rule-block strong { display:block; margin:8px 0 6px; }
+    .rule-block span { color:#808794; font-size:12px; line-height:1.6; }
+    .swap-actions { display:flex; flex-wrap:wrap; gap:8px; }
+    .ghost { padding:11px 14px; border-radius:10px; color:#4f6cd1; background:#edf2ff; font-weight:700; }
+    .danger { padding:11px 14px; border-radius:10px; color:#b42318; background:#fff1f0; font-weight:700; }
+    .demo-link { background:transparent; color:#5d7ff5; font-size:11px; text-decoration:underline; }
+    .cooldown-wrap { margin-top:12px; }
+    .cooldown-wrap span { color:#8a919c; font-size:11px; }
+    .cooldown-bar { margin-top:6px; height:8px; border-radius:99px; background:#eef1f6; overflow:hidden; }
+    .cooldown-bar i { display:block; height:100%; width:0; background:linear-gradient(90deg,var(--pink),var(--blue)); }
+    .auth-box { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:4px 0 8px; }
+    .auth-pane { padding:12px; border-radius:10px; background:#f7f8fb; color:#667; font-size:11px; line-height:1.55; }
+    .auth-pane.on { background:#edf2ff; color:#31457a; }
+    .qr-fake { width:84px; height:84px; margin:8px auto; border-radius:8px; background:repeating-conic-gradient(#222 0 25%, #fff 0 50%) 0 0/14px 14px; }
+    .process-wrap { position:fixed; inset:0; z-index:24; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(35,39,57,.38); backdrop-filter:blur(7px); }
+    .process-wrap.open { display:flex; }
+    .process-card { width:min(460px,100%); padding:26px; border-radius:16px; background:#fff; box-shadow:0 25px 70px rgba(29,34,58,.22); }
+    .process-card p { margin:0; color:#858c98; font-size:12px; line-height:1.6; }
+    .process-card li i { width:18px; height:18px; display:grid; place-items:center; border-radius:50%; background:#eef1f6; font-style:normal; font-size:10px; }
+    .process-card ol { margin:14px 0 0; padding:0; list-style:none; display:grid; gap:8px; }
+    .process-card li { display:flex; gap:8px; align-items:center; color:#8a919c; font-size:12px; }
+    .process-card li.on { color:#24232b; font-weight:700; }
+    .process-card li.done { color:#2fae79; }
+    .spin { width:36px; height:36px; border-radius:50%; border:3px solid #e8ebf3; border-top-color:var(--pink); animation:spin .8s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg) } }
+    .choice-grid { display:grid; gap:8px; }
+    .choice-grid button { text-align:left; padding:12px 14px; border-radius:10px; background:#f7f8fb; border:1px solid #edf0f5; }
+    .choice-grid button strong { display:block; font-size:13px; }
+    .choice-grid button span { display:block; margin-top:4px; color:#8a919c; font-size:11px; line-height:1.5; }
+    .bench-frame { width:min(1400px,100%); min-height:820px; display:grid; grid-template-columns:228px minmax(0,1fr); overflow:hidden; border-radius:18px; background:#f4f6fa; box-shadow:0 22px 55px rgba(40,49,77,.14); }
+    .bench-frame.mobile { width:390px; grid-template-columns:1fr; min-height:720px; }
+    .bench-frame.mobile .bench-side { padding:12px; }
+    .bench-frame.mobile .bench-nav { display:flex; gap:6px; margin-top:10px; overflow:auto; }
+    .bench-frame.mobile .bench-nav button { flex:0 0 auto; }
+    .bench-frame.mobile .kpi { grid-template-columns:1fr 1fr; }
+    .bench-side { background:#222a44; color:#d5dbed; padding:22px 16px; }
+    .bench-side .logo { color:#fff; font-size:14px; font-weight:800; }
+    .bench-side .sub { margin-top:6px; color:#8b93ad; font-size:11px; line-height:1.55; }
+    .bench-nav { display:grid; gap:6px; margin-top:22px; }
+    .bench-nav button { text-align:left; padding:11px 12px; border-radius:8px; background:transparent; color:#c5cbe0; }
+    .bench-nav button.active { background:#323c63; color:#fff; font-weight:700; }
+    .bench-main { padding:22px 22px 36px; }
+    .bench-page { display:none; }
+    .bench-page.active { display:block; }
+    .kpi { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+    .kpi article { padding:16px; border-radius:12px; background:#fff; box-shadow:var(--shadow-soft); }
+    .kpi span { color:#8a919c; font-size:11px; }
+    .kpi b { display:block; margin-top:8px; font-size:22px; }
+    .kpi small { display:block; margin-top:6px; color:#2fae79; font-size:10px; }
+    .panel { margin-top:12px; padding:18px; border-radius:13px; background:#fff; box-shadow:var(--shadow-soft); }
+    .panel h3 { margin:0 0 12px; font-size:15px; }
+    table.grid { width:100%; border-collapse:collapse; }
+    table.grid th, table.grid td { padding:11px 8px; text-align:left; font-size:12px; border-bottom:1px solid #f0f1f4; vertical-align:middle; }
+    table.grid th { color:#8a919c; font-size:11px; background:#fafbfe; }
+    .pill { display:inline-flex; padding:3px 7px; border-radius:999px; font-size:10px; font-weight:700; }
+    .pill.ok { color:#2a9b6b; background:#eaf8f0; }
+    .pill.busy { color:#a66a29; background:#fff5df; }
+    .pill.off { color:#969da8; background:#f1f2f5; }
+    .toggle { width:42px; height:24px; border-radius:999px; background:#d9dee8; position:relative; }
+    .toggle.on { background:#2fae79; }
+    .toggle i { position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; transition:.2s var(--ease); }
+    .toggle.on i { left:21px; }
+    .toggle[disabled], .order-strip button[disabled] { opacity:.45; cursor:not-allowed; }
+    .modal.wide { width:min(540px,100%); }
+    .status.locked { color:#5d7ff5; background:#edf2ff; }
+    .shelf-grid.plan-grid { grid-template-columns:repeat(4, minmax(0,1fr)); max-width:none; }
+    .empty-hint { padding:18px; color:#8a919c; font-size:12px; }
+    .live-dot { display:inline-flex; align-items:center; gap:6px; color:#2fae79; font-size:11px; }
+    .live-dot i { width:7px; height:7px; border-radius:50%; background:#41c487; }
+    .site-frame.mobile .rules-grid, .site-frame.mobile .auth-box { grid-template-columns:1fr; }
+    .site-frame.mobile .history-row { grid-template-columns:1fr 1fr; }
+    .site-frame.mobile .history-row.head { display:none; }
+    .site-frame.mobile .shelf-grid.plan-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .site-frame.mobile .order-strip.show { display:grid; grid-template-columns:1fr 1fr; }
+    .site-frame.mobile .order-strip-actions, .site-frame.mobile .plan-game-row, .site-frame.mobile .plan-stock { grid-template-columns:1fr 1fr; }
+    .site-frame.mobile .plan-game-row { grid-template-columns:36px 1fr 70px; }
+    .site-frame.mobile .swap-actions { display:grid; }
+    .mobile-bottom-nav { display:none; position:fixed; z-index:8; left:50%; bottom:0; width:390px; transform:translateX(-50%); grid-template-columns:repeat(5,1fr); padding:10px 8px calc(10px + env(safe-area-inset-bottom)); border-top:1px solid #e9ebf1; background:rgba(255,255,255,.96); box-shadow:0 -5px 18px rgba(29,39,66,.08); }
+    .mobile-bottom-nav button { display:grid; gap:4px; place-items:center; color:#878d99; background:transparent; font-size:10px; }
+    .mobile-bottom-nav button.active { color:var(--pink); font-weight:700; }
+    .mobile-bottom-nav b { font-size:17px; font-weight:400; }
+    @media (max-width:1180px) {
+      .site-header { padding-left:28px; padding-right:28px; gap:25px; }
+      .site-nav { gap:17px; }
+      .home-grid { grid-template-columns:230px minmax(0,1fr) 230px; }
+      .shelf-section { padding-left:170px; }
+    }
+    @media (max-width:860px) {
+      .proto-toolbar { padding:0 14px; }
+      .proto-brand span, .proto-note { display:none; }
+      .stage { padding:14px; }
+      .site-frame { min-height:calc(100vh - 86px); }
+      .site-header { display:block; padding:14px 18px 10px; }
+      .brand-logo { width:150px; display:block; margin:0 auto 10px; }
+      .search { width:100%; }
+      .download-link { display:none; }
+      .site-nav { overflow:auto; justify-content:flex-start; gap:8px; }
+      .site-nav button { flex:0 0 auto; }
+      .home-grid { grid-template-columns:1fr; }
+      .hot-panel, .user-panel { display:none; }
+      .hero-banner { min-height:290px; }
+      .shelf-section { padding-left:170px; }
+      .activity-layout, .session-layout { grid-template-columns:1fr; }
+      .directory-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .pass-hub-hero { display:block; }
+      .pass-hub-mark { margin-top:17px; }
+      .pass-matrix { grid-template-columns:1fr; }
+      .pass-detail-panel { grid-template-columns:1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *:before, *:after { animation-duration:.01ms !important; transition-duration:.01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="proto-toolbar">
+    <div class="proto-brand"><i class="dot"></i><strong>GENRE-PASS / V2</strong><span>C / B 双侧履约原型</span></div>
+    <div class="toolbar-mid">
+      <div class="role-toggle" aria-label="角色"><button class="active" data-role="c">租客 C 端</button><button data-role="b">号商 B 端</button><button data-role="intro">产品介绍</button></div>
+      <div class="device-toggle" aria-label="页面预览尺寸"><button class="active" data-device="desktop">PC 页面</button><button data-device="mobile">移动页面</button></div>
+    </div>
+    <div class="proto-note">产品双端 = 端游 / 手游<br>C/B 共用同一套订单状态</div>
+  </header>
+
+  <main class="stage">
+    <section class="site-frame" id="siteFrame" aria-label="租号玩跨端通行证官网入口原型">
+      <div class="topline"><span>⌂ 您好，欢迎来到租号玩平台！</span><span class="right"><span>🎁 登录/注册领红包</span><span>帮助中心⌄</span><span>关于我们⌄</span></span></div>
+      <header class="site-header">
+        <img class="brand-logo" src="assets/zuhaowan-logo.png" alt="租号玩" />
+        <div class="search"><span class="search-select">全部游戏⌄</span><input class="search-input" placeholder="请输入游戏关键词" aria-label="请输入游戏关键词" /><button class="search-button" aria-label="搜索">⌕</button></div>
+        <button class="download-link" data-action="toast" data-message="沿用现有下载上号器入口（演示）">🚀 下载上号器 ›</button>
+      </header>
+      <nav class="site-nav" aria-label="官网主导航">
+        <button class="active" data-go="home">首页</button>
+        <button data-go="activity">通行证</button>
+        <button data-go="directory">实时目录</button>
+        <button data-go="mypass">我的通行证</button>
+        <button data-action="toast" data-message="租号大厅继续沿用现有单游戏货架">租号大厅 <em class="hot">Hot</em></button>
+        <button data-action="toast" data-message="特价专区继续沿用现有活动入口">特价专区</button>
+        <button data-go="rules">规则</button>
+        <button data-action="toast" data-message="加入赚钱为现有官网入口">加入赚钱</button>
+      </nav>
+
+      <div class="site-main">
+        <section class="page active" id="page-home">
+          <div class="home-grid">
+            <aside class="hot-panel">
+              <div class="hot-tabs"><button class="active">热游</button><button>端游</button><button>STEAM</button><button>手游</button></div>
+              <div class="hot-list">
+                <button data-action="toast" data-message="打开 QQ 飞车单游戏货架"><i class="game-avatar">QQ</i><span>QQ 飞车 <small>玉麟麒麟 / 炫龙 / S车</small></span><em>›</em></button>
+                <button data-action="toast" data-message="打开无畏契约单游戏货架"><i class="game-avatar">V</i><span>无畏契约 <small>可排位 / 21冠军</small></span><em>›</em></button>
+                <button data-action="toast" data-message="打开穿越火线单游戏货架"><i class="game-avatar">CF</i><span>穿越火线 <small>幻神音效卡</small></span><em>›</em></button>
+                <button data-action="toast" data-message="打开英雄联盟单游戏货架"><i class="game-avatar">LOL</i><span>英雄联盟 <small>黑色玫瑰 / 艾欧尼亚</small></span><em>›</em></button>
+                <button data-action="toast" data-message="打开三角洲行动单游戏货架"><i class="game-avatar">Δ</i><span>三角洲行动端游 <small>可排位</small></span><em>›</em></button>
+              </div>
+              <button class="all-games" data-action="toast" data-message="打开全部游戏货架">全部游戏 <span>›</span></button>
+            </aside>
+
+            <div class="hero-banner" aria-label="进入跨端通行证活动">
+              <div class="banner-copy">
+                <h1>办一张通行证<br><strong>精选好号随心玩</strong></h1>
+                <p>端游、手游共用一份时长。先购通行证，选定游戏后平台算法智能派发优质好号，免挑号免踩坑。</p>
+                <div class="banner-actions"><button class="primary" data-go="activity">立即探索</button><button class="secondary" data-go="rules">查看规则</button></div>
+              </div>
+            </div>
+
+            <aside class="user-panel">
+              <div class="user-head"><i class="user-avatar">租</i><div><strong>欢迎来到租号玩</strong><small>注册即送最高5.7元红包</small></div><b class="svip">SVIP</b></div>
+              <button class="login-btn" data-action="toast" data-message="登录/注册沿用现有官网流程">登录/注册领5.7元红包</button>
+              <div class="user-links"><button data-go="mypass"><b>▣</b>我的订单</button><button data-action="toast" data-message="查看我的收藏"><b>♡</b>我的收藏</button><button data-action="toast" data-message="查看我的足迹"><b>♧</b>我的足迹</button></div>
+              <div class="empty-order" id="homeOrderEmpty"><div><b>您还没有通行证</b><span>开通后这里会显示母订单</span></div></div>
+              <div class="user-foot"><span>◔ 租号玩清风行动</span><span>更多 ›</span></div>
+            </aside>
+          </div>
+
+          <div class="section-head"><div><h2>跨端通行证活动</h2><p>从现有官网货架进入新的可流转时长体验</p></div><button class="section-link" data-go="activity">查看活动详情 ›</button></div>
+          <section class="shelf-section">
+            <div class="shelf-art">✦</div>
+            <div class="shelf-title"><h2>Genre-Pass</h2><span>端游 × 手游 · 时长共享</span></div>
+            <div class="shelf-tags"><button>全站目录</button><button>共享时长</button><button>单活跃会话</button><button>各端独立授权</button><button>运营可配置</button></div>
+            <div class="shelf-grid plan-grid">
+              <article class="shelf-card"><div class="shelf-thumb"><span class="shelf-badge">入门</span><strong>NIGHT</strong></div><h3>单晚尝鲜卡</h3><p>单端锁定 · 可换 1 次</p><div class="shelf-price"><div><strong>¥9.9</strong><small> 起</small></div><button data-go="activity" data-pick="single">查看</button></div></article>
+              <article class="shelf-card"><div class="shelf-thumb"><span class="shelf-badge">周末</span><strong>FPS</strong></div><h3>品类双端周末卡</h3><p>射击品类 · 端游+手游</p><div class="shelf-price"><div><strong>¥29.9</strong><small> 起</small></div><button data-go="activity" data-pick="category">查看</button></div></article>
+              <article class="shelf-card"><div class="shelf-thumb"><span class="shelf-badge">自由</span><strong>7 DAYS</strong></div><h3>全站双端周卡</h3><p>全站目录 · 共享时长</p><div class="shelf-price"><div><strong>¥69.9</strong><small> 起</small></div><button data-go="activity" data-pick="allsite">查看</button></div></article>
+              <article class="shelf-card"><div class="shelf-thumb"><span class="shelf-badge">尊享</span><strong>SVIP</strong></div><h3>尊享神装通行证</h3><p>高品质号池优先派单</p><div class="shelf-price"><div><strong>¥129</strong><small> 起</small></div><button data-go="activity" data-pick="premium">查看</button></div></article>
+            </div>
+            <div class="shelf-shortcuts"><button data-go="directory">查看实时可用目录 ›</button><button data-go="mypass">我的通行证 ›</button><button data-go="session">当前会话 ›</button></div>
+          </section>
+
+          <div class="section-head"><div><h2>穿越火线</h2><p>兄弟，下一把一起起</p></div><button class="section-link" data-action="toast" data-message="查看穿越火线单游戏货架">查看更多 ›</button></div>
+          <section class="shelf-section" style="min-height:255px;padding-top:17px;">
+            <div class="shelf-art">◒</div><div class="shelf-title"><h2>热门账号</h2><span>沿用现有单游戏货架</span></div><div class="shelf-grid">
+              <article class="shelf-card"><div class="shelf-thumb"><span class="shelf-badge">特价专区</span><strong>幻神</strong></div><h3>幻神音效卡 / 星神 / 幻兽</h3><p>精选低价好号</p><div class="shelf-price"><div><strong>¥0.3</strong><small>/时起</small></div><button data-action="toast" data-message="进入现有账号下单流程">立即租</button></div></article>
+              <article class="shelf-card"><div class="shelf-thumb"><span class="shelf-badge">低价账号</span><strong>CF</strong></div><h3>生化号｜炽焰蝶刀</h3><p>热门账号</p><div class="shelf-price"><div><strong>¥1.27</strong><small>/时</small></div><button data-action="toast" data-message="进入现有账号下单流程">立即租</button></div></article>
+              <article class="shelf-card"><div class="shelf-thumb"><span class="shelf-badge">精选账号</span><strong>V9</strong></div><h3>G36C幻影皮肤号</h3><p>可排位</p><div class="shelf-price"><div><strong>¥4.06</strong><small>/时</small></div><button data-action="toast" data-message="进入现有账号下单流程">立即租</button></div></article>
+              <article class="shelf-card"><div class="shelf-thumb"><span class="shelf-badge">大神靓号</span><strong>HERO</strong></div><h3>圣耀幽瞳全套靓号</h3><p>热度1000+</p><div class="shelf-price"><div><strong>¥10.39</strong><small>/时</small></div><button data-action="toast" data-message="进入现有账号下单流程">立即租</button></div></article>
+            </div>
+          </section>
+        </section>
+
+        <section class="page" id="page-activity">
+          <div class="crumbs"><button data-go="home">首页</button><b>›</b><span>活动中心</span><b>›</b><strong>通行证中心</strong></div>
+          <section class="pass-hub-hero">
+            <div class="pass-hub-copy"><span class="activity-kicker"><i></i>全网电竞通行证 · 跨端畅玩</span><h1>游戏畅玩通行证</h1><p>端游手游共享时长 · 平台算法智能秒级派号 · 当局不顺支持切换（含20分钟对局保护）。</p></div>
+            <div class="pass-hub-mark" aria-hidden="true"></div>
+          </section>
+          <div class="order-strip" id="orderStrip">
+            <div class="order-strip-brand">PASS</div>
+            <div class="order-strip-main">
+              <div class="order-strip-kicker">母订单 <b id="stripId">GP-00000000</b></div>
+              <strong id="stripTitle">单晚尝鲜卡</strong>
+              <em id="stripMeta">未履约 · 覆盖游戏与货架见套餐</em>
+            </div>
+            <div class="order-strip-time"><b id="stripRemain">00:00:00</b><span>剩余时长</span></div>
+            <div class="order-strip-actions">
+              <button class="ghost" id="upgradePassBtn" type="button">升级套餐</button>
+              <button class="primary" data-go="mypass">查看母订单</button>
+            </div>
+          </div>
+          <div class="pass-filter" aria-label="通行证筛选"><button class="active" data-pass-filter="all">全部通行证</button><button data-pass-filter="single">单晚尝鲜</button><button data-pass-filter="category">品类双端</button><button data-pass-filter="allsite">全站双端</button><button data-pass-filter="premium">尊享神装</button></div>
+          <div class="pass-matrix" id="passMatrix">
+            <article class="pass-choice selected" data-pass-card="single"><span class="pass-badge">入门首选</span><div class="pass-choice-art night"></div><div class="pass-choice-copy"><div class="pass-choice-kicker"><span>01 · 单端轻量体验</span><span>高性价比</span></div><h2>单晚尝鲜卡</h2><p>今晚只想先玩几局，打腻了还能换一次。</p><div class="pass-tags"><span>2–3 小时</span><span>单端</span><span>单品类动态目录</span></div><div class="pass-bottom"><div class="pass-price"><strong>¥9.9</strong><small> 起</small></div><div class="pass-actions"><button data-pass-select="single">看方案</button><button class="pass-buy" data-pass-activate="single">开通</button></div></div></div></article>
+            <article class="pass-choice" data-pass-card="category"><span class="pass-badge">周末爆款</span><div class="pass-choice-art weekend"></div><div class="pass-choice-copy"><div class="pass-choice-kicker"><span>02 · 品类双端</span><span>推荐</span></div><h2>品类双端周末卡</h2><p>一个品类，端游和手游接力玩满周末。</p><div class="pass-tags"><span>6–8 小时</span><span>端游 + 手游</span><span>品类动态目录</span></div><div class="pass-bottom"><div class="pass-price"><strong>¥29.9</strong><small> 起</small></div><div class="pass-actions"><button data-pass-select="category">看方案</button><button class="pass-buy" data-pass-activate="category">开通</button></div></div></div></article>
+            <article class="pass-choice" data-pass-card="allsite"><span class="pass-badge">自由旗舰</span><div class="pass-choice-art allsite"></div><div class="pass-choice-copy"><div class="pass-choice-kicker"><span>03 · 全站双端</span><span>高自由</span></div><h2>全站双端周卡</h2><p>一周有效，按实时目录决定今天玩什么。</p><div class="pass-tags"><span>15–20 小时</span><span>端游 + 手游</span><span>全站准入目录</span></div><div class="pass-bottom"><div class="pass-price"><strong>¥69.9</strong><small> 起</small></div><div class="pass-actions"><button data-pass-select="allsite">看方案</button><button class="pass-buy" data-pass-activate="allsite">开通</button></div></div></div></article>
+            <article class="pass-choice" data-pass-card="premium"><span class="pass-badge">品质优先</span><div class="pass-choice-art premium"></div><div class="pass-choice-copy"><div class="pass-choice-kicker"><span>04 · 高品质账号池</span><span>尊享</span></div><h2>尊享神装通行证</h2><p>优先进入高品质账号池，适合追求账号体验的玩家。</p><div class="pass-tags"><span>7 天有效</span><span>高品质号池</span><span>动态目录</span></div><div class="pass-bottom"><div class="pass-price"><strong>¥129</strong><small> 起</small></div><div class="pass-actions"><button data-pass-select="premium">看方案</button><button class="pass-buy" data-pass-activate="premium">开通</button></div></div></div></article>
+          </div>
+          <aside class="how-card" style="margin-top:12px"><h3>通行证怎么用</h3><p class="empty-hint" style="padding:8px 0 0">点击卡片或「看方案」查看该套餐覆盖的游戏和货架数量。</p><div class="how-steps"><div class="how-step"><b>1</b><strong>看方案</strong><span>先看覆盖几款游戏、每款多少货架。</span></div><div class="how-step"><b>2</b><strong>支付开通</strong><span>生成母订单，时长归通行证。</span></div><div class="how-step"><b>3</b><strong>选游戏不选号</strong><span>算法按在池货架派号，各端独立授权。</span></div></div></aside>
+          <div class="activity-actions" style="margin-top:15px"><button class="secondary" data-go="directory">预览当前卡可用目录</button></div>
+        </section>
+
+        <section class="page" id="page-directory">
+          <div class="directory-tools"><div><div class="crumbs" style="margin-left:0"><button data-go="activity">活动中心</button><b>›</b><strong>实时可用目录</strong></div><h1>选择想玩的游戏</h1><p id="directoryHint">目录按当前通行证过滤，用户选游戏不选号。</p></div><div class="directory-filter"><button class="active" data-end-filter="all">全部</button><button data-end-filter="pc">端游</button><button data-end-filter="mobile">手游</button></div></div>
+          <div class="directory-grid" id="directoryGrid"></div>
+          <div class="catalog-note"><b>履约说明：</b>选游戏后由算法派号。同时只能有一个子会话。换号先退出存证，再按占用分钟结算给号商，且不计入撤单率。押金沿用现有规则，本原型不展开。</div>
+        </section>
+
+        <section class="page" id="page-session">
+          <div class="session-head"><div><div class="crumbs" style="margin-left:0"><button data-go="directory">实时可用目录</button><b>›</b><strong>当前会话</strong></div><h1>当前会话</h1><p>剩余时长属于母订单。游戏和账号只是当前子会话。</p></div><button class="secondary" data-action="open-switch">结束并切换</button></div>
+          <div class="session-empty" id="sessionEmpty"><div><div class="empty-icon">↻</div><h2>当前暂无进行中的游戏</h2><p>先支付开通通行证，再从实时目录选择游戏。授权成功后这里才会开始扣时。</p><button class="primary" data-go="directory">去实时目录</button></div></div>
+          <div id="sessionContent" hidden>
+            <section class="session-hero"><span class="session-tag">GENRE-PASS · 子会话履约中</span><h2 id="sessionGame">三角洲行动</h2><p id="sessionInfo">端游 · 算法派单</p><span class="live"><i></i>运行中</span><div class="time"><strong id="timer">02:30:00</strong><span>母订单剩余时长</span></div></section>
+            <div class="session-layout">
+              <article class="timeline">
+                <h3>会话状态</h3>
+                <div class="steps">
+                  <div class="step done"><i class="step-dot">✓</i><div><strong>母订单已支付</strong><span>时长归通行证，不跟死某一只号。</span></div><time>已完成</time></div>
+                  <div class="step current" id="currentStep"><i class="step-dot">02</i><div><strong id="currentStepTitle">游戏在线</strong><span id="currentStepDesc">算法已派发账号。</span></div><time>现在</time></div>
+                  <div class="step"><i class="step-dot">03</i><div><strong>换号 / 换游戏</strong><span>满 20 分钟后可退出存证并释放号源。</span></div><time>待触发</time></div>
+                </div>
+                <div class="cooldown-wrap"><span id="cooldownLabel">对局保护中</span><div class="cooldown-bar"><i id="cooldownBar"></i></div></div>
+                <div class="swap-card"><div><strong>当局不顺？</strong><span>同游戏换号、换其他游戏、或只结束本局，三条路分开走。</span></div>
+                  <div class="swap-actions">
+                    <button class="primary" data-action="open-switch">申请切换</button>
+                    <button class="demo-link" data-action="skip-cooldown">评审：跳过冷却</button>
+                  </div>
+                </div>
+              </article>
+              <aside class="session-account">
+                <h3>当前履约账号</h3>
+                <div class="account-box"><i class="account-avatar" id="accountIcon">Δ</i><div><strong id="accountTitle">算法优选号</strong><span id="accountMerchant">号商 · 巡检正常</span></div></div>
+                <div class="account-stats">
+                  <div><span>本局已占用</span><b id="usedStat">0 分钟</b></div>
+                  <div><span>母订单剩余</span><b id="remainStat">150 分钟</b></div>
+                  <div><span>当前端</span><b id="endStat">端游</b></div>
+                  <div><span>换号保护</span><b id="cooldownStat">保护中</b></div>
+                </div>
+                <p class="account-note">换号释放按分钟结算给号商，不计入撤单率。匹配等待期间不扣母订单时长。</p>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-mypass">
+          <div class="crumbs"><button data-go="home">首页</button><b>›</b><strong>我的通行证</strong></div>
+          <div class="session-empty" id="myPassEmpty"><div><div class="empty-icon">◇</div><h2>还没有通行证</h2><p>先选一张卡并完成支付，才会生成母订单。</p><button class="primary" data-go="activity">去选卡</button></div></div>
+          <div id="myPassContent" hidden>
+            <section class="pass-hero-card">
+              <span class="session-tag">母订单 <b id="orderId">GP-00000000</b></span>
+              <h1 id="myPassTitle">单晚尝鲜卡</h1>
+              <p id="myPassMeta">权益说明</p>
+              <div class="pass-hero-meta">
+                <span class="meta-chip">剩余 <b id="myPassRemain">02:30:00</b></span>
+                <span class="meta-chip" id="myPassExpire">当晚有效</span>
+                <span class="meta-chip" id="myPassLock">未锁端</span>
+                <span class="meta-chip" id="myPassSession">当前无子会话</span>
+              </div>
+              <div class="banner-actions" style="margin-top:18px">
+                <button class="primary" data-go="directory">去选游戏</button>
+                <button class="secondary" data-go="session">当前会话</button>
+                <button class="ghost" id="upgradeFromMyPass" type="button">升级套餐</button>
+              </div>
+            </section>
+            <article class="history-card">
+              <h3>子会话记录</h3>
+              <div class="history-row head"><span>时间</span><span>游戏</span><span>账号</span><span>占用</span><span>结果</span></div>
+              <div id="historyRows"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="page" id="page-rules">
+          <div class="crumbs"><button data-go="home">首页</button><b>›</b><strong>通行证规则</strong></div>
+          <div class="rules-grid">
+            <article class="rule-block"><b>01</b><strong>卖的是时长，不是某只号</strong><span>购买后得到母订单：剩余时长、当期目录访问权、有限切换权。具体游戏以实时库存为准。</span></article>
+            <article class="rule-block"><b>02</b><strong>选游戏，不选号</strong><span>平台按在库、端、号池等级和信誉派号。用户不能在通行证里指定某一只货架账号。</span></article>
+            <article class="rule-block"><b>03</b><strong>同时只能上一款</strong><span>当前子会话结束后才能进入下一款。端游走上号器，手游走扫码，两端不共用凭证。</span></article>
+            <article class="rule-block"><b>04</b><strong>20 分钟对局保护</strong><span>未满保护时间不能换号，避免秒进秒退。同游戏换号和换游戏是两条路。</span></article>
+            <article class="rule-block"><b>05</b><strong>换号 ≠ 商户撤单</strong><span>退出后按占用分钟结算给号商，号源回池。失败不自动回原号，时长留在母订单，售后走现有规则。</span></article>
+            <article class="rule-block"><b>06</b><strong>押金与合规沿用现有</strong><span>本期不新做押金减免。未成年人、实名、厂商协议沿用平台已有限制。</span></article>
+          </div>
+        </section>
+      </div>
+      <nav class="mobile-bottom-nav" aria-label="移动端原型导航"><button class="active" data-go="home"><b>⌂</b>首页</button><button data-go="activity"><b>◇</b>通行证</button><button data-go="directory"><b>⌕</b>目录</button><button data-go="session"><b>↻</b>会话</button><button data-go="mypass"><b>▣</b>我的</button></nav>
+    </section>
+
+    <section class="bench-frame" id="bFrame" hidden aria-label="商家工作台通行证供给池">
+      <aside class="bench-side">
+        <div class="logo">商家工作台</div>
+        <div class="sub">现有 zu.zuhaowan.com 上的新增模块：通行证供给池。号商自愿加入；进池后履约侧不能拒单。</div>
+        <nav class="bench-nav">
+          <button class="active" data-bench="dash">供给总览</button>
+          <button data-bench="pool">账号准入</button>
+          <button data-bench="settle">占用结算</button>
+        </nav>
+      </aside>
+      <div class="bench-main">
+        <section class="bench-page active" id="bench-dash">
+          <h2 style="margin:0 0 6px">通行证供给池</h2>
+          <p class="empty-hint" style="padding:0 0 12px">与 C 端共用同一套母订单 / 子会话状态。可先在租客侧下单，再切回这里看出占用。</p>
+          <div class="kpi">
+            <article><span>在池账号</span><b id="kpiPool">0</b><small>自愿加入</small></article>
+            <article><span>履约中</span><b id="kpiBusy">0</b><small>不可移出</small></article>
+            <article><span>今日占用分钟</span><b id="kpiMinutes">0</b><small>按子会话累计</small></article>
+            <article><span>撤单率影响</span><b id="kpiCancel">0%</b><small>换号不计入撤单</small></article>
+          </div>
+          <div class="panel">
+            <h3>当前占用</h3>
+            <div class="history-row head"><span>账号</span><span>游戏</span><span>号商</span><span>状态</span><span>母订单</span></div>
+            <div id="liveOccupancy"></div>
+          </div>
+        </section>
+        <section class="bench-page" id="bench-pool">
+          <div class="panel" style="margin-top:0">
+            <h3>账号是否加入供给池</h3>
+            <p class="empty-hint" style="padding:0 0 10px">未加入的号仍可走普通时租货架。履约中的号不能移出。进池后不能在履约侧拒绝通行证派单。</p>
+            <table class="grid">
+              <thead><tr><th>账号</th><th>游戏</th><th>端 / 区服</th><th>号商</th><th>状态</th><th>入池</th></tr></thead>
+              <tbody id="poolTable"></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="bench-page" id="bench-settle">
+          <div class="panel" style="margin-top:0">
+            <h3>子会话占用结算</h3>
+            <p class="empty-hint" style="padding:0 0 10px">单价 ¥0.18/分钟为演示，待内部核定。科目参考业务知识库，本原型不新开账户。</p>
+            <table class="grid">
+              <thead><tr><th>时间</th><th>账号</th><th>游戏</th><th>占用</th><th>结算</th><th>类型</th><th>撤单</th></tr></thead>
+              <tbody id="settleTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </section>
+    <section class="intro-frame" id="introFrame" hidden aria-label="游戏畅玩通行证产品介绍">
+      <header class="intro-cover">
+        <span class="intro-kicker">产品介绍</span>
+        <h1>游戏畅玩通行证</h1>
+        <p class="lede">租号玩现在卖的是「某款游戏里的某一只号、某一段时租」。游戏畅玩通行证卖的是「一段可以在当期目录里换着用的时长」：用户选游戏，平台派号，剩余时长留在母订单上。</p>
+        <p class="aside">它和现有租号大厅并行，不替换单游戏货架。</p>
+      </header>
+      <nav class="intro-toc" aria-label="介绍目录">
+        <a href="#intro-2">问题</a>
+        <a href="#intro-3">卖什么</a>
+        <a href="#intro-5">租客</a>
+        <a href="#intro-6">号商</a>
+        <a href="#intro-7">规则</a>
+        <a href="#intro-8">与时租</a>
+      </nav>
+      <div class="intro-body">
+        <h2 id="intro-2">现在卡在哪</h2>
+        <div class="intro-grid">
+          <article class="intro-card"><b>租客</b><p>选错号或打腻了，剩余时长锁在这只号上，换游戏要重新下单。</p></article>
+          <article class="intro-card"><b>号商</b><p>空闲号按占用分钟卖掉。换号是释放，不算撤单。</p></article>
+          <article class="intro-card"><b>平台</b><p>多一个「先买时长、再选游戏」的入口，上号和售后沿用现有能力。</p></article>
+        </div>
+
+        <h2 id="intro-3">卖什么</h2>
+        <div class="intro-rights">
+          <div class="intro-right"><i>1</i><div><strong>时长</strong><span>记在母订单上，不绑某一只号。</span></div></div>
+          <div class="intro-right"><i>2</i><div><strong>当期目录</strong><span>能玩哪些游戏，看这张卡和当时货架。</span></div></div>
+          <div class="intro-right"><i>3</i><div><strong>有限切换</strong><span>结束当前局，把剩余时长转到下一只号或下一款游戏。</span></div></div>
+        </div>
+        <p>不卖指定号，不承诺固定游戏清单，也不是无限会员。双端指端游和手游，不是网页的电脑版 / 手机版。</p>
+        <div class="intro-skus">
+          <article class="intro-sku"><strong>单晚尝鲜</strong><span>当晚短玩。第一局锁定端游或手游，整晚可换 1 次。</span></article>
+          <article class="intro-sku"><strong>品类双端周末</strong><span>一个品类，电脑和手机共用时长。</span></article>
+          <article class="intro-sku"><strong>全站双端周卡</strong><span>7 天内按当天目录选游戏。</span></article>
+          <article class="intro-sku"><strong>尊享神装</strong><span>更高号池。可补差价升级，时长保留，不能降级。</span></article>
+        </div>
+        <p class="intro-note">买之前可看覆盖几款游戏、每款多少货架。价格和时长均为示例。</p>
+
+        <h2 id="intro-5">租客怎么用</h2>
+        <ol class="intro-pipe">
+          <li><b>1</b>进通行证</li>
+          <li><b>2</b>看游戏和货架</li>
+          <li><b>3</b>支付，生成母订单</li>
+          <li><b>4</b>选游戏，不选号</li>
+          <li><b>5</b>端游上号器 / 手游扫码</li>
+          <li><b>6</b>授权成功才扣时</li>
+        </ol>
+        <div class="intro-paths">
+          <article class="intro-card"><b>同游戏换号</b><p>存证后按分钟结算，再派另一只号。</p></article>
+          <article class="intro-card"><b>换其他游戏</b><p>先结束再回目录。换端要重新授权。</p></article>
+          <article class="intro-card"><b>只结束本局</b><p>释放号源，剩余时长留着。</p></article>
+        </div>
+        <p class="intro-callout">未满 20 分钟不能换。单晚卡第一局锁定端游或手游。</p>
+
+        <h2 id="intro-6">号商怎么配合</h2>
+        <div class="intro-grid">
+          <article class="intro-card"><b>自愿入池</b><p>不进池的号仍走普通时租。进池后不能拒派来的通行证单。</p></article>
+          <article class="intro-card"><b>占用中不能退出</b><p>这只号正在被玩时，不能移出供给池。</p></article>
+          <article class="intro-card"><b>按分钟结算</b><p>结束或换号后释放。不计入撤单。单价为演示数。</p></article>
+        </div>
+
+        <h2 id="intro-7">规则</h2>
+        <div class="intro-rules">
+          <div class="intro-rule"><b>扣时</b>　授权成功后才扣。排队等待不扣。</div>
+          <div class="intro-rule"><b>结算</b>　按本局占用分钟结给这只号的号商。</div>
+          <div class="intro-rule"><b>同时一款</b>　要玩下一款，先结束当前会话。</div>
+          <div class="intro-rule"><b>保护 20 分钟</b>　避免秒进秒退。</div>
+          <div class="intro-rule"><b>换号 ≠ 撤单</b>　只记占用和释放。</div>
+          <div class="intro-rule"><b>失败不回原号</b>　时长留下，重选或走现有售后。</div>
+          <div class="intro-rule"><b>升级</b>　补差价扩目录，已剩时长不清零。</div>
+          <div class="intro-rule"><b>押金与合规</b>　沿用现有规则，本期不新做免押。</div>
+        </div>
+
+        <h2 id="intro-8">和时租并存</h2>
+        <div class="intro-split">
+          <article class="intro-card"><b>时租照旧</b><p>选号、下单、解锁码、上号器。</p></article>
+          <article class="intro-card"><b>通行证另走</b><p>一张母订单，下面多次子会话。履约中不再叠开一单时租。</p></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-wrap" id="payModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div id="payConfirm">
+        <div class="modal-head"><h3>确认支付开通</h3><button class="close" data-close-modal aria-label="关闭">×</button></div>
+        <p>支付成功后生成母订单。押金沿用现有规则，本原型不展开。</p>
+        <div class="modal-lines">
+          <div class="modal-line"><span>通行证</span><b id="payPassName">单晚尝鲜卡</b></div>
+          <div class="modal-line"><span>权益</span><b id="payPlan">2.5 小时 · 单端 · 射击品类</b></div>
+          <div class="modal-line"><span>应付</span><b id="payPrice">¥9.9</b></div>
+          <div class="modal-line"><span>支付方式</span><b>余额 ¥328.00</b></div>
+        </div>
+        <div class="modal-actions"><button class="secondary" data-close-modal>取消</button><button class="primary" id="confirmPay">确认支付</button></div>
+      </div>
+      <div id="paySuccess" hidden>
+        <div class="modal-head"><h3>支付成功</h3><button class="close" data-close-modal aria-label="关闭">×</button></div>
+        <p>母订单已生效。接下来从实时目录选游戏，授权成功后才开始扣时。</p>
+        <div class="modal-lines"><div class="modal-line"><span>母订单号</span><b id="payOrderId">—</b></div></div>
+        <div class="modal-actions"><button class="secondary" id="goMyPassFromPay">查看我的通行证</button><button class="primary" id="goDirectoryFromPay">去选游戏</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-wrap" id="planModal" role="dialog" aria-modal="true">
+    <div class="modal plan-modal">
+      <div class="modal-head"><div><h3 id="selectedPassTitle">单晚尝鲜卡</h3><p id="selectedPassLead" style="margin:6px 0 0">今晚先玩几局。</p></div><span class="meta-chip" id="selectedPassTag">单端 · 射击品类</span><button class="close" data-close-modal aria-label="关闭">×</button></div>
+      <div class="selected-checks" style="margin-top:14px">
+        <div class="selected-check"><b id="selectedDuration">2.5 小时</b><span>可用时长</span></div>
+        <div class="selected-check"><b id="selectedValidity">当晚有效</b><span>使用期限</span></div>
+        <div class="selected-check"><b id="selectedDevice">单端</b><span>支持设备</span></div>
+        <div class="selected-check"><b id="selectedSwitch">可换 1 次</b><span>换号规则</span></div>
+      </div>
+      <div class="plan-stock">
+        <div><b id="planGameCount">0</b><span>覆盖游戏</span></div>
+        <div><b id="planShelfCount">0</b><span>在池货架</span></div>
+        <div><b id="planReadyCount">0</b><span>可立即派号的游戏</span></div>
+      </div>
+      <div class="scope-head" style="margin:4px 0 8px"><div class="scope-title-wrap"><span class="scope-badge" id="selectedScope">射击品类目录</span><strong id="selectedScopeDesc">动态目录</strong></div><span class="scope-pool" id="selectedPool">精选体验号池</span></div>
+      <div class="plan-game-list" id="planGameList"></div>
+      <div class="selected-note" id="selectedPassNote">规则说明</div>
+      <div class="modal-actions"><button class="secondary" data-close-modal>关闭</button><button class="primary" id="selectedPassActivate" data-action="open-pay">开通单晚尝鲜卡</button></div>
+    </div>
+  </div>
+  <div class="modal-wrap" id="upgradeModal" role="dialog" aria-modal="true">
+    <div class="modal wide">
+      <div class="modal-head"><h3>升级母订单套餐</h3><button class="close" data-close-modal aria-label="关闭">×</button></div>
+      <p id="upgradeLead">补差价后扩大游戏目录和货架范围，剩余时长保留，当前进行中的对局不受影响。</p>
+      <div id="upgradeList"></div>
+      <div class="modal-actions"><button class="secondary" data-close-modal>暂不升级</button></div>
+    </div>
+  </div>
+  <div class="modal-wrap" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal wide">
+      <div class="modal-head"><h3>确认授权并开始扣时</h3><button class="close" data-close-modal aria-label="关闭">×</button></div>
+      <p>授权成功前不扣母订单时长。端游和手游使用不同确认方式。</p>
+      <div class="modal-lines">
+        <div class="modal-line"><span>目标游戏</span><b id="authGame">—</b></div>
+        <div class="modal-line"><span>履约端</span><b id="authEnd">—</b></div>
+        <div class="modal-line"><span>授权方式</span><b id="authMethod">—</b></div>
+        <div class="modal-line"><span>派发账号</span><b id="authAccount">—</b></div>
+      </div>
+      <div class="auth-box">
+        <div class="auth-pane" id="authPcPane">
+          <strong>端游 · 上号器</strong>
+          <span>1. 确认 Windows 客户端在线<br>2. 接收解锁指令<br>3. 拉起游戏后开始扣时</span>
+        </div>
+        <div class="auth-pane" id="authMobilePane" hidden>
+          <strong>手游 · 扫码 / 授权</strong>
+          <div class="qr-fake" aria-hidden="true"></div>
+          <span>请用手机 App 扫码或完成设备确认。</span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="danger" id="failAuth">模拟授权失败</button>
+        <button class="secondary" data-close-modal>返回目录</button>
+        <button class="primary" id="confirmAuth">确认授权进入</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-wrap" id="switchChoiceModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modal-head"><h3>结束当前子会话</h3><button class="close" data-close-modal aria-label="关闭">×</button></div>
+      <p>先退出存证并按占用分钟结算。换号不计入商户撤单。失败不会自动回到原号。</p>
+      <div class="choice-grid">
+        <button id="swapSame"><strong>同游戏换号</strong><span>算法再派同一游戏的另一只在库号，无需重新选游戏。</span></button>
+        <button id="swapOther"><strong>换其他游戏</strong><span>释放当前号后回到目录。若换端，需要重新授权。</span></button>
+        <button id="endOnly"><strong>只结束本局</strong><span>剩余时长留在母订单，稍后再玩。</span></button>
+      </div>
+      <div class="modal-actions"><button class="secondary" data-close-modal>继续当前游戏</button></div>
+    </div>
+  </div>
+  <div class="modal-wrap" id="cooldownModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modal-head"><h3>对局保护未满</h3><button class="close" data-close-modal aria-label="关闭">×</button></div>
+      <p>未满 20 分钟不能换号，避免秒进秒退影响号商和账号安全。本原型用 15 秒模拟 20 分钟。</p>
+      <div class="modal-actions">
+        <button class="secondary" data-close-modal>继续玩</button>
+        <button class="primary" data-action="skip-cooldown">评审：跳过冷却</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-wrap" id="failModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modal-head"><h3 id="failTitle">无法继续</h3><button class="close" data-close-modal aria-label="关闭">×</button></div>
+      <p id="failText">剩余时长保留。</p>
+      <div class="modal-actions"><button class="primary" id="failOk">知道了</button></div>
+    </div>
+  </div>
+  <div class="process-wrap" id="processWrap">
+    <div class="process-card">
+      <div class="spin" aria-hidden="true"></div>
+      <h3 id="processTitle" style="margin:14px 0 6px">处理中</h3>
+      <p id="processDesc">请稍候</p>
+      <ol id="processSteps"></ol>
+    </div>
+  </div>
+  <div class="toast" id="toast"><i></i><span id="toastText">已更新</span></div>
+  <script src="app.js"></script>
+</body>
+</html>
