@@ -17,6 +17,7 @@ svg{display:block;flex-shrink:0}button svg{pointer-events:none}[hidden]{display:
 .editor-head{height:69px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 25px;border-bottom:1px solid var(--line)}.editor-head h2{font-size:17px;line-height:1.4;margin:0;font-weight:600}.editor-head p{font-size:11px;color:#98a1ae;margin:3px 0 0}
 .form-scroll{overflow-y:auto;overscroll-behavior:contain;flex:1;min-height:0;scrollbar-width:thin;scrollbar-color:#d7dde7 transparent}.form-content{padding:23px 25px 28px}.form-row{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;margin-bottom:19px;align-items:start}.form-row:last-child{margin-bottom:0}.row-label{text-align:right;padding-top:9px;color:#505b6d;white-space:nowrap}.required:before{content:"*";color:#f36b71;margin-right:5px}.field-body{min-width:0}
 .text-input,.select-input{height:35px;width:100%;border:1px solid #d9dfe8;background:#fff;color:#3b4659;border-radius:5px;padding:0 11px;transition:border-color .15s,box-shadow .15s;font-size:12px}.text-input::placeholder{color:#aab2bf}.text-input:focus,.select-input:focus{border-color:#7daaff;box-shadow:0 0 0 2px #3878f60c}.select-input{padding-right:24px;text-overflow:ellipsis;cursor:pointer}.select-input:disabled{color:#909bad;background:#f4f6f9;border-color:#e3e7ee;cursor:not-allowed;opacity:1}.select-input.placeholder{color:#9ca7b8}.input-wrap{position:relative}.input-wrap .text-input{padding-right:52px}.char-count{position:absolute;right:11px;top:9px;color:#9ba7b9;font-size:11px;pointer-events:none}.input-invalid{border-color:#ee8d92!important;background:#fffafb!important}
+.search-select{position:relative;width:100%;min-width:0}.search-select-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;white-space:nowrap;overflow:hidden}.search-select-trigger>span:first-child{overflow:hidden;text-overflow:ellipsis}.search-select-trigger .search-chevron{color:#9aa7b9;font-size:11px;transition:transform .15s}.search-select.open .search-select-trigger .search-chevron{transform:rotate(180deg)}.search-select-trigger:disabled{opacity:1}.search-select-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:40;padding:7px;background:#fff;border:1px solid #dce4ef;border-radius:7px;box-shadow:0 12px 28px #233c631f,0 3px 8px #233c6310}.search-select-search{height:31px;width:100%;border:1px solid #e0e6ef;border-radius:5px;padding:0 9px;color:#3b4659;background:#fbfcfe;font-size:12px}.search-select-search:focus{outline:none;border-color:#7daaff;box-shadow:0 0 0 2px #3878f60c}.search-select-options{max-height:220px;overflow:auto;margin-top:6px;scrollbar-width:thin;scrollbar-color:#d8e0eb transparent}.search-option{display:flex;align-items:center;width:100%;min-height:31px;padding:5px 9px;border:0;border-radius:4px;background:transparent;color:#4a5669;text-align:left;font-size:12px;line-height:1.35;cursor:pointer}.search-option:hover,.search-option.active{background:#edf4ff;color:#2d70ee}.search-option.selected{background:#e8f1ff;color:#2f72ed;font-weight:550}.search-option.clear-option{color:#8d9aab}.search-option.clear-option:hover,.search-option.clear-option.active{color:#2d70ee}.search-select-empty{display:none;padding:11px 9px;color:#a0aaba;font-size:11px;text-align:center}.search-select-options.no-match .search-select-empty{display:block}.search-select.input-invalid .search-select-trigger{border-color:#ee8d92!important;background:#fffafb!important}.pool-inline-notice{font-size:11px;color:#6f8ec4;background:#f1f6ff;border-radius:4px;padding:5px 8px;margin-top:6px;line-height:1.5}.disabled-hint{color:#aab3bf;font-size:11px;line-height:1.6;margin-top:6px}
 .radio-group{display:flex;align-items:center;gap:22px;min-height:35px;flex-wrap:wrap}.radio-label{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-size:12px;cursor:pointer}.radio-label input{width:15px;height:15px;margin:0;accent-color:var(--blue);cursor:pointer}.radio-label:has(input:checked){color:#3776e5}.radio-label:has(input:disabled){color:#b0b8c4;cursor:not-allowed}.radio-label input:disabled{cursor:not-allowed}.hint{font-size:11px;color:#929cad;line-height:1.7;margin-top:6px}.hint-inline{font-size:11px;color:#9aa4b4;line-height:1.6}.type-options{display:flex;align-items:center;gap:20px}.type-options .radio-group{flex-shrink:0}.type-options .hint-inline{max-width:340px}.rule-grid{display:grid;grid-template-columns:1fr 1fr 1.14fr;gap:12px}.rule-grid.single{grid-template-columns:1fr 1fr;max-width:470px}.rule-item{min-width:0}.mini-label{font-size:11px;color:#8994a6;display:block;margin-bottom:5px}.inherit-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;line-height:1.6;background:#eef1f6;color:#909cad;border-radius:3px;padding:2px 5px;margin-top:5px} .support-list{border:1px solid #e5eaf1;border-radius:6px;background:#fbfcfe;padding:10px 11px 9px;max-width:720px}.support-head,.support-row{display:grid;grid-template-columns:minmax(180px,1.45fr) 95px minmax(145px,1fr) 69px;gap:9px;align-items:start}.support-head{padding:0 31px 5px 0;color:#9aa5b5;font-size:10px}.support-row{padding:6px 0;border-top:1px solid #edf0f5}.support-row:first-of-type{border-top:0}.support-cell{min-width:0}.support-cell .text-input,.support-cell .select-input{height:34px}.support-actions{display:flex;align-items:center;gap:6px;padding-top:1px}.support-action{border:0;width:29px;height:29px;border-radius:50%;display:grid;place-items:center;font-size:20px;line-height:1;font-weight:500;padding:0}.support-action.add{background:#edf4ff;color:var(--blue)}.support-action.remove{background:#f0f2f5;color:#9ba5b4}.support-action.remove:hover:not(:disabled){background:#fff0f1;color:#e86770}.support-action:disabled{background:#f4f5f7;color:#cbd1db}.support-list>.hint{margin:8px 0 0;padding-left:1px}.single-game-switch{margin-top:-8px;background:#fff;border-radius:15px 15px 0 0;padding:12px 12px 3px}.single-game-switch .mobile-text-tabs{padding-bottom:7px}.single-game-switch .mobile-text-tab{background:transparent;border-radius:0;padding:6px 13px 10px;color:#8c838a}.single-game-switch .mobile-text-tab.selected{background:transparent;color:#3b3441;font-weight:700}.single-game-switch .mobile-text-tab.selected:after{position:absolute;content:"";height:3px;width:21px;bottom:3px;left:50%;transform:translateX(-50%);border-radius:3px;background:#f16b7c}
 .section-divider{height:1px;background:#eef1f5;margin:23px 0}.tab-section{background:#f6f8fb;border:1px solid #e5eaf3;border-radius:8px;padding:14px;margin-top:22px;margin-bottom:23px}.section-heading{display:flex;align-items:center;justify-content:space-between;margin:0 0 11px;gap:10px}.section-heading h3{margin:0;font-size:13px;font-weight:600}.section-heading span{font-size:10px;color:#99a3b3}.tabs-shell{background:#fff;border:1px solid #e2e8f1;border-radius:6px;overflow:hidden}.tab-strip{height:47px;display:flex;align-items:stretch;padding:0 13px;border-bottom:1px solid #e9edf3;gap:9px;min-width:0}.strip-label{font-weight:500;align-self:center;white-space:nowrap;font-size:12px;color:#596578}.tab-scroll{display:flex;align-items:stretch;gap:3px;min-width:0;flex:1;overflow:auto;scrollbar-width:none}.tab-scroll::-webkit-scrollbar{display:none}.admin-tab-wrap{display:flex;position:relative;flex-shrink:0;align-items:stretch;border-bottom:2px solid transparent;max-width:165px}.admin-tab-wrap.active{border-bottom-color:var(--blue);color:var(--blue)}.admin-tab{border:0;background:transparent;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}.active .admin-tab{font-weight:600;padding-right:5px}.admin-tab:hover{color:var(--blue)}.tab-close{border:0;background:none;color:#98a6bd;padding:0 7px 1px 2px;font-size:16px;line-height:1}.tab-close:hover{color:#ee6068}.tab-add{align-self:center;border:1.5px solid #5d94fa;color:var(--blue);width:23px;height:23px;line-height:19px;border-radius:50%;font-size:21px;background:#fff;padding:0;flex-shrink:0}.tab-add:hover{background:#edf4ff}.tab-add:disabled{border-color:#d8dfe9;color:#c7cfda;background:#f8fafc}.tab-count{font-size:11px;color:#8996ab;align-self:center;white-space:nowrap;margin-left:2px}.tab-error-dot{width:5px;height:5px;border-radius:50%;background:#f46c71;position:absolute;top:7px;right:6px}
 .tab-form{padding:17px 15px 16px}.tab-main-fields{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:16px;margin-bottom:15px}.inline-field{display:grid;grid-template-columns:78px minmax(0,1fr);gap:6px;align-items:start}.inline-field>label{padding-top:8px;font-size:12px;text-align:right;white-space:nowrap}.tab-small-row{display:grid;grid-template-columns:78px minmax(0,1fr);gap:6px;margin-bottom:13px;align-items:start}.tab-small-row:last-child{margin-bottom:0}.tab-small-label{padding-top:9px;text-align:right;font-size:12px;white-space:nowrap}.tab-small-row .radio-group{gap:16px}.icon-picker{display:flex;align-items:center;gap:10px;margin-top:7px;max-width:360px}.equip-preview{width:43px;height:43px;border-radius:7px;background:#f5f6fa;border:1px solid #ebedf2;flex-shrink:0;object-fit:contain}.icon-empty{width:43px;height:43px;display:grid;place-items:center;border-radius:7px;background:#f4f6fa;color:#b5bfce}.background-row{display:flex;align-items:center;gap:12px}.child-container{margin:0 13px 13px;background:#f3f6fb;border:1px solid #e3eaf4;border-radius:5px;padding:0 10px 10px}.child-container .tab-strip{padding:0 1px;border-bottom:0;gap:6px}.child-container .tab-form{background:white;border:1px solid #e4eaf3;border-radius:4px;padding:15px 12px}.copy-link{border:0;background:none;color:var(--blue);font-size:11px;white-space:nowrap;padding:0 0 0 6px;align-self:center}.copy-link:disabled{color:#b4bece}.copy-link:hover:not(:disabled){color:#165acc}
@@ -205,6 +206,50 @@ for(let i=0;i<60;i++){
   if(item.prices.hour!==undefined&&item.prices.hour<=8)item.rules.push('pkg-low');
   POOLS[2].shelves.push(item);
 }
+// 两层 tab 示例使用独立的套餐号池；每条规则都准备三条以上对应价格类型的货架，便于预览和搜索联调。
+function addPackagePool(id,name,price,ruleSpecs){
+  const pool={id,name,rules:ruleSpecs.map((spec,index)=>({id:id+'-rule-'+index,name:'规则-'+spec.label,game:spec.game,price:spec.price||price})),shelves:[]};
+  ruleSpecs.forEach((spec,ruleIndex)=>{
+    for(let i=0;i<3;i++){
+      const item=makeShelf(id,spec.game,ruleIndex*3+i,spec.price||price,(ruleIndex+i)%10,'equipment');
+      item.rules=[pool.rules[ruleIndex].id];
+      item.title=gameById(spec.game).name+' · '+spec.label+'｜套餐好号 '+(i+1);
+      pool.shelves.push(item);
+    }
+  });
+  POOLS.push(pool);
+}
+const packageRuleGames=[['wz','王者'],['hp','和平'],['cf','穿越'],['ww','无畏'],['lol','联盟']];
+addPackagePool('1103','包天套餐号池【号池:1103】','day',[
+  ...packageRuleGames.map(([game,label])=>({game,label:'包天'+label})),
+  {game:'wz',label:'包天王者高配'},{game:'hp',label:'包天和平高配'},{game:'cf',label:'包天穿越高配'},
+  {game:'ww',label:'包天无畏高配'},{game:'lol',label:'包天联盟高配'},{game:'hp',label:'包天人气优选'},{game:'wz',label:'包天全英雄'}
+]);
+addPackagePool('1104','包夜套餐号池【号池:1104】','night',[
+  ...packageRuleGames.map(([game,label])=>({game,label:'包夜'+label})),
+  {game:'wz',label:'包夜王者高配'},{game:'hp',label:'包夜和平高配'},{game:'cf',label:'包夜穿越高配'},
+  {game:'ww',label:'包夜无畏高配'},{game:'lol',label:'包夜联盟高配'},{game:'hp',label:'包夜人气优选'},{game:'ww',label:'包夜限定套装'}
+]);
+addPackagePool('1105','10小时随心租号池【号池:1105】','ten',[
+  ...packageRuleGames.map(([game,label])=>({game,label:'10小时'+label})),
+  {game:'wz',label:'10小时王者高配'},{game:'hp',label:'10小时和平高配'},{game:'cf',label:'10小时穿越高配'},
+  {game:'ww',label:'10小时无畏高配'},{game:'lol',label:'10小时联盟高配'},{game:'hp',label:'10小时人气优选'},{game:'cf',label:'10小时英雄级'}
+]);
+addPackagePool('1106','小时畅玩精选号池【号池:1106】','hour',[
+  ...packageRuleGames.map(([game,label])=>({game,label:'小时'+label})),
+  {game:'wz',label:'小时王者高配'},{game:'hp',label:'小时和平高配'},{game:'cf',label:'小时穿越高配'},
+  {game:'ww',label:'小时无畏高配'},{game:'lol',label:'小时联盟高配'},{game:'hp',label:'小时人气优选'}
+]);
+addPackagePool('1107','周租高配号池【号池:1107】','week',[
+  ...packageRuleGames.map(([game,label])=>({game,label:'周租'+label})),
+  {game:'wz',label:'周租王者高配'},{game:'hp',label:'周租和平高配'},{game:'cf',label:'周租穿越高配'},
+  {game:'ww',label:'周租无畏高配'},{game:'lol',label:'周租联盟高配'},{game:'wz',label:'周租全英雄'}
+]);
+addPackagePool('1108','会员专享活动号池【号池:1108】','special',[
+  ...packageRuleGames.map(([game,label])=>({game,label:'特惠'+label})),
+  {game:'wz',label:'特惠王者高配'},{game:'hp',label:'特惠和平高配'},{game:'cf',label:'特惠穿越高配'},
+  {game:'ww',label:'特惠无畏高配'},{game:'lol',label:'特惠联盟高配'},{game:'hp',label:'特惠人气优选'}
+]);
 const DEVICES=['全部','安卓-普通版','安卓-极速版','安卓-应用市场版','PC站-官网','客户端-官网','PC站-全部','M站-全部','客户端-全部','安卓APP-全部'];
 // 单 tab 示例需要覆盖三种价格类型；补充明确命中的假货架，方便预览和回归检查。
 [['hp','day'],['wz','day'],['cf','night']].forEach(([game,price],group)=>{
@@ -214,7 +259,7 @@ const DEVICES=['全部','安卓-普通版','安卓-极速版','安卓-应用市�
     POOLS[0].shelves.push(item);
   }
 });
-let sequence=0, state, baseline, activeExample='one', validationAttempted=false, lastConfirmed=false, errors=[], toastTimer, stateEpoch=0;
+let sequence=0, state, baseline, activeExample='one', validationAttempted=false, lastConfirmed=false, errors=[], toastTimer, stateEpoch=0, poolNoticeTimers=new Map(), poolNotices={};
 function modeKey(type=state.type,depth=state.depth){return type==='single'?'single':depth===2?'two':'one';}
 function modeSeed(key){
   const base={pageName:'',poolId:'',headers:{pc:'',client:'',mobile:'',gradient:''},audience:'',devices:[]};
@@ -244,7 +289,7 @@ function ensureSingleSelection(){
   if(!available.some(row=>row.game===state.singleSelectedGame))state.singleSelectedGame=available[0]?available[0].game:'';
 }
 function makeTab(ordinal=1,options={}){
-  return Object.assign({id:'tab-'+(++sequence),created:sequence,ordinal,name:'',priority:'',iconMode:'none',iconData:'',equipment:'',equipmentGame:'',background:'',game:'',price:'',rule:'',children:[]},options);
+  return Object.assign({id:'tab-'+(++sequence),created:sequence,ordinal,name:'',priority:'',iconMode:'none',iconData:'',equipment:'',equipmentGame:'',background:'',game:'',price:'',poolId:'',rule:'',children:[]},options);
 }
 function sorted(tabs){return tabs.slice().sort((a,b)=>{
   const score=(t)=>t.priority!==''&&Number.isFinite(Number(t.priority))?Number(t.priority):Infinity;
@@ -276,10 +321,12 @@ function ensureTabs(){
     if(!top.children.some(t=>t.id===state.selectedChildren[top.id]))state.selectedChildren[top.id]=sorted(top.children)[0].id;
   });
 }
-function selectedPoolId(){
-  return state.type==='multi'&&state.depth===1?(state.global&&state.global.poolId||''):state.poolId||'';
+function selectedPoolId(top=activeTop()){
+  if(state.type==='multi'&&state.depth===1)return state.global&&state.global.poolId||'';
+  if(state.type==='multi'&&state.depth===2)return top&&top.poolId||'';
+  return state.poolId||'';
 }
-function selectedPool(){return poolById(selectedPoolId());}
+function selectedPool(top=activeTop()){return poolById(selectedPoolId(top));}
 function effective(tab,parent=null){
   const useGlobal=state.type==='multi'&&state.depth===1;
   return {game:(useGlobal&&state.global.game)||(parent&&parent.game)||(tab&&tab.game)||'',price:(useGlobal&&state.global.price)||(parent&&parent.price)||(tab&&tab.price)||''};
@@ -307,11 +354,11 @@ function contextFor(top=activeTop(),child=activeChild(top)){
   if(state.type==='single')return singleContext();
   const leaf=state.depth===2?child:top;
   const values=effective(leaf,state.depth===2?top:null);
-  const rules=[top&&top.rule,state.depth===2&&child&&child.rule].filter(Boolean);
-  return Object.assign(values,{rules:[...new Set(rules)],top,leaf});
+  const rules=[state.depth===1&&top&&top.rule,state.depth===2&&child&&child.rule].filter(Boolean);
+  return Object.assign(values,{rules:[...new Set(rules)],poolId:selectedPoolId(top),top,leaf});
 }
 function matchingShelves(context=contextFor()){
-  const pool=selectedPool();
+  const pool=poolById(context.poolId||selectedPoolId(context.top));
   if(!pool||!context.game||!context.price)return [];
   return pool.shelves.filter(s=>s.game===context.game&&Object.hasOwn(s.prices,context.price)&&context.rules.every(rule=>s.rules.includes(rule)));
 }
@@ -324,7 +371,7 @@ function tabIcon(tab,parent=null){
   return '';
 }
 function loadExample(which,notify=true){
-  stateEpoch++;state=emptyState();activeExample=which;validationAttempted=false;lastConfirmed=false;errors=[];
+  stateEpoch++;state=emptyState();activeExample=which;validationAttempted=false;lastConfirmed=false;errors=[];poolNotices={};poolNoticeTimers.forEach(timer=>clearTimeout(timer));poolNoticeTimers.clear();
   if(which==='single'){
     state.pageName='顶级豪车载具';state.poolId='1120';
     state.supportGames=[
@@ -339,9 +386,13 @@ function loadExample(which,notify=true){
   }else if(which==='two'){
     state.pageName='套餐专区';state.poolId='1102';state.type='multi';state.depth=2;state.lastMultiDepth=2;
     state.global={game:'',price:'',poolId:'',rule:''};
-    state.tabs=[['包天玩','day'],['包夜玩','night'],['10小时随心租','ten']].map(([name,price],i)=>{
-      const top=makeTab(i+1,{name,price,priority:String(i+1),iconMode:i===0?'upload':'none',iconData:i===0?sunImage:'',background:i===0?goldBackground:''});
-      top.children=packageCombinations.filter(c=>c[0]===price).map(([,game],j)=>makeTab(j+1,{name:gameById(game).short,priority:String(j+1),game,rule:'pkg-'+price+'-'+game,iconMode:game==='wz'?'equipment':'none',equipment:game==='wz'?'0':'',equipmentGame:game}));
+    state.tabs=[['包天玩','day','1103'],['包夜玩','night','1104'],['10小时随心租','ten','1105']].map(([name,price,poolId],i)=>{
+      const pool=poolById(poolId);
+      const top=makeTab(i+1,{name,price,priority:String(i+1),poolId,iconMode:i===0?'upload':'none',iconData:i===0?sunImage:'',background:i===0?goldBackground:''});
+      top.children=packageRuleGames.map(([game,label],j)=>{
+        const rule=pool.rules.find(item=>item.game===game&&item.name==='规则-'+priceById(price).name+label);
+        return makeTab(j+1,{name:label,priority:String(j+1),game,rule:rule?rule.id:'',iconMode:game==='wz'?'equipment':'none',equipment:game==='wz'?'0':'',equipmentGame:game});
+      });
       return top;
     });
   }
@@ -353,6 +404,28 @@ function loadExample(which,notify=true){
 
 function selectOptions(options,value,placeholder='请选择'){
   return '<option value="">'+esc(placeholder)+'</option>'+options.map(o=>'<option value="'+esc(o.id)+'"'+(String(o.id)===String(value)?' selected':'')+'>'+esc(o.name)+'</option>').join('');
+}
+function searchableSelect({id,scope,key,tabId='',options=[],value='',placeholder='请选择',disabled=false,errorKey='',notice=''}){
+  const selected=options.find(option=>String(option.id)===String(value));
+  const label=selected?selected.name:placeholder;
+  const attrs=[
+    'data-search-select',
+    'data-search-id="'+esc(id)+'"',
+    'data-search-scope="'+esc(scope)+'"',
+    'data-search-key="'+esc(key)+'"',
+    'data-search-tab-id="'+esc(tabId)+'"',
+    'data-error-for="'+esc(errorKey)+'"'
+  ].join(' ');
+  const optionMarkup=[{id:'',name:'请选择/清空',clear:true},...options].map(option=>
+    '<button type="button" role="option" class="search-option'+(option.clear?' clear-option ':' ')+(String(option.id)===String(value)?' selected':'')+'" data-search-option="'+esc(option.id)+'" data-search-label="'+esc(option.name)+'" aria-selected="'+(String(option.id)===String(value))+'">'+esc(option.name)+'</button>'
+  ).join('');
+  return '<div class="search-select'+(disabled?' is-disabled':'')+'" '+attrs+'>'+
+    '<button type="button" class="search-select-trigger select-input'+(!value?' placeholder':'')+'" aria-haspopup="listbox" aria-expanded="false"'+(disabled?' disabled':'')+'>'+
+      '<span>'+esc(label)+'</span><span class="search-chevron">▾</span></button>'+
+    '<div class="search-select-menu" role="listbox" hidden>'+
+      '<input class="search-select-search" type="search" placeholder="搜索名称或号池编号" autocomplete="off" aria-label="搜索选项">'+
+      '<div class="search-select-options">'+optionMarkup+'<div class="search-select-empty">无匹配项</div></div>'+
+    '</div></div>'+(notice?'<div class="pool-inline-notice">'+esc(notice)+'</div>':'');
 }
 function errorSlot(key){return '<div class="field-error" data-error="'+esc(key)+'"></div>';}
 function radio(name,value,label,current,attrs='',disabled=false){
@@ -380,27 +453,30 @@ function supportGamesFields(){
 }
 function globalOneFields(){
   const global=state.global||{};
-  return '<div class="rule-grid"><div class="rule-item"><label for="global-game" class="mini-label">游戏</label><select id="global-game" class="select-input'+(!global.game?' placeholder':'')+'" data-global="game" data-error-for="global.game">'+selectOptions(GAMES,global.game,'不限')+'</select></div>'+    '<div class="rule-item"><label for="global-price" class="mini-label">价格类型</label><select id="global-price" class="select-input'+(!global.price?' placeholder':'')+'" data-global="price" data-error-for="global.price">'+selectOptions(PRICES.map(p=>({id:p.id,name:p.name+'价格'})),global.price,'不限')+'</select></div>'+    '<div class="rule-item"><label for="global-pool" class="mini-label required">号池</label><select id="global-pool" class="select-input'+(!global.poolId?' placeholder':'')+'" data-global="poolId" data-error-for="global.poolId">'+selectOptions(POOLS,global.poolId,'请选择号池')+'</select>'+errorSlot('global.poolId')+'</div></div>';
+  return '<div class="rule-grid"><div class="rule-item"><label for="global-game" class="mini-label">游戏</label><select id="global-game" class="select-input'+(!global.game?' placeholder':'')+'" data-global="game" data-error-for="global.game">'+selectOptions(GAMES,global.game,'不限')+'</select></div>'+    '<div class="rule-item"><label for="global-price" class="mini-label">价格类型</label><select id="global-price" class="select-input'+(!global.price?' placeholder':'')+'" data-global="price" data-error-for="global.price">'+selectOptions(PRICES.map(p=>({id:p.id,name:p.name+'价格'})),global.price,'不限')+'</select></div>'+    '<div class="rule-item"><label for="global-pool" class="mini-label required">号池</label>'+searchableSelect({id:'global-pool',scope:'global',key:'poolId',options:POOLS,value:global.poolId,placeholder:'请选择号池',errorKey:'global.poolId'})+errorSlot('global.poolId')+'</div></div>';
 }
 function ruleFields(scope,tab=null,parent=null){
   const global=scope==='global',single=global&&state.type==='single';
   const obj=global?state.global:tab;
-  const pool=poolById(global?selectedPoolId():selectedPoolId());
-  const one=state.type==='multi'&&state.depth===1;
-  const rulePool=state.type==='multi'&&state.depth===1?(state.global&&state.global.poolId||''):state.poolId;
+  const twoTop=!global&&state.type==='multi'&&state.depth===2&&!parent;
+  const rulePool=global?(state.global&&state.global.poolId||''):twoTop?(tab&&tab.poolId||''):state.type==='multi'&&state.depth===1?(state.global&&state.global.poolId||''):(parent&&parent.poolId||state.poolId);
   const rulesPool=poolById(rulePool);
-  return '<div class="rule-grid'+(single?' single':'')+'">'+['game','price','rule'].filter(key=>!single||key!=='rule').map(key=>{
-    const inheritance=!global&&key!=='rule'?inherited(parent,key):null;
-    const value=inheritance?inheritance.value:obj[key];
-    const label={game:'游戏',price:'价格类型',rule:'号池规则'}[key];
+  const keys=single?['game','price']:twoTop?['game','price','pool']:['game','price','rule'];
+  return '<div class="rule-grid'+(single?' single':'')+'">'+keys.map(key=>{
+    const inheritance=!global&&key!=='rule'&&key!=='pool'?inherited(parent,key):null;
+    const value=inheritance?inheritance.value:key==='pool'?obj.poolId:obj[key];
+    const label={game:'游戏',price:'价格类型',rule:'号池规则',pool:'号池'}[key];
     const id=global?'global-'+key:'field-'+tab.id+'-'+key;
-    const options=key==='game'?GAMES:key==='price'?PRICES.map(p=>({id:p.id,name:p.name+'价格'})):(rulesPool?rulesPool.rules:[]);
-    const noPool=!global&&key==='rule'&&state.type==='multi'&&state.depth===1&&!rulePool;
-    const attrs=global?'data-global="'+key+'"':'data-tab-field="'+key+'" data-tab-id="'+tab.id+'"';
-    const errorKey=single?'global.'+key:tab?tab.id+'.conditions':'';
-    const disabled=!!inheritance||noPool;
-    const placeholder=noPool?'请先在全局展示选择号池':key==='rule'||single?'请选择':'不限';
-    return '<div class="rule-item"><label for="'+id+'" class="mini-label'+(single?' required':'')+'">'+label+'</label>'+      '<select id="'+id+'" class="select-input'+(!value?' placeholder':'')+'" '+attrs+(disabled?' disabled':'')+' data-error-for="'+errorKey+'">'+      selectOptions(options,value,placeholder)+'</select>'+      (inheritance?'<span class="inherit-tag">'+icon('lock',10)+'继承自'+inheritance.from+'</span>':'')+      (single?errorSlot('global.'+key):'')+'</div>';
+    const options=key==='game'?GAMES:key==='price'?PRICES.map(p=>({id:p.id,name:p.name+'价格'})):key==='pool'?POOLS:(rulesPool?rulesPool.rules:[]);
+    const noPool=!global&&!twoTop&&key==='rule'&&state.type==='multi'&&state.depth===2&&!rulePool;
+    const oneNoPool=!global&&key==='rule'&&state.type==='multi'&&state.depth===1&&!rulePool;
+    const disabled=!!inheritance||noPool||oneNoPool;
+    const placeholder=noPool?'请先在一级tab选择号池':oneNoPool?'请先在全局展示选择号池':key==='rule'||key==='pool'||single?'请选择':'不限';
+    const errorKey=single?'global.'+key:twoTop&&key==='pool'?tab.id+'.poolId':tab?tab.id+'.conditions':'';
+    const field=key==='pool'||key==='rule'
+      ? searchableSelect({id,scope:'tab',key:key==='pool'?'poolId':'rule',tabId:tab&&tab.id||'',options,value,placeholder,disabled,errorKey,notice:twoTop&&poolNotices[tab.id]||''})
+      : '<select id="'+id+'" class="select-input'+(!value?' placeholder':'')+'" data-tab-field="'+key+'" data-tab-id="'+(tab?tab.id:'')+'"'+(disabled?' disabled':'')+' data-error-for="'+errorKey+'">'+selectOptions(options,value,placeholder)+'</select>';
+    return '<div class="rule-item"><label for="'+id+'" class="mini-label'+((single||key==='pool')?' required':'')+'">'+label+'</label>'+field+(inheritance?'<span class="inherit-tag">'+icon('lock',10)+'继承自'+inheritance.from+'</span>':'')+(single?errorSlot('global.'+key):'')+'</div>';
   }).join('')+'</div>';
 }
 
@@ -448,7 +524,7 @@ function renderEditor(){
   const two=state.type==='multi'&&state.depth===2;
   $('formContent').innerHTML=
     '<div class="form-row"><label class="row-label required" for="pageName">页面名称</label><div class="field-body"><input class="text-input" id="pageName" data-state="pageName" value="'+esc(state.pageName)+'" placeholder="请输入页面名称" autocomplete="off" data-error-for="pageName">'+errorSlot('pageName')+'</div></div>'+
-    '<div class="form-row"><label class="row-label required" for="poolId">业务活动</label><div class="field-body"><select id="poolId" class="select-input'+(!state.poolId?' placeholder':'')+'" data-state="poolId" data-error-for="poolId">'+selectOptions(POOLS,state.poolId,'请选择业务活动')+'</select>'+errorSlot('poolId')+'</div></div>'+
+    '<div class="form-row"><label class="row-label'+(two?'':' required')+'" for="poolId">业务活动</label><div class="field-body"><select id="poolId" class="select-input'+(!state.poolId?' placeholder':'')+'" data-state="poolId" data-error-for="poolId"'+(two?' disabled':'')+'>'+selectOptions(POOLS,state.poolId,'请选择业务活动')+'</select>'+(two?'<div class="disabled-hint">两层tab下由一级tab选择号池，业务活动不生效。</div>':'')+errorSlot('poolId')+'</div></div>'+
     '<div class="form-row"><span class="row-label required">专区类型</span><div class="field-body type-options"><div class="radio-group">'+radio('zone-type','single','单tab专区',state.type,'data-state="type"')+radio('zone-type','multi','多tab专区',state.type,'data-state="type"')+'</div><span class="hint-inline">单tab专区：不配tab，进入后直接展示货架；多tab专区：按tab分区展示。</span></div></div>'+
     (state.type==='multi'?'<div class="form-row"><span class="row-label required">tab层级</span><div class="field-body"><div class="radio-group">'+radio('tab-depth',1,'一层',state.depth,'data-state="depth"')+radio('tab-depth',2,'两层',state.depth,'data-state="depth"')+'</div></div></div>':'')+
     (state.type==='single'?'<div class="form-row"><span class="row-label required">支持游戏</span><div class="field-body">'+supportGamesFields()+'</div></div>':state.depth===1?'<div class="form-row"><span class="row-label">全局展示</span><div class="field-body">'+globalOneFields()+'<div class="hint">对本专区所有tab生效；号池决定下方tab可选的号池规则。</div></div></div>':'')+
@@ -533,9 +609,11 @@ function renderPreview(resetScroll=false){
   $('phoneScroll').scrollTop=resetScroll?0:scroll;
   restoreScroll($('phoneScroll'),offsets);ensureSelectedVisible($('phoneScroll'));
   const ruleNames=context.rules.map(id=>{const rule=pool&&pool.rules.find(r=>r.id===id);return rule?rule.name:id;});
-  $('previewContext').innerHTML='<div class="context-title"><strong>当前展示条件</strong><span>'+(pool?'号池 '+pool.id+' · 命中 '+shelves.length+' / '+pool.shelves.length+' 条':'尚未选择业务活动')+'</span></div>'+
-    '<div class="context-chips"><span class="context-chip">'+esc(game?game.name:'游戏未确定')+'</span><span class="context-chip">'+esc(price?price.name+'价格':'价格类型未确定')+'</span><span class="context-chip">'+(context.rules.length?'同时满足 '+context.rules.length+' 条规则':'整个号池范围')+'</span></div>'+
-    (ruleNames.length?'<div class="context-rules">'+esc(ruleNames.join(' ∩ '))+'</div>':'');
+  const poolLabel=pool?pool.name+'（号池:'+pool.id+'）':'号池未选择';
+  $('previewContext').innerHTML='<div class="context-title"><strong>当前展示条件</strong><span>'+(pool?'号池 '+pool.id+' · 命中 '+shelves.length+' / '+pool.shelves.length+' 条':'尚未选择号池')+'</span></div>'+
+    '<div class="context-chips"><span class="context-chip">'+esc(game?game.name:'游戏未确定')+'</span><span class="context-chip">'+esc(price?price.name+'价格':'价格类型未确定')+'</span><span class="context-chip">'+esc(poolLabel)+'</span></div>'+
+    (ruleNames.length?'<div class="context-rules">'+(two?'二级tab号池规则：':'号池规则：')+esc(ruleNames.join(' ∩ '))+'</div>':'')+
+    (two?'<div class="context-rules">一级tab号池：'+esc(poolLabel)+'</div>':'');
 }
 function captureScroll(root){
   const values={};root.querySelectorAll('[data-scroll-key]').forEach(el=>{values[el.dataset.scrollKey]=el.scrollLeft;});return values;
@@ -569,7 +647,7 @@ function validateState(){
   const result=[];
   const add=(key,message,topId='',tabId='')=>result.push({key,message,topId,tabId});
   if(!state.pageName.trim())add('pageName','请输入页面名称');
-  if(!state.poolId)add('poolId','请选择业务活动');
+  if(!(state.type==='multi'&&state.depth===2)&&!state.poolId)add('poolId','请选择业务活动');
   if(state.type==='single'){
     const rows=Array.isArray(state.supportGames)?state.supportGames:[];
     if(!rows.length)add('supportGames.count','至少配置1行支持游戏');
@@ -600,6 +678,7 @@ function validateState(){
   sorted(state.tabs).forEach(top=>{
     checkTab(top);
     if(state.depth===2){
+      if(!top.poolId)add(top.id+'.poolId','请选择号池',top.id,top.id);
       if(top.children.length<1||top.children.length>10)add(top.id+'.count','每层须有1—10个tab',top.id,top.id);
       sorted(top.children).forEach(child=>checkTab(child,top));
     }
@@ -706,24 +785,41 @@ function confirmCopy(){
   if(!available){toast('当前二级tab已达10个，请先删除后再复制');return;}
   const candidates=sorted(source.children).slice(0,available);
   const start=Math.max(0,...target.children.map(t=>t.ordinal));
+  const allowed=new Set((poolById(target.poolId)?.rules||[]).map(rule=>rule.id));
+  let cleared=0;
   const copies=candidates.map((t,i)=>{
     const copied=clone(t);
     delete copied.id;delete copied.created;
     copied.ordinal=start+i+1;copied.children=[];copied.background='';
+    if(copied.rule&&!allowed.has(copied.rule)){copied.rule='';cleared++;}
     return makeTab(start+i+1,copied);
   });
   target.children.push(...copies);
   if(copies.length)state.selectedChildren[target.id]=copies[0].id;
   reconcileEquipment();lastConfirmed=false;$('copyDialog').close();renderAll();
-  toast(source.children.length>available?'已复制 '+copies.length+' 个二级tab；超过10个的部分已截断':'已复制 '+copies.length+' 个二级tab，配置可独立编辑');
+  const suffix=source.children.length>available?'；超过10个的部分已截断':'';
+  toast('已复制 '+copies.length+' 个二级tab'+(cleared?'，已清空 '+cleared+' 个不属于当前号池的号池规则':'')+suffix);
 }
-function clearRulesOutsidePool(poolId){
+function showPoolNotice(topId,count){
+  if(!count)return;
+  poolNotices[topId]='已清空 '+count+' 个二级tab中不属于该号池的号池规则';
+  if(poolNoticeTimers.has(topId))clearTimeout(poolNoticeTimers.get(topId));
+  poolNoticeTimers.set(topId,setTimeout(()=>{delete poolNotices[topId];poolNoticeTimers.delete(topId);renderAll();},3200));
+}
+function clearRulesOutsidePool(poolId,top=null){
   const allowed=new Set((poolById(poolId)?.rules||[]).map(rule=>rule.id));
+  let count=0;
+  if(state.type==='multi'&&state.depth===2&&top){
+    (top.children||[]).forEach(child=>{if(child.rule&&!allowed.has(child.rule)){child.rule='';count++;}});
+    showPoolNotice(top.id,count);
+    return count;
+  }
   state.global.rule='';
-  (state.tabs||[]).forEach(top=>{
-    if(top.rule&&!allowed.has(top.rule))top.rule='';
-    (top.children||[]).forEach(child=>{if(child.rule&&!allowed.has(child.rule))child.rule='';});
+  (state.tabs||[]).forEach(item=>{
+    if(item.rule&&!allowed.has(item.rule))item.rule='';
+    (item.children||[]).forEach(child=>{if(child.rule&&!allowed.has(child.rule))child.rule='';});
   });
+  return count;
 }
 function handleField(element,isComposing=false){
   let value=element.value;
@@ -731,7 +827,17 @@ function handleField(element,isComposing=false){
     value=Array.from(value).slice(0,10).join('');
     if(value!==element.value)element.value=value;
   }
-  if(element.dataset.state){
+  if(element.dataset.searchScope){
+    const scope=element.dataset.searchScope,key=element.dataset.searchKey;
+    if(scope==='global'){
+      state.global[key]=value;
+      if(key==='poolId')clearRulesOutsidePool(value);
+    }else if(scope==='tab'){
+      const found=findTab(element.dataset.searchTabId);if(!found)return;
+      found.tab[key]=value;
+      if(key==='poolId'&&state.depth===2&&!found.parent)clearRulesOutsidePool(value,found.tab);
+    }
+  }else if(element.dataset.state){
     const key=element.dataset.state;
     if(key==='type'||key==='depth'){
       saveCurrentMode();
@@ -820,8 +926,56 @@ function handleUpload(input){
   };
   reader.readAsDataURL(file);
 }
+let openSearchSelect=null, searchOptionIndex=-1;
+function searchSelectOptions(root){return [...root.querySelectorAll('.search-option')].filter(option=>!option.hidden);}
+function syncSearchOptionState(root){
+  const options=searchSelectOptions(root);
+  options.forEach((option,index)=>option.classList.toggle('active',index===searchOptionIndex));
+  if(options[searchOptionIndex])options[searchOptionIndex].scrollIntoView({block:'nearest'});
+}
+function filterSearchSelect(root,query=''){
+  const needle=query.trim().toLowerCase(),options=[...root.querySelectorAll('.search-option')];
+  options.forEach(option=>{
+    const haystack=(option.dataset.searchLabel+' '+option.dataset.searchOption).toLowerCase();
+    option.hidden=!!needle&&!haystack.includes(needle);
+  });
+  const visible=searchSelectOptions(root);
+  root.querySelector('.search-select-options').classList.toggle('no-match',visible.length===0);
+  searchOptionIndex=visible.length?Math.max(0,Math.min(searchOptionIndex,visible.length-1)):-1;
+  syncSearchOptionState(root);
+}
+function closeSearchSelect(){
+  if(!openSearchSelect)return;
+  openSearchSelect.classList.remove('open');
+  const trigger=openSearchSelect.querySelector('.search-select-trigger'),menu=openSearchSelect.querySelector('.search-select-menu');
+  if(trigger)trigger.setAttribute('aria-expanded','false');
+  if(menu)menu.hidden=true;
+  openSearchSelect=null;searchOptionIndex=-1;
+}
+function openSearchSelectMenu(root){
+  if(!root||root.classList.contains('is-disabled'))return;
+  if(openSearchSelect&&openSearchSelect!==root)closeSearchSelect();
+  const trigger=root.querySelector('.search-select-trigger'),menu=root.querySelector('.search-select-menu'),input=root.querySelector('.search-select-search');
+  root.classList.add('open');menu.hidden=false;trigger.setAttribute('aria-expanded','true');
+  const visible=searchSelectOptions(root),selected=visible.findIndex(option=>option.classList.contains('selected'));
+  searchOptionIndex=selected>=0?selected:0;filterSearchSelect(root,input.value||'');
+  openSearchSelect=root;input.focus();input.select();
+}
+function commitSearchSelect(root,value){
+  if(!root||root.classList.contains('is-disabled'))return;
+  const synthetic={value,tagName:'SELECT',type:'select-one',dataset:{searchScope:root.dataset.searchScope,searchKey:root.dataset.searchKey,searchTabId:root.dataset.searchTabId}};
+  closeSearchSelect();handleField(synthetic);
+}
+function moveSearchOption(delta){
+  if(!openSearchSelect)return;
+  const options=searchSelectOptions(openSearchSelect);if(!options.length)return;
+  searchOptionIndex=(searchOptionIndex+delta+options.length)%options.length;syncSearchOptionState(openSearchSelect);
+}
 document.addEventListener('input',event=>{
   const el=event.target;
+  if(el instanceof HTMLInputElement&&el.classList.contains('search-select-search')){
+    const root=el.closest('[data-search-select]');if(root)filterSearchSelect(root,el.value);return;
+  }
   if(el instanceof HTMLInputElement&&['text','number'].includes(el.type))handleField(el,event.isComposing);
 });
 document.addEventListener('compositionend',event=>{
@@ -834,7 +988,27 @@ document.addEventListener('change',event=>{
   if(el instanceof HTMLInputElement&&['text','number'].includes(el.type))return;
   if(el.dataset.state||el.dataset.global||el.dataset.supportField||el.dataset.tabField||el.dataset.check)handleField(el);
 });
+document.addEventListener('keydown',event=>{
+  const trigger=event.target.closest&&event.target.closest('.search-select-trigger');
+  if(trigger){
+    const root=trigger.closest('[data-search-select]');
+    if(event.key==='ArrowDown'||event.key==='ArrowUp'||event.key==='Enter'||event.key===' '){event.preventDefault();if(!root.classList.contains('open'))openSearchSelectMenu(root);else if(event.key==='ArrowDown')moveSearchOption(1);else if(event.key==='ArrowUp')moveSearchOption(-1);else if(event.key==='Enter'){const option=searchSelectOptions(root)[searchOptionIndex];if(option)commitSearchSelect(root,option.dataset.searchOption);}}
+    else if(event.key==='Escape')closeSearchSelect();
+    return;
+  }
+  if(openSearchSelect&&event.target.classList.contains('search-select-search')){
+    if(event.key==='ArrowDown'){event.preventDefault();moveSearchOption(1);}
+    else if(event.key==='ArrowUp'){event.preventDefault();moveSearchOption(-1);}
+    else if(event.key==='Enter'){event.preventDefault();const option=searchSelectOptions(openSearchSelect)[searchOptionIndex];if(option)commitSearchSelect(openSearchSelect,option.dataset.searchOption);}
+    else if(event.key==='Escape'){event.preventDefault();closeSearchSelect();}
+  }
+});
 document.addEventListener('click',event=>{
+  const option=event.target.closest&&event.target.closest('.search-option');
+  if(option){event.preventDefault();commitSearchSelect(option.closest('[data-search-select]'),option.dataset.searchOption);return;}
+  const trigger=event.target.closest&&event.target.closest('.search-select-trigger');
+  if(trigger){event.preventDefault();const root=trigger.closest('[data-search-select]');if(root.classList.contains('open'))closeSearchSelect();else openSearchSelectMenu(root);return;}
+  if(openSearchSelect&&!event.target.closest('[data-search-select]'))closeSearchSelect();
   const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;
   const action=button.dataset.action;
   if(action==='example')loadExample(button.dataset.example);
