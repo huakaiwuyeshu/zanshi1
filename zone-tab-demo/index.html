@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data: blob:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'none';">
+<title>营销号池专区配置 Demo</title>
+<style>
+:root{--blue:#3878f6;--blue-light:#edf4ff;--text:#283449;--muted:#8a95a6;--line:#e5e9f0;--red:#f05b67;--bg:#f3f5f9;--font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:13px/1.5 var(--font);min-width:1200px}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed}button{color:inherit}input,select{outline:none}button:focus-visible,a:focus-visible{outline:3px solid #a7c6ff;outline-offset:3px}button{transition:background .15s,border-color .15s,color .15s}
+svg{display:block;flex-shrink:0}button svg{pointer-events:none}[hidden]{display:none!important}
+.toolbar{height:78px;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:13px;white-space:nowrap}.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#3378f6;box-shadow:0 5px 12px #3378f622;color:#fff}.brand h1{font-size:19px;letter-spacing:.3px;line-height:1.3;margin:0;font-weight:650}.brand p{margin:3px 0 0;color:#969faf;font-size:11px;letter-spacing:1px}
+.examples{display:flex;align-items:center;gap:9px}.btn{height:35px;padding:0 15px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid #dbe1ea;background:#fff;border-radius:6px;white-space:nowrap;font-weight:500}.btn:hover{border-color:#8ab2ff;color:var(--blue);background:#f9fbff}.btn.primary{background:var(--blue);border-color:var(--blue);color:white;box-shadow:0 3px 8px #3878f61a}.btn.primary:hover{background:#2369ec}.btn.sample{font-size:12px;height:36px;padding:0 13px}.btn.sample.active{color:var(--blue);border-color:#aac8ff;background:#f0f5ff}.sample-number{font-size:10px;width:17px;height:17px;border-radius:4px;background:#eff2f7;color:#8793a6;display:grid;place-items:center}.sample.active .sample-number{background:#3878f6;color:#fff}.toolbar-divider{height:22px;width:1px;background:var(--line);margin:0 4px}.btn.ghost{border-color:transparent;background:transparent;color:#7f899a;font-size:12px}.btn.ghost:hover{color:var(--blue);background:var(--blue-light)}
+.workspace{max-width:1740px;margin:auto;padding:24px 30px 30px;display:grid;grid-template-columns:minmax(700px,1.52fr) minmax(415px,1fr);gap:28px;align-items:start}
+.editor{height:calc(100vh - 126px);min-height:650px;position:sticky;top:102px;background:#fff;border:1px solid #e2e6ee;border-radius:12px;box-shadow:0 4px 18px #29345005;display:flex;flex-direction:column;overflow:hidden}
+.editor-head{height:69px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 25px;border-bottom:1px solid var(--line)}.editor-head h2{font-size:17px;line-height:1.4;margin:0;font-weight:600}.editor-head p{font-size:11px;color:#98a1ae;margin:3px 0 0}
+.form-scroll{overflow-y:auto;overscroll-behavior:contain;flex:1;min-height:0;scrollbar-width:thin;scrollbar-color:#d7dde7 transparent}.form-content{padding:23px 25px 28px}.form-row{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;margin-bottom:19px;align-items:start}.form-row:last-child{margin-bottom:0}.row-label{text-align:right;padding-top:9px;color:#505b6d;white-space:nowrap}.required:before{content:"*";color:#f36b71;margin-right:5px}.field-body{min-width:0}
+.text-input,.select-input{height:35px;width:100%;border:1px solid #d9dfe8;background:#fff;color:#3b4659;border-radius:5px;padding:0 11px;transition:border-color .15s,box-shadow .15s;font-size:12px}.text-input::placeholder{color:#aab2bf}.text-input:focus,.select-input:focus{border-color:#7daaff;box-shadow:0 0 0 2px #3878f60c}.select-input{padding-right:24px;text-overflow:ellipsis;cursor:pointer}.select-input:disabled{color:#909bad;background:#f4f6f9;border-color:#e3e7ee;cursor:not-allowed;opacity:1}.select-input.placeholder{color:#9ca7b8}.input-wrap{position:relative}.input-wrap .text-input{padding-right:52px}.char-count{position:absolute;right:11px;top:9px;color:#9ba7b9;font-size:11px;pointer-events:none}.input-invalid{border-color:#ee8d92!important;background:#fffafb!important}
+.radio-group{display:flex;align-items:center;gap:22px;min-height:35px;flex-wrap:wrap}.radio-label{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-size:12px;cursor:pointer}.radio-label input{width:15px;height:15px;margin:0;accent-color:var(--blue);cursor:pointer}.radio-label:has(input:checked){color:#3776e5}.radio-label:has(input:disabled){color:#b0b8c4;cursor:not-allowed}.radio-label input:disabled{cursor:not-allowed}.hint{font-size:11px;color:#929cad;line-height:1.7;margin-top:6px}.hint-inline{font-size:11px;color:#9aa4b4;line-height:1.6}.type-options{display:flex;align-items:center;gap:20px}.type-options .radio-group{flex-shrink:0}.type-options .hint-inline{max-width:340px}.rule-grid{display:grid;grid-template-columns:1fr 1fr 1.14fr;gap:12px}.rule-grid.single{grid-template-columns:1fr 1fr;max-width:470px}.rule-item{min-width:0}.mini-label{font-size:11px;color:#8994a6;display:block;margin-bottom:5px}.inherit-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;line-height:1.6;background:#eef1f6;color:#909cad;border-radius:3px;padding:2px 5px;margin-top:5px} .support-list{border:1px solid #e5eaf1;border-radius:6px;background:#fbfcfe;padding:10px 11px 9px;max-width:720px}.support-head,.support-row{display:grid;grid-template-columns:minmax(180px,1.45fr) 95px minmax(145px,1fr) 69px;gap:9px;align-items:start}.support-head{padding:0 31px 5px 0;color:#9aa5b5;font-size:10px}.support-row{padding:6px 0;border-top:1px solid #edf0f5}.support-row:first-of-type{border-top:0}.support-cell{min-width:0}.support-cell .text-input,.support-cell .select-input{height:34px}.support-actions{display:flex;align-items:center;gap:6px;padding-top:1px}.support-action{border:0;width:29px;height:29px;border-radius:50%;display:grid;place-items:center;font-size:20px;line-height:1;font-weight:500;padding:0}.support-action.add{background:#edf4ff;color:var(--blue)}.support-action.remove{background:#f0f2f5;color:#9ba5b4}.support-action.remove:hover:not(:disabled){background:#fff0f1;color:#e86770}.support-action:disabled{background:#f4f5f7;color:#cbd1db}.support-list>.hint{margin:8px 0 0;padding-left:1px}.single-game-switch{margin-top:-8px;background:#fff;border-radius:15px 15px 0 0;padding:12px 12px 3px}.single-game-switch .mobile-text-tabs{padding-bottom:7px}.single-game-switch .mobile-text-tab{background:transparent;border-radius:0;padding:6px 13px 10px;color:#8c838a}.single-game-switch .mobile-text-tab.selected{background:transparent;color:#3b3441;font-weight:700}.single-game-switch .mobile-text-tab.selected:after{position:absolute;content:"";height:3px;width:21px;bottom:3px;left:50%;transform:translateX(-50%);border-radius:3px;background:#f16b7c}
+.section-divider{height:1px;background:#eef1f5;margin:23px 0}.tab-section{background:#f6f8fb;border:1px solid #e5eaf3;border-radius:8px;padding:14px;margin-top:22px;margin-bottom:23px}.section-heading{display:flex;align-items:center;justify-content:space-between;margin:0 0 11px;gap:10px}.section-heading h3{margin:0;font-size:13px;font-weight:600}.section-heading span{font-size:10px;color:#99a3b3}.tabs-shell{background:#fff;border:1px solid #e2e8f1;border-radius:6px;overflow:hidden}.tab-strip{height:47px;display:flex;align-items:stretch;padding:0 13px;border-bottom:1px solid #e9edf3;gap:9px;min-width:0}.strip-label{font-weight:500;align-self:center;white-space:nowrap;font-size:12px;color:#596578}.tab-scroll{display:flex;align-items:stretch;gap:3px;min-width:0;flex:1;overflow:auto;scrollbar-width:none}.tab-scroll::-webkit-scrollbar{display:none}.admin-tab-wrap{display:flex;position:relative;flex-shrink:0;align-items:stretch;border-bottom:2px solid transparent;max-width:165px}.admin-tab-wrap.active{border-bottom-color:var(--blue);color:var(--blue)}.admin-tab{border:0;background:transparent;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}.active .admin-tab{font-weight:600;padding-right:5px}.admin-tab:hover{color:var(--blue)}.tab-close{border:0;background:none;color:#98a6bd;padding:0 7px 1px 2px;font-size:16px;line-height:1}.tab-close:hover{color:#ee6068}.tab-add{align-self:center;border:1.5px solid #5d94fa;color:var(--blue);width:23px;height:23px;line-height:19px;border-radius:50%;font-size:21px;background:#fff;padding:0;flex-shrink:0}.tab-add:hover{background:#edf4ff}.tab-add:disabled{border-color:#d8dfe9;color:#c7cfda;background:#f8fafc}.tab-count{font-size:11px;color:#8996ab;align-self:center;white-space:nowrap;margin-left:2px}.tab-error-dot{width:5px;height:5px;border-radius:50%;background:#f46c71;position:absolute;top:7px;right:6px}
+.tab-form{padding:17px 15px 16px}.tab-main-fields{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:16px;margin-bottom:15px}.inline-field{display:grid;grid-template-columns:78px minmax(0,1fr);gap:6px;align-items:start}.inline-field>label{padding-top:8px;font-size:12px;text-align:right;white-space:nowrap}.tab-small-row{display:grid;grid-template-columns:78px minmax(0,1fr);gap:6px;margin-bottom:13px;align-items:start}.tab-small-row:last-child{margin-bottom:0}.tab-small-label{padding-top:9px;text-align:right;font-size:12px;white-space:nowrap}.tab-small-row .radio-group{gap:16px}.icon-picker{display:flex;align-items:center;gap:10px;margin-top:7px;max-width:360px}.equip-preview{width:43px;height:43px;border-radius:7px;background:#f5f6fa;border:1px solid #ebedf2;flex-shrink:0;object-fit:contain}.icon-empty{width:43px;height:43px;display:grid;place-items:center;border-radius:7px;background:#f4f6fa;color:#b5bfce}.background-row{display:flex;align-items:center;gap:12px}.child-container{margin:0 13px 13px;background:#f3f6fb;border:1px solid #e3eaf4;border-radius:5px;padding:0 10px 10px}.child-container .tab-strip{padding:0 1px;border-bottom:0;gap:6px}.child-container .tab-form{background:white;border:1px solid #e4eaf3;border-radius:4px;padding:15px 12px}.copy-link{border:0;background:none;color:var(--blue);font-size:11px;white-space:nowrap;padding:0 0 0 6px;align-self:center}.copy-link:disabled{color:#b4bece}.copy-link:hover:not(:disabled){color:#165acc}
+.upload-unit{position:relative;flex-shrink:0}.upload-box{width:75px;height:62px;border:1px dashed #ccd6e5;background:#fafcff;border-radius:5px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#a2afc3;cursor:pointer;overflow:hidden}.upload-box:hover{border-color:var(--blue);color:var(--blue);background:#f3f8ff}.upload-box .plus{font-size:25px;font-weight:300;line-height:1}.upload-box .upload-text{font-size:10px}.upload-box img{width:100%;height:100%;object-fit:cover}.upload-box .replace{display:none;position:absolute;inset:0;align-items:center;justify-content:center;background:#23345080;color:#fff;font-size:11px}.upload-box:hover .replace{display:flex}.remove-image{position:absolute;top:-5px;right:-5px;width:17px;height:17px;background:#73849d;border:2px solid #fff;color:white;border-radius:50%;padding:0;line-height:11px;font-size:11px}.remove-image:hover{background:#eb6672}.head-uploads{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.head-uploads .upload-box{height:75px;width:100%}.upload-caption{font-size:10px;color:#7d889a;text-align:center;margin-top:7px;white-space:nowrap}.uploads-disabled .upload-box{opacity:.45;cursor:not-allowed;background:#f1f3f7}.uploads-disabled .upload-caption{color:#b2bac6}.warning-note{display:flex;align-items:center;gap:6px;background:#fff5e8;color:#d39744;padding:8px 11px;font-size:11px;border-radius:4px;margin-top:10px}.checkbox-group{display:flex;gap:10px 18px;flex-wrap:wrap;padding-top:8px}.checkbox-group.devices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px 8px}.checkbox-label{display:flex;align-items:center;gap:6px;font-size:11px;white-space:nowrap;cursor:pointer}.checkbox-label input{width:14px;height:14px;margin:0;accent-color:var(--blue)}.field-error{font-size:11px;color:#ec5e67;margin-top:5px;line-height:1.6}.field-error:empty{display:none}.editor-footer{height:65px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:0 25px;background:#fff}.footer-note{font-size:11px;color:#97a2b4;display:flex;align-items:center;gap:6px}.footer-buttons{display:flex;gap:10px}.editor-footer .btn{min-width:73px}.validation-banner{margin:12px 24px 0;padding:9px 12px;border-radius:5px;font-size:12px;display:flex;align-items:center;gap:7px;flex-shrink:0}.validation-banner.error{background:#fff1f1;color:#df626a;border:1px solid #ffe0e3}.validation-banner.success{background:#f0faf5;color:#48a179;border:1px solid #dcefe6}.validation-banner button{margin-left:auto;border:0;background:none;color:inherit;font-size:11px}
+.preview-column{display:flex;flex-direction:column;align-items:center;min-width:0}.preview-head{width:375px;height:36px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:11px}.preview-head h2{font-size:13px;font-weight:600;margin:0}.preview-head p{font-size:10px;color:#99a3b3;margin:2px 0 0}
+.phone{width:375px;height:780px;flex-shrink:0;background:#252b37;border:6px solid #292f3c;border-radius:39px;position:relative;box-shadow:0 22px 55px #28364b1c,0 5px 12px #29364a14,inset 0 0 0 1px #626b7b;overflow:hidden}.phone-screen{height:100%;border-radius:32px;overflow:hidden;background:#f7f7f9;display:flex;flex-direction:column;position:relative}.phone-top{flex-shrink:0;background:linear-gradient(110deg,#fbedf4,#f9dfe9 55%,#f3deff);position:relative;z-index:2}.phone-top.two{background:linear-gradient(110deg,#ffe4df,#fff0e7)}.statusbar{height:34px;display:flex;align-items:center;justify-content:space-between;padding:9px 21px 2px;font-size:11px;color:#332c38;font-weight:650}.camera-island{width:78px;height:20px;border-radius:14px;position:absolute;top:6px;left:50%;transform:translateX(-50%);background:#252b37}.status-icons{display:flex;align-items:center;gap:4px}.phone-titlebar{height:43px;display:grid;grid-template-columns:32px minmax(0,1fr) 32px;gap:5px;align-items:center;padding:0 13px;color:#392c3a}.phone-title{font-size:15px;font-weight:600;text-align:center;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.decorative-icon{display:grid;place-items:center}.phone-scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:none;background:#f7f7f9}.phone-scroll::-webkit-scrollbar{display:none}.phone-home{position:absolute;bottom:6px;width:111px;height:4px;border-radius:4px;background:#252b37;left:50%;transform:translateX(-50%);z-index:4;pointer-events:none}.phone-home-area{height:17px;position:absolute;bottom:0;width:100%;background:linear-gradient(transparent,#f7f7f9);pointer-events:none;z-index:3}
+.hero{height:156px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 95% 20%,#e9a2f3 0,transparent 55%),linear-gradient(120deg,#ffeaed 0,#ffc3dc 42%,#dfa4ef 100%);display:flex;align-items:center;padding:16px 21px}.hero-upload{width:100%;height:156px;object-fit:cover;display:block}.hero-copy{position:relative;z-index:1;max-width:250px;align-self:center}.hero h2{font-size:27px;line-height:1.25;letter-spacing:-1px;margin:0;color:#713665;font-weight:800;max-width:230px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;text-shadow:0 1px 0 #ffffff70}.hero-art{position:absolute;right:-23px;bottom:-8px;width:188px;height:142px;opacity:.9;transform:rotate(-12deg)}.hero-art.car{width:183px;height:145px;right:-9px;bottom:0;transform:rotate(-8deg)}
+.mobile-tabs-section{background:white;position:relative;margin-top:-8px;border-radius:15px 15px 0 0;padding:16px 12px 9px}.mobile-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px 3px}.mobile-grid-tab{padding:0;border:0;background:none;min-width:0;display:flex;align-items:center;flex-direction:column;gap:6px}.grid-icon{width:49px;height:49px;border-radius:13px;background:#fff1f5;display:grid;place-items:center;border:1.5px solid transparent;background-position:center;background-size:cover;transition:all .15s}.grid-icon img{width:42px;height:42px;object-fit:contain;border-radius:9px}.mobile-grid-tab.selected .grid-icon{border-color:#ef6b87;box-shadow:0 2px 5px #f889a229}.mobile-grid-tab .grid-name{font-size:9px;line-height:1.25;color:#716d79;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.35px}.mobile-grid-tab.selected .grid-name{color:#e74c6f;font-weight:650}.placeholder-icon{display:flex;align-items:center;justify-content:center;color:#bec1cc;width:100%;height:100%}
+.mobile-text-tabs{display:flex;gap:9px;overflow:auto;scrollbar-width:none;align-items:center;padding:1px 1px 5px}.mobile-text-tabs::-webkit-scrollbar{display:none}.mobile-text-tab{font-size:13px;white-space:nowrap;border:0;background:transparent;position:relative;padding:9px 14px;border-radius:8px;flex-shrink:0;min-height:36px;background-size:cover;background-position:center}.mobile-text-tab.selected{background-color:#fff0f4;color:#cf506b;font-weight:700}
+.two-tabs{background:linear-gradient(115deg,#ffe5df,#fff1e6);padding:12px 12px 0}.primary-pills{display:flex;gap:8px;overflow:auto;scrollbar-width:none;padding-bottom:15px}.primary-pills::-webkit-scrollbar{display:none}.primary-pill{display:flex;align-items:center;gap:5px;flex-shrink:0;font-size:12px;border:1px solid #fff5ee;background:#ffffffdb;border-radius:22px;padding:7px 11px 7px 7px;color:#907666;min-height:41px;background-size:cover;background-position:center}.primary-pill.selected{background-color:#fce4a7;color:#6e4a25;border-color:#e7c37b;font-weight:650;box-shadow:0 3px 6px #b88d4b14}.primary-pill img{width:24px;height:24px;object-fit:contain;border-radius:50%}.primary-pill .placeholder-icon{width:24px;height:24px;color:#bbada0}.secondary-tabs{display:flex;gap:21px;overflow:auto;scrollbar-width:none;margin:0 -12px;background:#fff;border-radius:15px 15px 0 0;padding:0 19px;min-height:47px;align-items:stretch}.secondary-tabs::-webkit-scrollbar{display:none}.secondary-tab{border:0;background:none;white-space:nowrap;font-size:13px;padding:11px 4px 13px;position:relative;color:#8c838a;flex-shrink:0}.secondary-tab.selected{font-weight:700;color:#3b3441}.secondary-tab.selected:after{position:absolute;content:"";height:3px;width:18px;bottom:5px;left:50%;transform:translateX(-50%);border-radius:3px;background:#f16b7c}
+.filters{padding:11px 14px 12px;background:#fff;border-bottom:1px solid #f1f1f4}.filter-row{display:flex;align-items:center;justify-content:space-between;gap:13px;color:#514954;font-size:11px}.filter-item{display:flex;align-items:center;gap:4px}.filter-triangle{font-size:9px;color:#aaa3ac;margin-left:1px}.filter-tags{display:flex;gap:7px;margin-top:12px;overflow:hidden}.filter-chip{font-size:10px;line-height:1.4;padding:5px 11px;border-radius:5px;background:#f6f5f8;color:#89808b;white-space:nowrap}
+.goods-area{padding:13px 10px 24px;background:#f7f7f9;min-height:260px}.goods-card{background:#fff;border-radius:11px;padding:11px;margin-bottom:9px;box-shadow:0 2px 4px #352e4903}.goods-main{display:grid;grid-template-columns:96px minmax(0,1fr);gap:11px}.goods-thumb{width:96px;height:96px;position:relative;overflow:hidden;border-radius:8px;flex-shrink:0;background:#d8c9ee}.goods-thumb>img{display:block;width:96px;height:96px;object-fit:cover}.picture-label{position:absolute;bottom:0;left:0;color:white;background:#30274370;padding:1px 5px;font-size:8px;border-top-right-radius:4px}.thumb-badge{position:absolute;top:5px;left:5px;font-size:7px;line-height:1.3;padding:2px 4px;background:#ffffffd9;color:#785c9b;border-radius:3px;letter-spacing:.5px}.goods-title{font-size:11px;font-weight:600;color:#3a3441;line-height:1.65;margin:-2px 0 4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:34px}.goods-sub{display:flex;justify-content:space-between;gap:3px;font-size:9px;color:#9c94a1;white-space:nowrap}.heat{color:#b2a1aa;display:flex;align-items:center;gap:2px;font-size:8px}.goods-tags{display:flex;flex-wrap:wrap;gap:3px;margin:5px 0}.goods-tag{font-size:8px;padding:1px 4px;border-radius:3px;line-height:1.5;background:#f6f4fb;color:#9b86ad;white-space:nowrap}.goods-rating{color:#aaa0ae;font-size:8px}.goods-rating b{font-weight:500;color:#9c8ba9}.goods-bottom{display:flex;justify-content:space-between;align-items:center;gap:6px;padding-top:10px;margin-top:9px;border-top:1px solid #f6f4f8}.rent-tags{display:flex;gap:4px}.rent-tag{font-size:8px;color:#b39aab;background:#fbf5f9;border-radius:3px;padding:3px 5px;white-space:nowrap}.rent-tag.deposit{background:#eff9f5;color:#72ab93}.goods-price{white-space:nowrap;color:#f04e65;line-height:1}.goods-price .currency{font-size:11px;font-weight:600}.goods-price strong{font-size:21px;letter-spacing:-.7px;font-weight:750}.goods-price .unit{font-size:9px;color:#aa9ca6;margin-left:2px}.goods-end{text-align:center;color:#c3bbc9;font-size:9px;margin-top:18px;letter-spacing:1px}
+.empty-state{padding:50px 10px 65px;text-align:center;color:#b4adbd}.empty-illustration{margin:0 auto 17px;width:88px;height:70px;display:grid;place-items:center;position:relative}.empty-illustration:before{content:"";position:absolute;inset:2px 8px;background:#efebf3;border-radius:50%;z-index:0}.empty-illustration svg{z-index:1;position:relative;color:#c6bacf}.empty-title{font-size:13px;color:#9d93a6;margin:0}.empty-description{font-size:10px;margin:7px 0 0;color:#beb5c6}
+.preview-context{width:375px;margin-top:16px;border:1px solid #e3e7ee;border-radius:9px;background:#ffffff90;padding:13px 15px;color:#8c97a8;font-size:11px}.context-title{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px}.context-title strong{font-size:11px;font-weight:500;color:#718096}.context-title span{font-size:10px;color:#a0aab8}.context-chips{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.context-chip{font-size:10px;background:#f0f3f8;color:#71839f;padding:3px 7px;border-radius:4px}.context-rules{font-size:10px;line-height:1.7;margin-top:7px;color:#a3adbb}
+.toast{position:fixed;top:90px;left:50%;transform:translate(-50%,-8px);z-index:100;background:#fff;border:1px solid #e1e9f1;border-radius:7px;box-shadow:0 8px 25px #1e38561a;padding:11px 18px;color:#576b85;display:flex;align-items:center;gap:8px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;max-width:650px}.toast.visible{opacity:1;transform:translate(-50%,0)}.toast.success{color:#3b9e71}.toast.error{color:#df6068}
+.copy-dialog{border:0;border-radius:12px;padding:0;width:440px;max-width:90vw;color:var(--text);box-shadow:0 20px 90px #10264430}.copy-dialog::backdrop{background:#20334d45;backdrop-filter:blur(2px)}.dialog-header{display:flex;align-items:center;justify-content:space-between;padding:19px 23px;border-bottom:1px solid var(--line)}.dialog-header h3{margin:0;font-size:16px;font-weight:600}.dialog-close{border:0;background:none;font-size:21px;color:#9ba7b7}.dialog-body{padding:20px 23px}.dialog-body p{color:#8b96a6;font-size:12px;margin:0 0 15px;line-height:1.9}.copy-summary{background:#f6f8fb;border:1px solid #e8edf5;border-radius:5px;padding:11px;margin-top:12px;color:#8b98ab;font-size:11px;line-height:1.9}.copy-summary b{color:#5e7290;font-weight:500}.dialog-footer{padding:14px 23px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px}.dialog-footer .btn:disabled{background:#afcafa;border-color:#afcafa;color:#fff;box-shadow:none}
+@media(min-width:1600px){.workspace{grid-template-columns:minmax(810px,1.5fr) minmax(460px,1fr);gap:36px}.form-content{padding:25px 30px}.form-row{grid-template-columns:105px minmax(0,1fr)}.checkbox-group.devices{grid-template-columns:repeat(5,minmax(0,1fr))}.tab-form{padding:19px 19px 17px}.rule-grid{gap:16px}.tab-section{padding:15px}.type-options .hint-inline{max-width:none}}
+@media(max-width:1380px){.toolbar{padding:0 23px;gap:12px}.brand h1{font-size:17px}.examples{gap:6px}.btn.sample{padding:0 9px}.workspace{padding:20px 22px 26px;gap:22px;grid-template-columns:minmax(710px,1.7fr) minmax(395px,1fr)}.editor{top:98px;height:calc(100vh - 118px)}.form-content{padding:21px 21px 25px}.form-row{gap:10px;grid-template-columns:88px minmax(0,1fr)}.tab-section{padding:11px}.tab-form{padding:16px 11px}.tab-small-row{grid-template-columns:72px minmax(0,1fr)}.inline-field{grid-template-columns:73px minmax(0,1fr)}.tab-small-row .radio-group{gap:12px}.child-container{margin:0 10px 10px;padding:0 8px 8px}.child-container .tab-form{padding:13px 9px}.tab-strip{padding:0 9px;gap:6px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="toolbar">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true"><svg width="23" height="23" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="2" fill="white"/><rect x="14" y="3" width="7" height="7" rx="2" fill="white" opacity=".55"/><rect x="3" y="14" width="7" height="7" rx="2" fill="white" opacity=".55"/><rect x="14" y="14" width="7" height="7" rx="2" fill="white"/></svg></div>
+    <div><h1>营销号池专区配置 Demo</h1><p>配置与预览 · 实时联动</p></div>
+  </div>
+  <nav class="examples" aria-label="载入演示配置">
+    <button type="button" class="btn sample" data-action="example" data-example="single"><span class="sample-number">1</span>示例：单tab专区</button>
+    <button type="button" class="btn sample" data-action="example" data-example="one"><span class="sample-number">2</span>示例：多tab一层</button>
+    <button type="button" class="btn sample" data-action="example" data-example="two"><span class="sample-number">3</span>示例：多tab两层</button>
+    <span class="toolbar-divider"></span>
+    <button type="button" class="btn ghost" data-action="example" data-example="empty"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6a7 7 0 1 1-1 7M4 2v5h5"/></svg>清空为默认态</button>
+  </nav>
+</header>
+<main class="workspace">
+  <section class="editor" aria-labelledby="editorTitle">
+    <header class="editor-head">
+      <div><h2 id="editorTitle">编辑专区落地页配置</h2><p>修改配置后，右侧专区页将实时更新</p></div>
+    </header>
+    <div id="validationBanner" hidden aria-live="polite"></div>
+    <div class="form-scroll" id="formScroll"><form id="configForm" novalidate><div class="form-content" id="formContent"></div></form></div>
+    <footer class="editor-footer">
+      <span class="footer-note" id="footerNote"></span>
+      <div class="footer-buttons"><button type="button" class="btn" data-action="cancel">取消</button><button type="button" class="btn primary" data-action="validate">确定</button></div>
+    </footer>
+  </section>
+  <aside class="preview-column" aria-labelledby="previewTitle">
+    <div class="preview-head"><div><h2 id="previewTitle">移动端实时预览</h2><p>375 × 780 · 点击预览中的 tab 可同步编辑</p></div></div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-top" id="phoneTop"></div>
+        <div class="phone-scroll" id="phoneScroll" aria-label="手机专区页"></div>
+        <div class="phone-home-area"></div><div class="phone-home"></div>
+      </div>
+    </div>
+    <div class="preview-context" id="previewContext"></div>
+  </aside>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog class="copy-dialog" id="copyDialog" aria-labelledby="copyDialogTitle">
+  <div class="dialog-header"><h3 id="copyDialogTitle">复制二级tab</h3><button type="button" class="dialog-close" aria-label="关闭复制窗口" data-action="close-copy">×</button></div>
+  <div class="dialog-body"><p id="copyDescription"></p><label class="mini-label" for="copySource">来源一级tab</label><select id="copySource" class="select-input"></select><div id="copySummary" class="copy-summary"></div></div>
+  <div class="dialog-footer"><button type="button" class="btn" data-action="close-copy">取消</button><button type="button" class="btn primary" id="copyConfirm" data-action="confirm-copy">复制</button></div>
+</dialog>
+<script>
+'use strict';
+// 依据：2026-10-19 本轮用户完整需求。关联背景：../../30-需求/REQ-ZHW-002.md、
+// ../../20-业务域/租号玩平台/README.md。历史需求的 4 个 tab 等口径不用于本 demo。
+// 数据全部虚构；仅本地内存演示；无请求、无持久化、无真实交易。
+const $ = (id) => document.getElementById(id);
+const esc = (value) => String(value == null ? '' : value).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const codeLength = (value) => Array.from(String(value)).length;
+const clone = (value) => JSON.parse(JSON.stringify(value));
+const svgURL = (content) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(content).replace(/'/g,'%27');
+const iconPaths = {
+  arrow:'<path d="m14 5-7 7 7 7"/>',
+  search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/>',
+  grid:'<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/>',
+  filter:'<path d="M4 6h16M7 12h10M10 18h4"/><circle cx="9" cy="6" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/>',
+  shield:'<path d="m12 3 7 3v6c0 5-7 9-7 9s-7-4-7-9V6z"/><path d="m8.5 12 2.2 2.2 4.8-4.8"/>',
+  lock:'<rect x="5" y="10" width="14" height="10" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/>',
+  check:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7v1"/>',
+  empty:'<path d="M4 9h16v12H4zM4 9l4-6h8l4 6M4 14h5l1 3h4l1-3h5"/>',
+  fire:'<path d="M12 2c1 5 7 7 7 13a7 7 0 0 1-14 0c0-4 3-7 4-8 0 3 1 4 2 5 1-3 2-6 1-10Z"/>',
+  star:'<path d="m12 3 2.7 5.8 6.3.9-4.5 4.5 1 6.3-5.5-3-5.5 3 1-6.3L3 9.7l6.3-.9z"/>'
+};
+function icon(name,size=16){return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(iconPaths[name]||iconPaths.grid)+'</svg>';}
+const GAMES = [
+  {id:'wz',name:'王者荣耀',short:'王者',tags:['传说皮肤','荣耀王者','全英雄','高胜率'],equipment:['李白','貂蝉','孙悟空','韩信','赵云','露娜','澜','诸葛亮','公孙离','瑶']},
+  {id:'hp',name:'和平精英',short:'和平',tags:['满级神装','稀有载具','粉装套装','王牌战神'],equipment:['满级星梦','满级超新星','满级幽焰骑士','满级万古烈焰','满级金蛇镇世','满级甜心宝贝','满级熔岩统帅','满级至情至圣','满级盖世英雄','满级墨龙九天']},
+  {id:'cf',name:'穿越火线',short:'穿越',tags:['英雄级武器','王者之心','全装账号','高等级'],equipment:['火麒麟','雷神','黑骑士','毁灭','天龙','无影','王者之心','黑龙','烈龙','修罗']},
+  {id:'ww',name:'无畏契约',short:'无畏',tags:['限定套装','近战皮肤','高段位','热门英雄'],equipment:['离火刃','紫金狂潮','掠夺印象','混沌序曲','电玩造物','盖亚复仇','电幻普普','光明哨兵','冠军套装','侦察行动']},
+  {id:'lol',name:'英雄联盟',short:'联盟',tags:['全英雄','限定皮肤','炫彩外观','峡谷之巅'],equipment:['亚索','阿狸','李青','劫','拉克丝','伊泽瑞尔','金克丝','锐雯','卡莎','永恩']}
+];
+const PRICES = [
+  {id:'hour',name:'时租',unit:'/时',base:5.8},
+  {id:'special',name:'短租特惠',unit:'/时',base:3.8},
+  {id:'morning',name:'包早',unit:'/早',base:13.8},
+  {id:'afternoon',name:'包午',unit:'/午',base:15.8},
+  {id:'night',name:'包夜',unit:'/夜',base:22.8},
+  {id:'day',name:'包天',unit:'/天',base:36.8},
+  {id:'ten',name:'10小时',unit:'/10小时',base:25.8},
+  {id:'week',name:'周租',unit:'/周',base:158.8}
+];
+const gameById = (id) => GAMES.find(g=>g.id===id);
+const priceById = (id) => PRICES.find(p=>p.id===id);
+const hues = [278,213,346,21,45,323,5,179,243,145];
+const imageCache = new Map();
+function equipmentImage(game,index){
+  const cacheKey='equip-'+game+'-'+index;
+  if(imageCache.has(cacheKey))return imageCache.get(cacheKey);
+  const g=gameById(game);
+  if(!g || index<0 || index>=g.equipment.length)return '';
+  const hue=hues[index%hues.length];
+  const gun=['hp','cf','ww'].includes(game);
+  const shape=gun
+    ? '<g transform="translate(8 7) rotate(-23 48 48)"><path d="M8 42h15l8-8h31v6h25v7H64l-8 8H35l-4 16h-9l3-22H8z" fill="hsl('+hue+',58%,46%)" stroke="white" stroke-opacity=".75" stroke-width="2"/><path d="M36 41h29M71 40v-4M42 33v-8h12v8M51 52l6 18h-9l-5-18" fill="none" stroke="hsl('+hue+',60%,31%)" stroke-width="4" stroke-linejoin="round"/><path d="M10 41v17l12-7" fill="hsl('+hue+',45%,62%)"/><rect x="34" y="38" width="22" height="5" rx="2" fill="white" opacity=".55"/><path d="m79 19 2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#fff" opacity=".85"/></g>'
+    : '<circle cx="50" cy="47" r="29" fill="hsl('+hue+',40%,74%)"/><path d="M23 90c1-26 13-34 27-34s26 8 27 34" fill="hsl('+hue+',42%,39%)"/><ellipse cx="50" cy="44" rx="20" ry="23" fill="hsl('+hue+',72%,92%)"/><path d="M30 45c-5-24 11-33 21-32 17 0 25 14 18 31l-9-21-11 14-15-2z" fill="hsl('+hue+',40%,29%)"/><circle cx="42" cy="46" r="2" fill="hsl('+hue+',40%,29%)"/><circle cx="58" cy="46" r="2" fill="hsl('+hue+',40%,29%)"/><text x="50" y="84" text-anchor="middle" font-size="19" font-family="sans-serif" font-weight="bold" fill="white">'+esc(g.equipment[index][0])+'</text>';
+  const result=svgURL('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="hsl('+hue+',90%,94%)"/><stop offset="1" stop-color="hsl('+hue+',65%,79%)"/></linearGradient></defs><rect width="100" height="100" rx="21" fill="url(#g)"/><circle cx="87" cy="12" r="32" fill="white" opacity=".28"/><path d="M0 79 100 40v60H0Z" fill="white" opacity=".15"/>'+shape+'</svg>');
+  imageCache.set(cacheKey,result);return result;
+}
+const pinkBackground=svgURL('<svg xmlns="http://www.w3.org/2000/svg" width="300" height="180"><defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#fff0f8"/><stop offset=".5" stop-color="#f6b7dc"/><stop offset="1" stop-color="#d5b1f5"/></linearGradient></defs><rect width="300" height="180" fill="url(#g)"/><path d="M-10 143Q74 45 157 108T330 29" stroke="#ffffff75" stroke-width="30" fill="none"/><circle cx="236" cy="35" r="33" fill="#fff8fc50"/></svg>');
+const goldBackground=svgURL('<svg xmlns="http://www.w3.org/2000/svg" width="300" height="120"><defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#fff0bc"/><stop offset="1" stop-color="#f3cf86"/></linearGradient></defs><rect width="300" height="120" fill="url(#g)"/><circle cx="256" cy="15" r="60" fill="#ffffff40"/><path d="M-10 120 170 5 220 120" fill="#fff5d030"/></svg>');
+const sunImage=svgURL('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><rect width="80" height="80" rx="40" fill="#ffbb54"/><circle cx="40" cy="40" r="14" fill="#fff6d7"/><g stroke="#fff6d7" stroke-width="4" stroke-linecap="round"><path d="M40 13v6M40 61v6M13 40h6M61 40h6M21 21l4 4M55 55l4 4M21 59l4-4M55 25l4-4"/></g></svg>');
+function carImage(hue=263){
+  return svgURL('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="160" viewBox="0 0 200 160"><defs><linearGradient id="c" x2="0" y2="1"><stop stop-color="hsl('+hue+',70%,84%)"/><stop offset="1" stop-color="hsl('+hue+',45%,48%)"/></linearGradient></defs><ellipse cx="101" cy="133" rx="85" ry="9" fill="#6e447a" opacity=".12"/><path d="m21 89 23-10 20-31q7-9 20-9h43q10 0 17 9l22 33 19 11 3 28H14l3-22z" fill="url(#c)" stroke="#ffffff85" stroke-width="2"/><path d="m57 78 17-29h49l24 29z" fill="#463952"/><path d="m78 49-8 29h32V49z" fill="#c4b7db"/><path d="M105 49v29h34l-20-29z" fill="#e7ddf5"/><path d="M17 94h28l8 11H17M153 94h29v11h-36" fill="#fff3ce"/><path d="M57 114h91" stroke="#62477e" stroke-width="5" stroke-linecap="round"/><rect x="27" y="116" width="25" height="20" rx="7" fill="#44374e"/><rect x="150" y="116" width="25" height="20" rx="7" fill="#44374e"/><path d="m54 85 94-1" stroke="white" stroke-opacity=".65" stroke-width="2"/></svg>');
+}
+const POOLS = [
+  {id:'1120',name:'和平精英-游戏专区-顶级豪车【号池:1120】',rules:[
+    {id:'car-luxury',name:'规则-顶级豪车'},{id:'car-dream',name:'规则-梦幻载具'},{id:'car-rare',name:'规则-稀有跑车'},
+    {id:'car-pink',name:'规则-粉装套装'},{id:'car-vip',name:'规则-人气优选'},{id:'car-new',name:'规则-新上好号'},
+    {id:'car-low',name:'规则-0-8元'},{id:'car-high',name:'规则-8元以上'}],shelves:[]},
+  {id:'1121',name:'和平精英-游戏专区-满级特效枪【号池:1121】',rules:GAMES[1].equipment.map((name,i)=>({id:'gun-'+i,name:'规则-'+name})).concat([{id:'gun-low',name:'规则-0-8元'},{id:'gun-vip',name:'规则-高配优选'}]),shelves:[]},
+  {id:'1102',name:'套餐专区-包天包夜随心租【号池:1102】',rules:[],shelves:[]}
+];
+const poolById=(id)=>POOLS.find(p=>p.id===id);
+const packageCombinations=[
+  ['day','wz'],['day','hp'],['day','cf'],
+  ['night','hp'],['night','cf'],['night','ww'],
+  ['ten','hp'],['ten','cf'],['ten','ww']
+];
+POOLS[2].rules=packageCombinations.map(([price,game])=>({id:'pkg-'+price+'-'+game,name:'规则-'+priceById(price).name+gameById(game).short}))
+  .concat([{id:'pkg-low',name:'规则-0-8元'},{id:'pkg-vip',name:'规则-人气优选'}]);
+function makeShelf(poolId,game,index,preferredPrice,equipmentIndex=0,kind='equipment'){
+  const g=gameById(game),prices={};
+  PRICES.forEach((p,i)=>{
+    if(p.id===preferredPrice || ((index+i)%3!==0 && (i<2 || (index+i)%2===0))){
+      prices[p.id]=Number((p.base+(index%7)*(p.id==='hour'||p.id==='special'?1:3)).toFixed(1));
+    }
+  });
+  const itemName=g.equipment[equipmentIndex%g.equipment.length];
+  const detail=kind==='car'?['顶级豪车｜梦幻跑车全套','稀有载具｜粉装神装随心选','豪车畅玩｜高配王牌账号'][index%3]:itemName+'｜'+['高配神装 王牌精选','热门皮肤 一键畅玩','全装高配 好号随心租'][index%3];
+  return {
+    id:poolId+'-'+index,poolId,game,rules:[],prices,
+    title:g.name+' · '+detail,
+    tags:[g.tags[index%4],g.tags[(index+1)%4],['品质好号','高配优选','热门推荐'][index%3]].slice(0,2+index%2),
+    heat:128+(index*47)%780,rating:(97.5+(index%6)*.4).toFixed(1),
+    equipmentIndex:equipmentIndex%g.equipment.length,kind,pictureNumber:index+1,
+    rentTag:'1小时起租',deposit:index%3!==1
+  };
+}
+for(let i=0;i<60;i++){
+  const game=i<40?'hp':GAMES.filter(g=>g.id!=='hp')[Math.floor((i-40)/5)].id;
+  const item=makeShelf('1120',game,i,'hour',i%10,game==='hp'?'car':'equipment');
+  item.rules=['car-'+['luxury','dream','rare','pink','vip','new'][i%6],item.prices.hour<=8?'car-low':'car-high'];
+  if(i%4===0&&!item.rules.includes('car-vip'))item.rules.push('car-vip');
+  POOLS[0].shelves.push(item);
+}
+for(let i=0;i<70;i++){
+  const game=i<50?'hp':GAMES.filter(g=>g.id!=='hp')[Math.floor((i-50)/5)].id;
+  const equipment=i<50?Math.floor(i/5):i%10;
+  const item=makeShelf('1121',game,i,'hour',equipment);
+  item.rules=[item.prices.hour<=8?'gun-low':'gun-vip'];
+  if(i<50)item.rules.unshift('gun-'+equipment);
+  if(i%5===0&&!item.rules.includes('gun-vip'))item.rules.push('gun-vip');
+  POOLS[1].shelves.push(item);
+}
+for(let i=0;i<60;i++){
+  const combo=i<45?packageCombinations[Math.floor(i/5)]:[['day','lol'],['night','wz'],['ten','lol']][Math.floor((i-45)/5)];
+  const [price,game]=combo;
+  const item=makeShelf('1102',game,i,price,i%10);
+  item.rules=i<45?['pkg-'+price+'-'+game]:['pkg-vip'];
+  if(i%2===0&&!item.rules.includes('pkg-vip'))item.rules.push('pkg-vip');
+  if(item.prices.hour!==undefined&&item.prices.hour<=8)item.rules.push('pkg-low');
+  POOLS[2].shelves.push(item);
+}
+const DEVICES=['全部','安卓-普通版','安卓-极速版','安卓-应用市场版','PC站-官网','客户端-官网','PC站-全部','M站-全部','客户端-全部','安卓APP-全部'];
+// 单 tab 示例需要覆盖三种价格类型；补充明确命中的假货架，方便预览和回归检查。
+[['hp','day'],['wz','day'],['cf','night']].forEach(([game,price],group)=>{
+  for(let i=0;i<3;i++){
+    const item=makeShelf('1120',game,100+group*3+i,price,(group*3+i)%10,game==='hp'?'car':'equipment');
+    item.rules=[];
+    POOLS[0].shelves.push(item);
+  }
+});
+let sequence=0, state, baseline, activeExample='one', validationAttempted=false, lastConfirmed=false, errors=[], toastTimer, stateEpoch=0;
+function modeKey(type=state.type,depth=state.depth){return type==='single'?'single':depth===2?'two':'one';}
+function modeSeed(key){
+  const base={pageName:'',poolId:'',headers:{pc:'',client:'',mobile:'',gradient:''},audience:'',devices:[]};
+  if(key==='single')return Object.assign(base,{global:{game:'',price:'',poolId:'',rule:''},supportGames:[{game:'',priority:'1',price:''}],singleSelectedGame:'',tabs:[],selectedTop:'',selectedChildren:{}});
+  return Object.assign(base,{global:{game:'',price:'',poolId:'',rule:''},supportGames:[{game:'',priority:'1',price:''}],singleSelectedGame:'',tabs:[],selectedTop:'',selectedChildren:{}});
+}
+function emptyState(){
+  const seed=modeSeed('single');
+  return Object.assign({type:'single',depth:1,lastMultiDepth:1,modes:{single:null,one:null,two:null}},seed);
+}
+function activeSnapshot(){
+  return clone({pageName:state.pageName,poolId:state.poolId,global:state.global,supportGames:state.supportGames,singleSelectedGame:state.singleSelectedGame,tabs:state.tabs,selectedTop:state.selectedTop,selectedChildren:state.selectedChildren,headers:state.headers,audience:state.audience,devices:state.devices});
+}
+function saveCurrentMode(){if(state&&state.modes)state.modes[modeKey()]=activeSnapshot();}
+function restoreMode(key){
+  const cfg=clone(state.modes&&state.modes[key]||modeSeed(key));
+  const seed=modeSeed(key);
+  Object.assign(state,seed,cfg);
+  state.global=Object.assign({game:'',price:'',poolId:'',rule:''},cfg.global||{});
+  state.supportGames=Array.isArray(cfg.supportGames)&&cfg.supportGames.length?cfg.supportGames:[{game:'',priority:'1',price:''}];
+  state.tabs=Array.isArray(cfg.tabs)?cfg.tabs:[];
+  state.selectedChildren=cfg.selectedChildren||{};
+}
+function ensureSingleSelection(){
+  const rows=Array.isArray(state.supportGames)?state.supportGames:[];
+  const available=sortedSupportGames().filter(row=>row.game&&row.price);
+  if(!available.some(row=>row.game===state.singleSelectedGame))state.singleSelectedGame=available[0]?available[0].game:'';
+}
+function makeTab(ordinal=1,options={}){
+  return Object.assign({id:'tab-'+(++sequence),created:sequence,ordinal,name:'',priority:'',iconMode:'none',iconData:'',equipment:'',equipmentGame:'',background:'',game:'',price:'',rule:'',children:[]},options);
+}
+function sorted(tabs){return tabs.slice().sort((a,b)=>{
+  const score=(t)=>t.priority!==''&&Number.isFinite(Number(t.priority))?Number(t.priority):Infinity;
+  return score(a)-score(b)||a.created-b.created;
+});}
+function sortedSupportGames(){
+  return (state.supportGames||[]).map((row,index)=>Object.assign({index},row)).sort((a,b)=>{
+    const score=(row)=>row.priority!==''&&Number.isFinite(Number(row.priority))?Number(row.priority):Infinity;
+    return score(a)-score(b)||a.index-b.index;
+  });
+}
+const tabName=(t)=>t.name.trim()||('Tab '+t.ordinal);
+const activeTop=()=>state.tabs.find(t=>t.id===state.selectedTop)||sorted(state.tabs)[0];
+const activeChild=(top)=>top&&(top.children.find(t=>t.id===state.selectedChildren[top.id])||sorted(top.children)[0]);
+function findTab(id){
+  for(const top of state.tabs){
+    if(top.id===id)return {tab:top,parent:null,level:1};
+    const child=top.children.find(t=>t.id===id);
+    if(child)return {tab:child,parent:top,level:2};
+  }
+  return null;
+}
+function ensureTabs(){
+  if(state.type!=='multi')return;
+  if(!state.tabs.length)state.tabs.push(makeTab());
+  if(!state.tabs.some(t=>t.id===state.selectedTop))state.selectedTop=sorted(state.tabs)[0].id;
+  if(state.depth===2)state.tabs.forEach(top=>{
+    if(!top.children.length)top.children.push(makeTab());
+    if(!top.children.some(t=>t.id===state.selectedChildren[top.id]))state.selectedChildren[top.id]=sorted(top.children)[0].id;
+  });
+}
+function selectedPoolId(){
+  return state.type==='multi'&&state.depth===1?(state.global&&state.global.poolId||''):state.poolId||'';
+}
+function selectedPool(){return poolById(selectedPoolId());}
+function effective(tab,parent=null){
+  const useGlobal=state.type==='multi'&&state.depth===1;
+  return {game:(useGlobal&&state.global.game)||(parent&&parent.game)||(tab&&tab.game)||'',price:(useGlobal&&state.global.price)||(parent&&parent.price)||(tab&&tab.price)||''};
+}
+function inherited(parent,key){
+  if(state.type==='multi'&&state.depth===1&&state.global[key])return {value:state.global[key],from:'全局展示'};
+  if(parent&&parent[key])return {value:parent[key],from:'一级tab'};
+  return null;
+}
+function reconcileEquipment(){
+  (state.tabs||[]).forEach(top=>{
+    [[top,null],...(top.children||[]).map(child=>[child,top])].forEach(([tab,parent])=>{
+      const game=effective(tab,parent).game;
+      if(tab.equipmentGame!==game){tab.equipment='';tab.equipmentGame=game;}
+      if(tab.iconMode==='equipment'&&!game)tab.iconMode='none';
+    });
+  });
+}
+function singleContext(){
+  ensureSingleSelection();
+  const row=(state.supportGames||[]).find(item=>item.game===state.singleSelectedGame&&item.game&&item.price)||sortedSupportGames().find(item=>item.game&&item.price);
+  return {game:row?row.game:'',price:row?row.price:'',rules:[],top:null,leaf:null,support:row||null};
+}
+function contextFor(top=activeTop(),child=activeChild(top)){
+  if(state.type==='single')return singleContext();
+  const leaf=state.depth===2?child:top;
+  const values=effective(leaf,state.depth===2?top:null);
+  const rules=[top&&top.rule,state.depth===2&&child&&child.rule].filter(Boolean);
+  return Object.assign(values,{rules:[...new Set(rules)],top,leaf});
+}
+function matchingShelves(context=contextFor()){
+  const pool=selectedPool();
+  if(!pool||!context.game||!context.price)return [];
+  return pool.shelves.filter(s=>s.game===context.game&&Object.hasOwn(s.prices,context.price)&&context.rules.every(rule=>s.rules.includes(rule)));
+}
+function tabIcon(tab,parent=null){
+  if(tab.iconMode==='upload')return tab.iconData;
+  if(tab.iconMode==='equipment'&&tab.equipment!==''){
+    const game=effective(tab,parent).game;
+    if(game&&tab.equipmentGame===game)return equipmentImage(game,Number(tab.equipment));
+  }
+  return '';
+}
+function loadExample(which,notify=true){
+  stateEpoch++;state=emptyState();activeExample=which;validationAttempted=false;lastConfirmed=false;errors=[];
+  if(which==='single'){
+    state.pageName='顶级豪车载具';state.poolId='1120';
+    state.supportGames=[
+      {game:'hp',priority:'1',price:'hour'},
+      {game:'wz',priority:'2',price:'day'},
+      {game:'cf',priority:'3',price:'night'}
+    ];state.singleSelectedGame='hp';
+  }else if(which==='one'){
+    state.pageName='满级特效枪';state.poolId='1121';state.type='multi';state.depth=1;state.lastMultiDepth=1;
+    state.global.game='hp';state.global.price='hour';state.global.poolId='1121';
+    state.tabs=GAMES[1].equipment.map((name,i)=>makeTab(i+1,{name,priority:String(i+1),iconMode:'equipment',equipment:String(i),equipmentGame:'hp',rule:'gun-'+i,background:i===0?pinkBackground:''}));
+  }else if(which==='two'){
+    state.pageName='套餐专区';state.poolId='1102';state.type='multi';state.depth=2;state.lastMultiDepth=2;
+    state.global={game:'',price:'',poolId:'',rule:''};
+    state.tabs=[['包天玩','day'],['包夜玩','night'],['10小时随心租','ten']].map(([name,price],i)=>{
+      const top=makeTab(i+1,{name,price,priority:String(i+1),iconMode:i===0?'upload':'none',iconData:i===0?sunImage:'',background:i===0?goldBackground:''});
+      top.children=packageCombinations.filter(c=>c[0]===price).map(([,game],j)=>makeTab(j+1,{name:gameById(game).short,priority:String(j+1),game,rule:'pkg-'+price+'-'+game,iconMode:game==='wz'?'equipment':'none',equipment:game==='wz'?'0':'',equipmentGame:game}));
+      return top;
+    });
+  }
+  if(which!=='empty'){state.audience='all';state.devices=DEVICES.slice();}
+  ensureTabs();ensureSingleSelection();reconcileEquipment();baseline=clone(state);renderAll(true);
+  $('formScroll').scrollTop=0;
+  if(notify)toast(which==='empty'?'已清空为默认态':'示例已载入，可直接修改配置');
+}
+
+function selectOptions(options,value,placeholder='请选择'){
+  return '<option value="">'+esc(placeholder)+'</option>'+options.map(o=>'<option value="'+esc(o.id)+'"'+(String(o.id)===String(value)?' selected':'')+'>'+esc(o.name)+'</option>').join('');
+}
+function errorSlot(key){return '<div class="field-error" data-error="'+esc(key)+'"></div>';}
+function radio(name,value,label,current,attrs='',disabled=false){
+  return '<label class="radio-label"><input type="radio" name="'+esc(name)+'" value="'+esc(value)+'"'+(String(value)===String(current)?' checked':'')+(disabled?' disabled':'')+' '+attrs+'>'+esc(label)+'</label>';
+}
+function uploadBox(scope,field,label,value,tabId='',disabled=false,head=false){
+  const id='upload-'+scope+'-'+(tabId||field)+'-'+field;
+  return '<div class="upload-unit">'+
+    '<label class="upload-box" for="'+esc(id)+'" title="'+esc(value?'更换'+label:'上传'+label)+'">'+
+    (value?'<img src="'+esc(value)+'" alt="'+esc(label)+'"><span class="replace">更换图片</span>':'<span class="plus">+</span><span class="upload-text">本地上传</span>')+
+    '</label><input hidden type="file" accept="image/*" id="'+esc(id)+'" data-upload-scope="'+esc(scope)+'" data-upload-field="'+esc(field)+'" data-tab-id="'+esc(tabId)+'"'+(disabled?' disabled':'')+' aria-label="'+esc(label)+'">'+
+    (value&&!disabled?'<button type="button" class="remove-image" data-action="remove-image" data-scope="'+esc(scope)+'" data-field="'+esc(field)+'" data-tab-id="'+esc(tabId)+'" aria-label="移除'+esc(label)+'">×</button>':'')+
+    (head?'<div class="upload-caption">'+esc(label)+'</div>':'')+'</div>';
+}
+function supportGameOptions(value,rowIndex){
+  const selected=(state.supportGames||[]).map((row,i)=>i===rowIndex?'':row.game).filter(Boolean);
+  return '<option value="">请选择游戏</option>'+GAMES.map(game=>'<option value="'+esc(game.id)+'"'+(game.id===value?' selected':'')+(selected.includes(game.id)?' disabled':'')+'>'+esc(game.name)+'</option>').join('');
+}
+function supportGamesFields(){
+  const rows=Array.isArray(state.supportGames)&&state.supportGames.length?state.supportGames:[{game:'',priority:'1',price:''}];
+  state.supportGames=rows;
+  return '<div class="support-list"><div class="support-head"><span>游戏</span><span>优先级</span><span>价格类型</span><span>操作</span></div>'+rows.map((row,index)=>
+    '<div class="support-row" data-support-row="'+index+'">'+
+      '<div class="support-cell"><select id="support-'+index+'-game" class="select-input'+(!row.game?' placeholder':'')+'" data-support-field="game" data-support-index="'+index+'" data-error-for="support.'+index+'.game">'+supportGameOptions(row.game,index)+'</select>'+errorSlot('support.'+index+'.game')+'</div>'+      '<div class="support-cell"><input id="support-'+index+'-priority" class="text-input" type="number" min="1" max="100" step="1" placeholder="1—100" value="'+esc(row.priority)+'" data-support-field="priority" data-support-index="'+index+'" data-error-for="support.'+index+'.priority">'+errorSlot('support.'+index+'.priority')+'</div>'+      '<div class="support-cell"><select id="support-'+index+'-price" class="select-input'+(!row.price?' placeholder':'')+'" data-support-field="price" data-support-index="'+index+'" data-error-for="support.'+index+'.price">'+selectOptions(PRICES.map(p=>({id:p.id,name:p.name+'价格'})),row.price,'请选择价格类型')+'</select>'+errorSlot('support.'+index+'.price')+'</div>'+      '<div class="support-actions"><button type="button" class="support-action add" data-action="add-support" data-support-index="'+index+'" aria-label="在此行下方新增支持游戏">⊕</button><button type="button" class="support-action remove" data-action="remove-support" data-support-index="'+index+'" aria-label="删除支持游戏"'+(rows.length<=1?' disabled':'')+'>⊖</button></div>'+    '</div>').join('')+errorSlot('supportGames.count')+'<div class="hint">进入专区后按游戏切换展示货架，优先级数字越小越靠前。</div></div>';
+}
+function globalOneFields(){
+  const global=state.global||{};
+  return '<div class="rule-grid"><div class="rule-item"><label for="global-game" class="mini-label">游戏</label><select id="global-game" class="select-input'+(!global.game?' placeholder':'')+'" data-global="game" data-error-for="global.game">'+selectOptions(GAMES,global.game,'不限')+'</select></div>'+    '<div class="rule-item"><label for="global-price" class="mini-label">价格类型</label><select id="global-price" class="select-input'+(!global.price?' placeholder':'')+'" data-global="price" data-error-for="global.price">'+selectOptions(PRICES.map(p=>({id:p.id,name:p.name+'价格'})),global.price,'不限')+'</select></div>'+    '<div class="rule-item"><label for="global-pool" class="mini-label required">号池</label><select id="global-pool" class="select-input'+(!global.poolId?' placeholder':'')+'" data-global="poolId" data-error-for="global.poolId">'+selectOptions(POOLS,global.poolId,'请选择号池')+'</select>'+errorSlot('global.poolId')+'</div></div>';
+}
+function ruleFields(scope,tab=null,parent=null){
+  const global=scope==='global',single=global&&state.type==='single';
+  const obj=global?state.global:tab;
+  const pool=poolById(global?selectedPoolId():selectedPoolId());
+  const one=state.type==='multi'&&state.depth===1;
+  const rulePool=state.type==='multi'&&state.depth===1?(state.global&&state.global.poolId||''):state.poolId;
+  const rulesPool=poolById(rulePool);
+  return '<div class="rule-grid'+(single?' single':'')+'">'+['game','price','rule'].filter(key=>!single||key!=='rule').map(key=>{
+    const inheritance=!global&&key!=='rule'?inherited(parent,key):null;
+    const value=inheritance?inheritance.value:obj[key];
+    const label={game:'游戏',price:'价格类型',rule:'号池规则'}[key];
+    const id=global?'global-'+key:'field-'+tab.id+'-'+key;
+    const options=key==='game'?GAMES:key==='price'?PRICES.map(p=>({id:p.id,name:p.name+'价格'})):(rulesPool?rulesPool.rules:[]);
+    const noPool=!global&&key==='rule'&&state.type==='multi'&&state.depth===1&&!rulePool;
+    const attrs=global?'data-global="'+key+'"':'data-tab-field="'+key+'" data-tab-id="'+tab.id+'"';
+    const errorKey=single?'global.'+key:tab?tab.id+'.conditions':'';
+    const disabled=!!inheritance||noPool;
+    const placeholder=noPool?'请先在全局展示选择号池':key==='rule'||single?'请选择':'不限';
+    return '<div class="rule-item"><label for="'+id+'" class="mini-label'+(single?' required':'')+'">'+label+'</label>'+      '<select id="'+id+'" class="select-input'+(!value?' placeholder':'')+'" '+attrs+(disabled?' disabled':'')+' data-error-for="'+errorKey+'">'+      selectOptions(options,value,placeholder)+'</select>'+      (inheritance?'<span class="inherit-tag">'+icon('lock',10)+'继承自'+inheritance.from+'</span>':'')+      (single?errorSlot('global.'+key):'')+'</div>';
+  }).join('')+'</div>';
+}
+
+function tabHasError(tab){return errors.some(e=>e.topId===tab.id||e.tabId===tab.id);}
+function tabStrip(tabs,selectedId,level,parent=null){
+  return '<div class="tab-strip"><span class="strip-label">'+(level===2?'二级tab：':state.depth===2?'一级tab：':'tab：')+'</span>'+
+    '<div class="tab-scroll" role="tablist" aria-label="'+(level===2?'二级tab配置':'一级tab配置')+'" data-scroll-key="admin-'+(parent?parent.id:'top')+'">'+
+    sorted(tabs).map(tab=>'<div class="admin-tab-wrap'+(tab.id===selectedId?' active':'')+'">'+
+      '<button type="button" role="tab" aria-selected="'+(tab.id===selectedId)+'" class="admin-tab" title="'+esc(tabName(tab))+'" data-action="select-tab" data-tab-id="'+tab.id+'"><span>'+esc(tabName(tab))+'</span></button>'+
+      (tab.id===selectedId&&tabs.length>1?'<button type="button" class="tab-close" data-action="delete-tab" data-tab-id="'+tab.id+'" aria-label="删除'+esc(tabName(tab))+'">×</button>':'')+
+      (tabHasError(tab)?'<i class="tab-error-dot" aria-label="配置待完善"></i>':'')+'</div>').join('')+
+    '</div><button type="button" class="tab-add" data-action="add-tab" data-level="'+level+'" data-parent-id="'+(parent?parent.id:'')+'"'+(tabs.length>=10?' disabled':'')+' title="'+(tabs.length>=10?'本层最多10个tab':'新增'+(level===2?'二级':'一级')+'tab')+'" aria-label="新增'+(level===2?'二级':'一级')+'tab">+</button>'+
+    '<span class="tab-count">'+tabs.length+'/10</span>'+
+    (level===2?'<button type="button" class="copy-link" data-action="open-copy"'+(state.tabs.length<2?' disabled':'')+'>从其他一级tab复制</button>':'')+'</div>';
+}
+function tabForm(tab,parent=null){
+  const id=tab.id,game=effective(tab,parent).game,gameData=gameById(game),isLeaf=!!parent||state.depth===1;
+  return '<div class="tab-form" data-editing-tab="'+id+'">'+
+    '<div class="tab-main-fields">'+
+      '<div class="inline-field"><label for="field-'+id+'-name" class="required">展示名称</label><div><div class="input-wrap"><input id="field-'+id+'-name" class="text-input" type="text" placeholder="请输入，不超过10个字" value="'+esc(tab.name)+'" data-tab-id="'+id+'" data-tab-field="name" data-error-for="'+id+'.name" autocomplete="off"><span class="char-count" data-count-for="'+id+'">'+codeLength(tab.name)+'/10</span></div>'+errorSlot(id+'.name')+'</div></div>'+
+      '<div class="inline-field"><label for="field-'+id+'-priority" class="required">展示优先级</label><div><input id="field-'+id+'-priority" class="text-input" type="number" min="1" max="100" step="1" placeholder="1—100" value="'+esc(tab.priority)+'" data-tab-id="'+id+'" data-tab-field="priority" data-error-for="'+id+'.priority">'+errorSlot(id+'.priority')+'</div></div>'+
+    '</div>'+
+    '<div class="tab-small-row"><span class="tab-small-label">tab图标</span><div>'+
+      '<div class="radio-group">'+radio('icon-'+id,'none','不设置',tab.iconMode,'data-tab-id="'+id+'" data-tab-field="iconMode"')+
+      radio('icon-'+id,'upload','自定义上传',tab.iconMode,'data-tab-id="'+id+'" data-tab-field="iconMode"')+
+      radio('icon-'+id,'equipment','装备库获取',tab.iconMode,'data-tab-id="'+id+'" data-tab-field="iconMode"',!game)+
+      (!game?'<span class="hint-inline">确定游戏后可选</span>':'')+'</div>'+
+      (tab.iconMode==='upload'?'<div class="icon-picker">'+uploadBox('tab','iconData','tab图标',tab.iconData,id)+'<span class="hint-inline">本地选择图片，支持预览</span></div>':'')+
+      (tab.iconMode==='equipment'&&gameData?'<div class="icon-picker">'+(tabIcon(tab,parent)?'<img class="equip-preview" src="'+esc(tabIcon(tab,parent))+'" alt="所选装备">':'<span class="icon-empty">'+icon('grid',20)+'</span>')+
+      '<select id="field-'+id+'-equipment" aria-label="选择装备" class="select-input" data-tab-field="equipment" data-tab-id="'+id+'">'+selectOptions(gameData.equipment.map((name,i)=>({id:String(i),name})),tab.equipment,'请选择'+gameData.name+'装备')+'</select></div>':'')+
+    '</div></div>'+
+    (!parent?'<div class="tab-small-row"><span class="tab-small-label">tab背景图</span><div class="background-row">'+uploadBox('tab','background','tab背景图',tab.background,id)+'<span class="hint-inline">选填，作为选中tab的底色块</span></div></div>':'')+
+    '<div class="tab-small-row"><span class="tab-small-label">展示规则</span><div>'+ruleFields('tab',tab,parent)+(isLeaf?errorSlot(id+'.conditions'):'')+'</div></div>'+
+  '</div>';
+}
+function renderTabSection(){
+  const top=activeTop();
+  return '<section class="tab-section" id="tabSection"><div class="section-heading"><h3 class="required">Tab配置</h3><span>数字越小越靠前 · 同优先级按创建顺序</span></div>'+
+    errorSlot('tabs.count')+'<div class="tabs-shell"><div id="topTabStrip">'+tabStrip(state.tabs,top.id,1)+'</div>'+tabForm(top)+
+    (state.depth===2?'<div class="child-container">'+errorSlot(top.id+'.count')+'<div id="childTabStrip">'+tabStrip(top.children,activeChild(top).id,2,top)+'</div>'+tabForm(activeChild(top),top)+'</div>':'')+'</div></section>';
+}
+function renderEditor(){
+  const scroll=$('formScroll').scrollTop,focus=document.activeElement&&document.activeElement.id;
+  const offsets=captureScroll($('formContent'));
+  const two=state.type==='multi'&&state.depth===2;
+  $('formContent').innerHTML=
+    '<div class="form-row"><label class="row-label required" for="pageName">页面名称</label><div class="field-body"><input class="text-input" id="pageName" data-state="pageName" value="'+esc(state.pageName)+'" placeholder="请输入页面名称" autocomplete="off" data-error-for="pageName">'+errorSlot('pageName')+'</div></div>'+
+    '<div class="form-row"><label class="row-label required" for="poolId">业务活动</label><div class="field-body"><select id="poolId" class="select-input'+(!state.poolId?' placeholder':'')+'" data-state="poolId" data-error-for="poolId">'+selectOptions(POOLS,state.poolId,'请选择业务活动')+'</select>'+errorSlot('poolId')+'</div></div>'+
+    '<div class="form-row"><span class="row-label required">专区类型</span><div class="field-body type-options"><div class="radio-group">'+radio('zone-type','single','单tab专区',state.type,'data-state="type"')+radio('zone-type','multi','多tab专区',state.type,'data-state="type"')+'</div><span class="hint-inline">单tab专区：不配tab，进入后直接展示货架；多tab专区：按tab分区展示。</span></div></div>'+
+    (state.type==='multi'?'<div class="form-row"><span class="row-label required">tab层级</span><div class="field-body"><div class="radio-group">'+radio('tab-depth',1,'一层',state.depth,'data-state="depth"')+radio('tab-depth',2,'两层',state.depth,'data-state="depth"')+'</div></div></div>':'')+
+    (state.type==='single'?'<div class="form-row"><span class="row-label required">支持游戏</span><div class="field-body">'+supportGamesFields()+'</div></div>':state.depth===1?'<div class="form-row"><span class="row-label">全局展示</span><div class="field-body">'+globalOneFields()+'<div class="hint">对本专区所有tab生效；号池决定下方tab可选的号池规则。</div></div></div>':'')+
+    (state.type==='multi'?renderTabSection():'<div class="section-divider"></div>')+
+    '<div class="form-row" id="headerRow"><span class="row-label">头图</span><div class="field-body"><div class="head-uploads'+(two?' uploads-disabled':'')+'">'+
+      [['pc','PC官网头图'],['client','客户端头图'],['mobile','移动端头图'],['gradient','移动端渐变底图']].map(([key,label])=>uploadBox('header',key,label,state.headers[key],'',two,true)).join('')+
+      '</div>'+(two?'<div class="warning-note">'+icon('info',14)+'两层tab下头图不生效。</div>':'')+'</div></div>'+
+    '<div class="section-divider"></div>'+
+    '<div class="form-row"><label class="row-label required" for="audience">可见人群</label><div class="field-body"><select id="audience" class="select-input" data-state="audience">'+selectOptions([{id:'all',name:'全网用户'},{id:'new',name:'新用户'},{id:'old',name:'老用户'},{id:'member',name:'会员用户'}],state.audience)+'</select></div></div>'+
+    '<div class="form-row"><span class="row-label required">设备类型</span><div class="field-body checkbox-group devices">'+DEVICES.map((name,i)=>'<label class="checkbox-label"><input type="checkbox" id="device-'+i+'" data-check="devices" value="'+esc(name)+'"'+(state.devices.includes(name)?' checked':'')+'>'+esc(name)+'</label>').join('')+'</div></div>';
+  $('formScroll').scrollTop=scroll;
+  restoreScroll($('formContent'),offsets);
+  if(focus&&$(focus))$(focus).focus({preventScroll:true});
+  ensureSelectedVisible($('formContent'));
+  refreshErrors();
+}
+function backgroundStyle(tab,selected){
+  return selected&&tab.background?' style="background-image:url(&quot;'+esc(tab.background)+'&quot;)"':'';
+}
+function mobileTabs(){
+  if(state.type==='single'){
+    const rows=sortedSupportGames().filter(row=>row.game&&row.price);
+    if(rows.length<=1)return '';
+    const selected=state.singleSelectedGame||rows[0].game;
+    return '<div class="single-game-switch"><div class="mobile-text-tabs" role="tablist" aria-label="前端游戏切换" data-scroll-key="mobile-single-game">'+rows.map(row=>
+      '<button type="button" role="tab" aria-selected="'+(row.game===selected)+'" class="mobile-text-tab'+(row.game===selected?' selected':'')+'" data-action="select-single-game" data-game-id="'+esc(row.game)+'">'+esc(gameById(row.game).name)+'</button>').join('')+'</div></div>';
+  }
+  const top=activeTop();
+  if(state.depth===2){
+    const child=activeChild(top);
+    return '<div class="two-tabs"><div class="primary-pills" role="tablist" aria-label="前端一级tab" data-scroll-key="mobile-top">'+
+      sorted(state.tabs).map(t=>'<button type="button" role="tab" aria-selected="'+(t.id===top.id)+'" class="primary-pill'+(t.id===top.id?' selected':'')+'" data-action="select-tab" data-tab-id="'+t.id+'"'+backgroundStyle(t,t.id===top.id)+'>'+        (tabIcon(t)?'<img src="'+esc(tabIcon(t))+'" alt="">':'<span class="placeholder-icon">'+icon('grid',15)+'</span>')+'<span>'+esc(tabName(t))+'</span></button>').join('')+
+      '</div><div class="secondary-tabs" role="tablist" aria-label="前端二级tab" data-scroll-key="mobile-child-'+top.id+'">'+
+      sorted(top.children).map(t=>'<button type="button" role="tab" aria-selected="'+(t.id===child.id)+'" class="secondary-tab'+(t.id===child.id?' selected':'')+'" data-action="select-tab" data-tab-id="'+t.id+'">'+esc(tabName(t))+'</button>').join('')+'</div></div>';
+  }
+  const hasIcons=state.tabs.some(t=>t.iconMode!=='none');
+  if(hasIcons){
+    return '<div class="mobile-tabs-section"><div class="mobile-grid" role="tablist" aria-label="前端专区tab">'+sorted(state.tabs).map(t=>{
+      const selected=t.id===top.id,src=tabIcon(t);
+      return '<button type="button" role="tab" aria-selected="'+selected+'" class="mobile-grid-tab'+(selected?' selected':'')+'" data-action="select-tab" data-tab-id="'+t.id+'" title="'+esc(tabName(t))+'"><span class="grid-icon"'+backgroundStyle(t,selected)+'>'+        (src?'<img src="'+esc(src)+'" alt="">':'<span class="placeholder-icon">'+icon('grid',23)+'</span>')+'</span><span class="grid-name">'+esc(tabName(t))+'</span></button>';
+    }).join('')+'</div></div>';
+  }
+  return '<div class="mobile-tabs-section"><div class="mobile-text-tabs" role="tablist" aria-label="前端专区tab" data-scroll-key="mobile-top">'+sorted(state.tabs).map(t=>
+    '<button type="button" role="tab" aria-selected="'+(t.id===top.id)+'" class="mobile-text-tab'+(t.id===top.id?' selected':'')+'" data-action="select-tab" data-tab-id="'+t.id+'"'+backgroundStyle(t,t.id===top.id)+'>'+esc(tabName(t))+'</button>').join('')+'</div></div>';
+}
+
+function heroMarkup(){
+  if(state.type==='multi'&&state.depth===2)return '';
+  if(state.headers.mobile)return '<img class="hero-upload" src="'+esc(state.headers.mobile)+'" alt="移动端头图">';
+  const isCar=selectedPoolId()==='1120';
+  return '<div class="hero"><div class="hero-copy"><h2>'+esc(state.pageName||'你的专属游戏专区')+'</h2></div><img class="hero-art'+(isCar?' car':'')+'" src="'+esc(isCar?carImage():equipmentImage('hp',0))+'" alt="" aria-hidden="true"></div>';
+}
+function shelfThumbnail(shelf){
+  const key='shelf-'+shelf.id;
+  if(imageCache.has(key))return imageCache.get(key);
+  const hue=hues[shelf.equipmentIndex%hues.length];
+  const main=shelf.kind==='car'
+    ? '<image href="'+carImage(hue)+'" x="-11" y="7" width="118" height="95"/>'
+    : '<image href="'+equipmentImage(shelf.game,shelf.equipmentIndex)+'" x="4" y="2" width="92" height="92"/>';
+  const url=svgURL('<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 100 100"><defs><linearGradient id="s" x2="1" y2="1"><stop stop-color="hsl('+hue+',65%,86%)"/><stop offset="1" stop-color="hsl('+hue+',40%,57%)"/></linearGradient></defs><rect width="100" height="100" fill="url(#s)"/><circle cx="92" cy="11" r="45" fill="white" opacity=".12"/>'+main+'<path d="M0 88 100 63v37H0Z" fill="#40344f" opacity=".13"/><path d="m80 20 2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="white" opacity=".9"/></svg>');
+  imageCache.set(key,url);return url;
+}
+function shelfCard(shelf,priceType){
+  const price=shelf.prices[priceType],priceInfo=priceById(priceType);
+  const rentText=priceType==='day'?'包天畅玩':priceType==='night'?'整夜畅玩':priceType==='ten'?'10小时套餐':priceType==='week'?'周租套餐':priceType==='morning'?'包早套餐':priceType==='afternoon'?'包午套餐':'1小时起租';
+  return '<article class="goods-card" data-shelf-id="'+shelf.id+'"><div class="goods-main"><div class="goods-thumb"><img src="'+esc(shelfThumbnail(shelf))+'" alt="'+esc(gameById(shelf.game).name+'货架示意图')+'"><span class="thumb-badge">精选好号</span><span class="picture-label">图 '+shelf.pictureNumber+'</span></div><div class="goods-info">'+
+    '<h3 class="goods-title">'+esc(shelf.title)+'</h3><div class="goods-sub"><span>安卓｜QQ</span><span class="heat">'+icon('fire',10)+shelf.heat+'</span></div>'+
+    '<div class="goods-tags">'+shelf.tags.map(tag=>'<span class="goods-tag">'+esc(tag)+'</span>').join('')+'</div><div class="goods-rating">好评率 <b>'+shelf.rating+'%</b></div></div></div>'+
+    '<div class="goods-bottom"><div class="rent-tags"><span class="rent-tag">'+rentText+'</span>'+(shelf.deposit?'<span class="rent-tag deposit">免押金</span>':'')+'</div><div class="goods-price"><span class="currency">¥</span><strong>'+price.toFixed(1)+'</strong><span class="unit">'+priceInfo.unit+'</span></div></div></article>';
+}
+function renderPreview(resetScroll=false){
+  const context=contextFor(),pool=selectedPool(),game=gameById(context.game),price=priceById(context.price);
+  const shelves=matchingShelves(context),two=state.type==='multi'&&state.depth===2;
+  const scroll=$('phoneScroll').scrollTop,offsets=captureScroll($('phoneScroll'));
+  $('phoneTop').classList.toggle('two',two);
+  $('phoneTop').innerHTML='<div class="statusbar"><span>9:41</span><span class="camera-island" aria-hidden="true"></span><span class="status-icons" aria-hidden="true"><svg width="14" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="1" y="7" width="2.5" height="4" rx=".7"/><rect x="5" y="5" width="2.5" height="6" rx=".7"/><rect x="9" y="3" width="2.5" height="8" rx=".7"/><rect x="13" y="1" width="2.5" height="10" rx=".7"/></svg><svg width="14" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 4q7-6 14 0M4 7q4-4 8 0M6.5 9.5q1.5-1.5 3 0"/></svg><svg width="23" height="12" viewBox="0 0 25 12" fill="none" stroke="currentColor"><rect x="1" y="1" width="20" height="10" rx="3"/><rect x="3" y="3" width="16" height="6" rx="1.4" fill="currentColor" stroke="none"/><path d="M23 4v4" stroke-width="2"/></svg></span></div>'+
+    '<div class="phone-titlebar"><span class="decorative-icon" aria-hidden="true">'+icon('arrow',20)+'</span><div class="phone-title">'+esc(state.pageName||'专区名称')+'</div><span class="decorative-icon" aria-hidden="true">'+icon('search',19)+'</span></div>';
+  const filters='<div class="filters"><div class="filter-row"><span class="filter-item">服务器<span class="filter-triangle">▾</span></span><span class="filter-item">综合排序<span class="filter-triangle">▾</span></span><span class="filter-item">'+icon('filter',12)+'筛选<span class="filter-triangle">▾</span></span></div>'+
+    '<div class="filter-tags">'+(game?game.tags:['热门推荐','品质好号','高配精选','人气专区']).map(tag=>'<span class="filter-chip">'+esc(tag)+'</span>').join('')+'</div></div>';
+  const empty='<div class="empty-state"><div class="empty-illustration">'+icon('empty',43)+'</div><p class="empty-title">暂无符合条件的货架</p><p class="empty-description">'+(!pool?'选择业务活动，开始配置你的专区':!context.game||!context.price?'确定游戏和价格类型后即可预览':'试试调整游戏、价格类型或号池规则')+'</p></div>';
+  $('phoneScroll').innerHTML=heroMarkup()+mobileTabs()+filters+'<div class="goods-area">'+(shelves.length?shelves.map(s=>shelfCard(s,context.price)).join('')+'<div class="goods-end">已经到底啦，去玩一局吧</div>':empty)+'</div>';
+  $('phoneScroll').scrollTop=resetScroll?0:scroll;
+  restoreScroll($('phoneScroll'),offsets);ensureSelectedVisible($('phoneScroll'));
+  const ruleNames=context.rules.map(id=>{const rule=pool&&pool.rules.find(r=>r.id===id);return rule?rule.name:id;});
+  $('previewContext').innerHTML='<div class="context-title"><strong>当前展示条件</strong><span>'+(pool?'号池 '+pool.id+' · 命中 '+shelves.length+' / '+pool.shelves.length+' 条':'尚未选择业务活动')+'</span></div>'+
+    '<div class="context-chips"><span class="context-chip">'+esc(game?game.name:'游戏未确定')+'</span><span class="context-chip">'+esc(price?price.name+'价格':'价格类型未确定')+'</span><span class="context-chip">'+(context.rules.length?'同时满足 '+context.rules.length+' 条规则':'整个号池范围')+'</span></div>'+
+    (ruleNames.length?'<div class="context-rules">'+esc(ruleNames.join(' ∩ '))+'</div>':'');
+}
+function captureScroll(root){
+  const values={};root.querySelectorAll('[data-scroll-key]').forEach(el=>{values[el.dataset.scrollKey]=el.scrollLeft;});return values;
+}
+function restoreScroll(root,values){
+  root.querySelectorAll('[data-scroll-key]').forEach(el=>{el.scrollLeft=values[el.dataset.scrollKey]||0;});
+}
+function ensureSelectedVisible(root){
+  root.querySelectorAll('[data-scroll-key]').forEach(strip=>{
+    const item=strip.querySelector('[aria-selected="true"]');
+    if(!item)return;
+    const a=item.getBoundingClientRect(),b=strip.getBoundingClientRect();
+    if(a.left<b.left)strip.scrollLeft-=b.left-a.left+3;
+    else if(a.right>b.right)strip.scrollLeft+=a.right-b.right+3;
+  });
+}
+function renderStrips(){
+  if(state.type!=='multi')return;
+  const top=activeTop(),offsets=captureScroll($('formContent'));
+  $('topTabStrip').innerHTML=tabStrip(state.tabs,top.id,1);
+  if(state.depth===2)$('childTabStrip').innerHTML=tabStrip(top.children,activeChild(top).id,2,top);
+  restoreScroll($('formContent'),offsets);ensureSelectedVisible($('formContent'));
+}
+function renderAll(resetScroll=false){
+  ensureTabs();
+  if(validationAttempted)errors=validateState();
+  document.querySelectorAll('.btn.sample').forEach(button=>button.classList.toggle('active',button.dataset.example===activeExample));
+  renderEditor();renderPreview(resetScroll);refreshErrors();
+}
+function validateState(){
+  const result=[];
+  const add=(key,message,topId='',tabId='')=>result.push({key,message,topId,tabId});
+  if(!state.pageName.trim())add('pageName','请输入页面名称');
+  if(!state.poolId)add('poolId','请选择业务活动');
+  if(state.type==='single'){
+    const rows=Array.isArray(state.supportGames)?state.supportGames:[];
+    if(!rows.length)add('supportGames.count','至少配置1行支持游戏');
+    const seen=new Map();
+    rows.forEach((row,index)=>{
+      if(!row.game)add('support.'+index+'.game','请选择游戏');
+      else if(seen.has(row.game))add('support.'+index+'.game','游戏不能重复');
+      else seen.set(row.game,index);
+      if(!row.price)add('support.'+index+'.price','请选择价格类型');
+      const n=Number(row.priority);
+      if(row.priority===''||!Number.isInteger(n)||n<1||n>100)add('support.'+index+'.priority','请输入1—100的整数');
+    });
+    return result;
+  }
+  if(state.depth===1&&!state.global.poolId)add('global.poolId','请选择号池');
+  if(state.tabs.length<1||state.tabs.length>10)add('tabs.count','每层须有1—10个tab');
+  const checkTab=(tab,parent=null)=>{
+    const topId=parent?parent.id:tab.id;
+    if(!tab.name.trim())add(tab.id+'.name','请输入展示名称',topId,tab.id);
+    else if(codeLength(tab.name)>10)add(tab.id+'.name','展示名称不能超过10个字',topId,tab.id);
+    const n=Number(tab.priority);
+    if(tab.priority===''||!Number.isInteger(n)||n<1||n>100)add(tab.id+'.priority','请输入1—100的整数',topId,tab.id);
+    if(parent||state.depth===1){
+      const value=effective(tab,parent);
+      if(!value.game||!value.price)add(tab.id+'.conditions',state.depth===2?'游戏和价格类型须在一级tab或本tab中确定':'游戏和价格类型须在上级或本tab中确定',topId,tab.id);
+    }
+  };
+  sorted(state.tabs).forEach(top=>{
+    checkTab(top);
+    if(state.depth===2){
+      if(top.children.length<1||top.children.length>10)add(top.id+'.count','每层须有1—10个tab',top.id,top.id);
+      sorted(top.children).forEach(child=>checkTab(child,top));
+    }
+  });
+  return result;
+}
+
+function refreshErrors(){
+  if(validationAttempted)errors=validateState();
+  else errors=[];
+  const messages=new Map(errors.map(e=>[e.key,e.message]));
+  document.querySelectorAll('[data-error]').forEach(el=>{
+    el.textContent=messages.get(el.dataset.error)||'';
+  });
+  document.querySelectorAll('[data-error-for]').forEach(el=>{
+    const invalid=messages.has(el.dataset.errorFor);
+    el.classList.toggle('input-invalid',invalid);
+    if(invalid)el.setAttribute('aria-invalid','true');else el.removeAttribute('aria-invalid');
+  });
+  const banner=$('validationBanner');
+  banner.hidden=!validationAttempted||(!errors.length&&!lastConfirmed);
+  if(!banner.hidden){
+    banner.className='validation-banner '+(errors.length?'error':'success');
+    banner.innerHTML=icon(errors.length?'info':'check',16)+(errors.length?'有 '+errors.length+' 项配置需要完善<button type="button" data-action="locate-error">定位首个问题</button>':'校验通过（演示，不保存）');
+  }
+  $('footerNote').innerHTML=icon('info',13)+(errors.length?'还有 '+errors.length+' 项待完善':lastConfirmed?'已完成校验 · 演示不保存':'仅本地演示 · 确定后校验配置');
+}
+function locateFirstError(){
+  if(!errors.length)return;
+  const first=errors[0];
+  if(first.topId){
+    state.selectedTop=first.topId;
+    if(first.tabId&&first.tabId!==first.topId)state.selectedChildren[first.topId]=first.tabId;
+    renderEditor();renderPreview();
+  }
+  const target=document.querySelector('[data-error="'+first.key+'"]');
+  if(target){
+    const scroll=$('formScroll'),rect=target.getBoundingClientRect(),container=scroll.getBoundingClientRect();
+    scroll.scrollTop+=rect.top-container.top-100;
+    const input=document.querySelector('[data-error-for="'+first.key+'"]:not(:disabled)');
+    if(input)input.focus({preventScroll:true});
+  }
+  renderStrips();
+}
+function toast(message,type='info'){
+  const element=$('toast');clearTimeout(toastTimer);
+  element.className='toast visible '+type;element.innerHTML=icon(type==='success'?'check':'info',16)+'<span>'+esc(message)+'</span>';
+  toastTimer=setTimeout(()=>{element.classList.remove('visible');},3200);
+}
+function selectTab(id,fromPreview=false){
+  const found=findTab(id);if(!found)return;
+  if(found.parent){state.selectedTop=found.parent.id;state.selectedChildren[found.parent.id]=id;}
+  else state.selectedTop=id;
+  ensureTabs();renderAll(false);
+  if(fromPreview){
+    const section=$('tabSection'),scroll=$('formScroll');
+    if(section){
+      const r=section.getBoundingClientRect(),s=scroll.getBoundingClientRect();
+      if(r.top<s.top||r.top>s.bottom-100)scroll.scrollTop+=r.top-s.top-13;
+    }
+  }
+}
+function addTab(level,parentId){
+  const parent=level===2?state.tabs.find(t=>t.id===parentId):null;
+  const tabs=parent?parent.children:state.tabs;
+  if(tabs.length>=10){toast('每层最多10个tab');return;}
+  const next=Math.max(0,...tabs.map(t=>t.ordinal))+1;
+  const tab=makeTab(next);tabs.push(tab);
+  if(parent)state.selectedChildren[parent.id]=tab.id;else state.selectedTop=tab.id;
+  ensureTabs();reconcileEquipment();lastConfirmed=false;renderAll();
+  const name=$('field-'+tab.id+'-name');if(name)name.focus({preventScroll:true});
+}
+function deleteTab(id){
+  const found=findTab(id);if(!found)return;
+  const tabs=found.parent?found.parent.children:state.tabs;
+  if(tabs.length<=1)return;
+  const order=sorted(tabs),oldIndex=order.findIndex(t=>t.id===id);
+  tabs.splice(tabs.findIndex(t=>t.id===id),1);
+  const next=sorted(tabs)[Math.min(oldIndex,tabs.length-1)].id;
+  if(found.parent)state.selectedChildren[found.parent.id]=next;
+  else{state.selectedTop=next;delete state.selectedChildren[id];}
+  lastConfirmed=false;renderAll();
+}
+function openCopy(){
+  if(state.depth!==2||state.tabs.length<2)return;
+  const top=activeTop(),others=sorted(state.tabs).filter(t=>t.id!==top.id);
+  $('copyDescription').textContent='选择来源一级tab，将它的二级tab追加到「'+tabName(top)+'」下，最多保留10个。';
+  $('copySource').innerHTML=others.map(t=>'<option value="'+t.id+'">'+esc(tabName(t))+'（'+t.children.length+'个二级tab）</option>').join('');
+  updateCopySummary();$('copyDialog').showModal();
+}
+function updateCopySummary(){
+  const source=state.tabs.find(t=>t.id===$('copySource').value),top=activeTop();
+  if(!source||!top)return;
+  const available=Math.max(0,10-top.children.length);
+  $('copySummary').innerHTML='<b>'+esc(sorted(source.children).map(tabName).join('、'))+'</b><br>当前 '+top.children.length+' 个，可再追加 '+available+' 个。'+
+    (source.children.length>available?'<br>超出数量将截断，本次可复制 '+Math.min(available,source.children.length)+' 个。':'')+
+    '<br>复制后，游戏和价格类型按当前一级tab的继承关系生效。';
+  $('copyConfirm').disabled=available===0;
+}
+function confirmCopy(){
+  const source=state.tabs.find(t=>t.id===$('copySource').value),target=activeTop();
+  if(!source||source.id===target.id)return;
+  const available=Math.max(0,10-target.children.length);
+  if(!available){toast('当前二级tab已达10个，请先删除后再复制');return;}
+  const candidates=sorted(source.children).slice(0,available);
+  const start=Math.max(0,...target.children.map(t=>t.ordinal));
+  const copies=candidates.map((t,i)=>{
+    const copied=clone(t);
+    delete copied.id;delete copied.created;
+    copied.ordinal=start+i+1;copied.children=[];copied.background='';
+    return makeTab(start+i+1,copied);
+  });
+  target.children.push(...copies);
+  if(copies.length)state.selectedChildren[target.id]=copies[0].id;
+  reconcileEquipment();lastConfirmed=false;$('copyDialog').close();renderAll();
+  toast(source.children.length>available?'已复制 '+copies.length+' 个二级tab；超过10个的部分已截断':'已复制 '+copies.length+' 个二级tab，配置可独立编辑');
+}
+function clearRulesOutsidePool(poolId){
+  const allowed=new Set((poolById(poolId)?.rules||[]).map(rule=>rule.id));
+  state.global.rule='';
+  (state.tabs||[]).forEach(top=>{
+    if(top.rule&&!allowed.has(top.rule))top.rule='';
+    (top.children||[]).forEach(child=>{if(child.rule&&!allowed.has(child.rule))child.rule='';});
+  });
+}
+function handleField(element,isComposing=false){
+  let value=element.value;
+  if(element.dataset.tabField==='name'&&!isComposing){
+    value=Array.from(value).slice(0,10).join('');
+    if(value!==element.value)element.value=value;
+  }
+  if(element.dataset.state){
+    const key=element.dataset.state;
+    if(key==='type'||key==='depth'){
+      saveCurrentMode();
+      if(key==='type'){
+        if(value==='single'){state.type='single';state.depth=1;}
+        else{state.type='multi';state.depth=state.lastMultiDepth||1;}
+      }else{
+        state.depth=Number(value);state.lastMultiDepth=state.depth;
+      }
+      restoreMode(modeKey());ensureTabs();
+    }else{
+      if(key==='poolId'){
+        state.poolId=value;
+        if(state.type==='multi'&&state.depth===1)state.global.poolId=value;
+        clearRulesOutsidePool(selectedPoolId());
+      }else state[key]=value;
+      ensureTabs();
+    }
+  }else if(element.dataset.global){
+    const key=element.dataset.global;
+    state.global[key]=value;
+    if(key==='poolId')clearRulesOutsidePool(value);
+  }else if(element.dataset.supportField){
+    const index=Number(element.dataset.supportIndex),row=state.supportGames[index];
+    if(!row)return;
+    row[element.dataset.supportField]=value;
+    ensureSingleSelection();
+  }else if(element.dataset.tabField){
+    const found=findTab(element.dataset.tabId);if(!found)return;
+    found.tab[element.dataset.tabField]=value;
+    if(element.dataset.tabField==='equipment')found.tab.equipmentGame=effective(found.tab,found.parent).game;
+  }else if(element.dataset.check){
+    const key=element.dataset.check;
+    if(key==='devices'&&value==='全部')state.devices=element.checked?DEVICES.slice():[];
+    else{
+      const set=new Set(state[key]);if(element.checked)set.add(value);else set.delete(value);
+      if(key==='devices'){
+        set.delete('全部');
+        if(DEVICES.slice(1).every(v=>set.has(v)))set.add('全部');
+      }
+      state[key]=[...set];
+    }
+  }else return;
+  lastConfirmed=false;ensureSingleSelection();reconcileEquipment();
+  const textField=element.tagName==='INPUT'&&['text','number'].includes(element.type);
+  if(textField){
+    if(element.dataset.tabField==='name'){
+      const counter=document.querySelector('[data-count-for="'+element.dataset.tabId+'"]');
+      if(counter)counter.textContent=codeLength(value)+'/10';
+    }
+    refreshErrors();renderStrips();renderPreview();
+  }else renderAll();
+}
+
+function addSupport(index){
+  const rows=state.supportGames||[];
+  const maxPriority=Math.max(0,...rows.map(row=>Number(row.priority)).filter(Number.isFinite));
+  rows.splice(index+1,0,{game:'',priority:String(Math.min(100,maxPriority+1)),price:''});
+  state.supportGames=rows;lastConfirmed=false;renderAll();
+}
+function removeSupport(index){
+  const rows=state.supportGames||[];
+  if(rows.length<=1)return;
+  rows.splice(index,1);state.supportGames=rows;ensureSingleSelection();lastConfirmed=false;renderAll();
+}
+function selectSingleGame(game){
+  if(!(state.supportGames||[]).some(row=>row.game===game&&row.price))return;
+  state.singleSelectedGame=game;renderPreview(false);
+}
+function handleUpload(input){
+  const file=input.files&&input.files[0];if(!file)return;
+  const epoch=stateEpoch,scope=input.dataset.uploadScope,field=input.dataset.uploadField,tabId=input.dataset.tabId;
+  if(file.type&&!file.type.startsWith('image/')){toast('请选择有效的图片文件','error');input.value='';return;}
+  const reader=new FileReader();
+  reader.onerror=()=>toast('图片读取失败，请重新选择','error');
+  reader.onload=()=>{
+    const url=reader.result,probe=new Image();
+    probe.onerror=()=>toast('无法预览这张图片，请选择其他图片','error');
+    probe.onload=()=>{
+      if(stateEpoch!==epoch)return;
+      if(scope==='header')state.headers[field]=url;
+      else{const found=findTab(tabId);if(!found)return;found.tab[field]=url;}
+      lastConfirmed=false;renderAll();toast('图片已更新');
+    };
+    probe.src=url;
+  };
+  reader.readAsDataURL(file);
+}
+document.addEventListener('input',event=>{
+  const el=event.target;
+  if(el instanceof HTMLInputElement&&['text','number'].includes(el.type))handleField(el,event.isComposing);
+});
+document.addEventListener('compositionend',event=>{
+  if(event.target instanceof HTMLInputElement)handleField(event.target,false);
+});
+document.addEventListener('change',event=>{
+  const el=event.target;
+  if(el.id==='copySource'){updateCopySummary();return;}
+  if(el.dataset.uploadScope){handleUpload(el);return;}
+  if(el instanceof HTMLInputElement&&['text','number'].includes(el.type))return;
+  if(el.dataset.state||el.dataset.global||el.dataset.supportField||el.dataset.tabField||el.dataset.check)handleField(el);
+});
+document.addEventListener('click',event=>{
+  const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;
+  const action=button.dataset.action;
+  if(action==='example')loadExample(button.dataset.example);
+  else if(action==='select-single-game')selectSingleGame(button.dataset.gameId);
+  else if(action==='add-support')addSupport(Number(button.dataset.supportIndex));
+  else if(action==='remove-support')removeSupport(Number(button.dataset.supportIndex));
+  else if(action==='select-tab')selectTab(button.dataset.tabId,!!button.closest('#phoneScroll'));
+  else if(action==='add-tab')addTab(Number(button.dataset.level),button.dataset.parentId);
+  else if(action==='delete-tab')deleteTab(button.dataset.tabId);
+  else if(action==='open-copy')openCopy();
+  else if(action==='close-copy')$('copyDialog').close();
+  else if(action==='confirm-copy')confirmCopy();
+  else if(action==='remove-image'){
+    if(button.dataset.scope==='header')state.headers[button.dataset.field]='';
+    else{const found=findTab(button.dataset.tabId);if(found)found.tab[button.dataset.field]='';}
+    lastConfirmed=false;renderAll();
+  }else if(action==='validate'){
+    validationAttempted=true;errors=validateState();lastConfirmed=!errors.length;refreshErrors();renderStrips();
+    if(errors.length){locateFirstError();toast('有 '+errors.length+' 项配置需要完善','error');}
+    else toast('校验通过（演示，不保存）','success');
+  }else if(action==='locate-error')locateFirstError();
+  else if(action==='cancel'){
+    stateEpoch++;state=clone(baseline);validationAttempted=false;lastConfirmed=false;errors=[];renderAll(true);
+    toast(activeExample==='empty'?'已恢复默认配置':'已恢复当前示例的初始配置');
+  }
+});
+$('configForm').addEventListener('submit',event=>{event.preventDefault();document.querySelector('[data-action="validate"]').click();});
+$('copyDialog').addEventListener('click',event=>{if(event.target===$('copyDialog')){const r=$('copyDialog').getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)$('copyDialog').close();}});
+loadExample('one',false);
+</script>
+</body>
+</html>
