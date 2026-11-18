@@ -289,7 +289,9 @@ function ensureSingleSelection(){
   if(!available.some(row=>row.game===state.singleSelectedGame))state.singleSelectedGame=available[0]?available[0].game:'';
 }
 function makeTab(ordinal=1,options={}){
-  return Object.assign({id:'tab-'+(++sequence),created:sequence,ordinal,name:'',priority:'',iconMode:'none',iconData:'',equipment:'',equipmentGame:'',background:'',game:'',price:'',poolId:'',rule:'',children:[]},options);
+  const tab=Object.assign({id:'tab-'+(++sequence),created:sequence,ordinal,name:'',priority:'',iconMode:'none',iconData:'',equipment:'',equipmentGame:'',background:'',headers:{pc:'',client:'',mobile:'',gradient:''},game:'',price:'',poolId:'',rule:'',children:[]},options);
+  tab.headers=Object.assign({pc:'',client:'',mobile:'',gradient:''},options.headers||{});
+  return tab;
 }
 function sorted(tabs){return tabs.slice().sort((a,b)=>{
   const score=(t)=>t.priority!==''&&Number.isFinite(Number(t.priority))?Number(t.priority):Infinity;
@@ -499,7 +501,7 @@ function tabForm(tab,parent=null){
       '<div class="inline-field"><label for="field-'+id+'-name" class="required">展示名称</label><div><div class="input-wrap"><input id="field-'+id+'-name" class="text-input" type="text" placeholder="请输入，不超过10个字" value="'+esc(tab.name)+'" data-tab-id="'+id+'" data-tab-field="name" data-error-for="'+id+'.name" autocomplete="off"><span class="char-count" data-count-for="'+id+'">'+codeLength(tab.name)+'/10</span></div>'+errorSlot(id+'.name')+'</div></div>'+
       '<div class="inline-field"><label for="field-'+id+'-priority" class="required">展示优先级</label><div><input id="field-'+id+'-priority" class="text-input" type="number" min="1" max="100" step="1" placeholder="1—100" value="'+esc(tab.priority)+'" data-tab-id="'+id+'" data-tab-field="priority" data-error-for="'+id+'.priority">'+errorSlot(id+'.priority')+'</div></div>'+
     '</div>'+
-    '<div class="tab-small-row"><span class="tab-small-label">tab图标</span><div>'+
+    '<div class="tab-small-row"><span class="tab-small-label'+(!parent?' required':'')+'">tab图标</span><div>'+
       '<div class="radio-group">'+radio('icon-'+id,'none','不设置',tab.iconMode,'data-tab-id="'+id+'" data-tab-field="iconMode"')+
       radio('icon-'+id,'upload','自定义上传',tab.iconMode,'data-tab-id="'+id+'" data-tab-field="iconMode"')+
       radio('icon-'+id,'equipment','装备库获取',tab.iconMode,'data-tab-id="'+id+'" data-tab-field="iconMode"',!game)+
@@ -510,6 +512,7 @@ function tabForm(tab,parent=null){
     '</div></div>'+
     (!parent?'<div class="tab-small-row"><span class="tab-small-label">tab背景图</span><div class="background-row">'+uploadBox('tab','background','tab背景图',tab.background,id)+'<span class="hint-inline">选填，作为选中tab的底色块</span></div></div>':'')+
     '<div class="tab-small-row"><span class="tab-small-label">展示规则</span><div>'+ruleFields('tab',tab,parent)+(isLeaf?errorSlot(id+'.conditions'):'')+'</div></div>'+
+    (state.type==='multi'&&state.depth===1&&!parent?'<div class="tab-small-row"><span class="tab-small-label">头图</span><div class="field-body"><div class="head-uploads">'+HEADER_FIELDS.map(([key,label])=>uploadBox('tabHeader',key,label,(tab.headers&&tab.headers[key])||'',id,false,true)).join('')+'</div></div></div>':'')+
   '</div>';
 }
 function renderTabSection(){
@@ -518,10 +521,11 @@ function renderTabSection(){
     errorSlot('tabs.count')+'<div class="tabs-shell"><div id="topTabStrip">'+tabStrip(state.tabs,top.id,1)+'</div>'+tabForm(top)+
     (state.depth===2?'<div class="child-container">'+errorSlot(top.id+'.count')+'<div id="childTabStrip">'+tabStrip(top.children,activeChild(top).id,2,top)+'</div>'+tabForm(activeChild(top),top)+'</div>':'')+'</div></section>';
 }
+const HEADER_FIELDS=[['pc','PC官网头图'],['client','客户端头图'],['mobile','移动端头图'],['gradient','移动端渐变底图']];
 function renderEditor(){
   const scroll=$('formScroll').scrollTop,focus=document.activeElement&&document.activeElement.id;
   const offsets=captureScroll($('formContent'));
-  const two=state.type==='multi'&&state.depth===2;
+  const two=state.type==='multi'&&state.depth===2,one=state.type==='multi'&&state.depth===1;
   $('formContent').innerHTML=
     '<div class="form-row"><label class="row-label required" for="pageName">页面名称</label><div class="field-body"><input class="text-input" id="pageName" data-state="pageName" value="'+esc(state.pageName)+'" placeholder="请输入页面名称" autocomplete="off" data-error-for="pageName">'+errorSlot('pageName')+'</div></div>'+
     '<div class="form-row"><label class="row-label'+(two?'':' required')+'" for="poolId">业务活动</label><div class="field-body"><select id="poolId" class="select-input'+(!state.poolId?' placeholder':'')+'" data-state="poolId" data-error-for="poolId"'+(two?' disabled':'')+'>'+selectOptions(POOLS,state.poolId,'请选择业务活动')+'</select>'+(two?'<div class="disabled-hint">两层tab下由一级tab选择号池，业务活动不生效。</div>':'')+errorSlot('poolId')+'</div></div>'+
@@ -529,9 +533,9 @@ function renderEditor(){
     (state.type==='multi'?'<div class="form-row"><span class="row-label required">tab层级</span><div class="field-body"><div class="radio-group">'+radio('tab-depth',1,'一层',state.depth,'data-state="depth"')+radio('tab-depth',2,'两层',state.depth,'data-state="depth"')+'</div></div></div>':'')+
     (state.type==='single'?'<div class="form-row"><span class="row-label required">支持游戏</span><div class="field-body">'+supportGamesFields()+'</div></div>':state.depth===1?'<div class="form-row"><span class="row-label">全局展示</span><div class="field-body">'+globalOneFields()+'<div class="hint">对本专区所有tab生效；号池决定下方tab可选的号池规则。</div></div></div>':'')+
     (state.type==='multi'?renderTabSection():'<div class="section-divider"></div>')+
-    '<div class="form-row" id="headerRow"><span class="row-label">头图</span><div class="field-body"><div class="head-uploads'+(two?' uploads-disabled':'')+'">'+
-      [['pc','PC官网头图'],['client','客户端头图'],['mobile','移动端头图'],['gradient','移动端渐变底图']].map(([key,label])=>uploadBox('header',key,label,state.headers[key],'',two,true)).join('')+
-      '</div>'+(two?'<div class="warning-note">'+icon('info',14)+'两层tab下头图不生效。</div>':'')+'</div></div>'+
+    (one?'':'<div class="form-row" id="headerRow"><span class="row-label">头图</span><div class="field-body"><div class="head-uploads'+(two?' uploads-disabled':'')+'">'+
+      HEADER_FIELDS.map(([key,label])=>uploadBox('header',key,label,state.headers[key],'',two,true)).join('')+
+      '</div>'+(two?'<div class="warning-note">'+icon('info',14)+'两层tab下头图不生效。</div>':'')+'</div></div>')+
     '<div class="section-divider"></div>'+
     '<div class="form-row"><label class="row-label required" for="audience">可见人群</label><div class="field-body"><select id="audience" class="select-input" data-state="audience">'+selectOptions([{id:'all',name:'全网用户'},{id:'new',name:'新用户'},{id:'old',name:'老用户'},{id:'member',name:'会员用户'}],state.audience)+'</select></div></div>'+
     '<div class="form-row"><span class="row-label required">设备类型</span><div class="field-body checkbox-group devices">'+DEVICES.map((name,i)=>'<label class="checkbox-label"><input type="checkbox" id="device-'+i+'" data-check="devices" value="'+esc(name)+'"'+(state.devices.includes(name)?' checked':'')+'>'+esc(name)+'</label>').join('')+'</div></div>';
@@ -573,7 +577,9 @@ function mobileTabs(){
 
 function heroMarkup(){
   if(state.type==='multi'&&state.depth===2)return '';
-  if(state.headers.mobile)return '<img class="hero-upload" src="'+esc(state.headers.mobile)+'" alt="移动端头图">';
+  const top=state.type==='multi'&&state.depth===1?activeTop():null;
+  const mobileHeader=top?(top.headers&&top.headers.mobile):state.headers.mobile;
+  if(mobileHeader)return '<img class="hero-upload" src="'+esc(mobileHeader)+'" alt="移动端头图">';
   const isCar=selectedPoolId()==='1120';
   return '<div class="hero"><div class="hero-copy"><h2>'+esc(state.pageName||'你的专属游戏专区')+'</h2></div><img class="hero-art'+(isCar?' car':'')+'" src="'+esc(isCar?carImage():equipmentImage('hp',0))+'" alt="" aria-hidden="true"></div>';
 }
@@ -919,6 +925,7 @@ function handleUpload(input){
     probe.onload=()=>{
       if(stateEpoch!==epoch)return;
       if(scope==='header')state.headers[field]=url;
+      else if(scope==='tabHeader'){const found=findTab(tabId);if(!found)return;found.tab.headers=found.tab.headers||{pc:'',client:'',mobile:'',gradient:''};found.tab.headers[field]=url;}
       else{const found=findTab(tabId);if(!found)return;found.tab[field]=url;}
       lastConfirmed=false;renderAll();toast('图片已更新');
     };
@@ -1023,6 +1030,7 @@ document.addEventListener('click',event=>{
   else if(action==='confirm-copy')confirmCopy();
   else if(action==='remove-image'){
     if(button.dataset.scope==='header')state.headers[button.dataset.field]='';
+    else if(button.dataset.scope==='tabHeader'){const found=findTab(button.dataset.tabId);if(found&&found.tab.headers)found.tab.headers[button.dataset.field]='';}
     else{const found=findTab(button.dataset.tabId);if(found)found.tab[button.dataset.field]='';}
     lastConfirmed=false;renderAll();
   }else if(action==='validate'){
